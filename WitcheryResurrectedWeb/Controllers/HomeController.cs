@@ -51,11 +51,13 @@ namespace WitcheryResurrectedWeb.Controllers
             }
 
             var releaseDate = DateTimeOffset.Now;
-            Program.Downloads[upload.Name] = new Program.Downloadable(
+            var downloadable = new Program.Downloadable(
                 upload.Name,
                 upload.Files.Select(file => new Program.DownloadFile(file.FileName, file.Length, 0)),
                 releaseDate
             );
+            Program.AddChanges(upload.ChangeLog.Split('\n'), downloadable.Additions, downloadable.Removals, downloadable.Changes);
+            Program.Downloads[upload.Name] = downloadable;
 
             Program.SortedDownloads[releaseDate] = upload.Name;
 
