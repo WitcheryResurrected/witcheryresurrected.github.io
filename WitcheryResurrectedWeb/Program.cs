@@ -25,7 +25,7 @@ namespace WitcheryResurrectedWeb
                 {
                     var path = Path.GetRelativePath("Downloads", directory);
                     var downloadable = new Downloadable(
-                        File.ReadAllText(Path.Combine(path, "name.txt")),
+                        File.ReadAllText(Path.Combine(directory, "name.txt")),
                         File
                                 .ReadAllLines(Path.Combine(directory, "indices.txt"))
                                 .Select(name =>

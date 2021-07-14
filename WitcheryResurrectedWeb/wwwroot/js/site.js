@@ -9,7 +9,7 @@ function toggleDarkMode() {
 }
 
 async function getDownloads() {
-    const result = await fetch("/Home/GetDownloads/" + (last ? last : ""));
+    const result = await fetch("/Home/Downloads/" + (last ? last : ""));
     const downloads = await result.json();
     for (let download of downloads) {
         //TODO add result

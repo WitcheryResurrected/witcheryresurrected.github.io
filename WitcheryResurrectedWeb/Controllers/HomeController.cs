@@ -76,11 +76,11 @@ namespace WitcheryResurrectedWeb.Controllers
             return Content("Success!");  
         }
 
-        [HttpGet]
+        [HttpGet("Home/Downloads")]
         public ActionResult<List<Program.Downloadable>> GetDownloads() => GetDownloads(null);
 
-        [HttpGet("{last}")]
-        public ActionResult<List<Program.Downloadable>> GetDownloads(string last)
+        [HttpGet("Home/Downloads/{last}")]
+        public ActionResult<List<Program.Downloadable>> GetDownloads([FromRoute] string last)
         {
             var list = new List<Program.Downloadable>();
             DateTimeOffset? lastDate;
@@ -115,8 +115,8 @@ namespace WitcheryResurrectedWeb.Controllers
             return list;
         }
 
-        [HttpPost("{name}/{file}")]
-        public async Task<IActionResult> Download(string name, string file)
+        [HttpGet("Download/{name}/{file}")]
+        public async Task<IActionResult> Download([FromRoute] string name, [FromRoute] string file)
         {
             var download = Program.Downloads[name];
             var index = -1;
