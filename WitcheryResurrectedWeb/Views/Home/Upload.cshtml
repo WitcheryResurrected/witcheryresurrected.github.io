@@ -4,25 +4,33 @@
 <h1>@ViewData["Title"]</h1>
 
 @model WitcheryResurrectedWeb.Controllers.HomeController.Uploadable
-<form asp-action="UploadFiles" enctype="multipart/form-data">
-    Name:
-    <br>
-    <input asp-for="Name"/>
-    <br>
-    <br>
-    Files:
-    <br>
-    <input asp-for="Files" multiple/>
+<form asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+    <label>
+        Name:
+        <br>
+        <input asp-for="Name"/>
+    </label>
     <br>
     <br>
-    Changelog:
+    <label>
+        Files:
+        <br>
+        <input asp-for="Files" multiple/>
+    </label>
     <br>
-    <textarea asp-for="ChangeLog"></textarea>
+    <br>
+    <label>
+        Changelog:
+        <br>
+        <textarea asp-for="ChangeLog"></textarea>
+    </label>
     <br>
     <br>
-    Secret Code:
-    <br>
-    <input asp-for="Pass"/>
+    <label>
+        Secret Code:
+        <br>
+        <input asp-for="Pass"/>
+    </label>
     <br>
     <br>
     <input type="submit"/>

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,8 @@ namespace WitcheryResurrectedWeb.Controllers
         {
             if (upload.Pass != Program.Pass) return Content("Wrong key.");
             if (upload.Files == null || upload.Files.Count == 0) return Content("No files selected.");
-            var folder = Path.Combine("Downloads", upload.Name);
+            var name = Regex.Replace(upload.Name, "[^a-z0-9_.-]", "");
+            var folder = Path.Combine("Downloads", name);
             Directory.CreateDirectory("Downloads");
             Directory.CreateDirectory(folder);
 
@@ -50,16 +52,26 @@ namespace WitcheryResurrectedWeb.Controllers
                 await text.WriteLineAsync(upload.ChangeLog);
             }
 
+            await using (var text = Files.CreateText(Path.Combine(folder, "name.txt")))
+            {
+                await text.WriteLineAsync(upload.Name);
+            }
+            
             var releaseDate = DateTimeOffset.Now;
             var downloadable = new Program.Downloadable(
                 upload.Name,
                 upload.Files.Select(file => new Program.DownloadFile(file.FileName, file.Length, 0)),
                 releaseDate
             );
-            Program.AddChanges(upload.ChangeLog.Split('\n'), downloadable.Additions, downloadable.Removals, downloadable.Changes);
-            Program.Downloads[upload.Name] = downloadable;
 
-            Program.SortedDownloads[releaseDate] = upload.Name;
+            if (upload.ChangeLog != null)
+            {
+                Program.AddChanges(upload.ChangeLog.Split('\n'), downloadable.Additions, downloadable.Removals,
+                    downloadable.Changes);
+            }
+
+            Program.Downloads[name] = downloadable;
+            Program.SortedDownloads[releaseDate] = name;
 
             return Content("Success!");  
         }
@@ -67,6 +79,7 @@ namespace WitcheryResurrectedWeb.Controllers
         [HttpGet]
         public ActionResult<List<Program.Downloadable>> GetDownloads() => GetDownloads(null);
 
+        [HttpGet("{last}")]
         public ActionResult<List<Program.Downloadable>> GetDownloads(string last)
         {
             var list = new List<Program.Downloadable>();
@@ -101,18 +114,57 @@ namespace WitcheryResurrectedWeb.Controllers
 
             return list;
         }
-        
-        public async Task<IActionResult> Download(string filename)  
+
+        [HttpPost("{name}/{file}")]
+        public async Task<IActionResult> Download(string name, string file)
         {
-            var memory = new MemoryStream();
-            await using (var stream = new FileStream(filename, FileMode.Open))  
+            var download = Program.Downloads[name];
+            var index = -1;
+            for (var i = 0; i < download.Paths.Length; ++i)
             {
-                await stream.CopyToAsync(memory);  
+                var downloadPath = download.Paths[i];
+                if (downloadPath.Name != file) continue;
+                index = i;
+                break;
             }
-            memory.Position = 0;  
-            return File(memory, "application/java-archive", Path.GetFileName(filename));  
+
+            if (index == -1)
+                return StatusCode(404);
+
+            lock (download) ++download.Paths[index].DownloadCount;
+            var indices = Path.Combine("Downloads", name, "indices.txt");
+            var newIndices = new StringBuilder();
+            await using (var stream = new FileStream(indices, FileMode.Open))
+            {
+                using var reader = new StreamReader(stream);
+                var i = 0;
+                while (!reader.EndOfStream)
+                {
+                    var line = await reader.ReadLineAsync();
+                    if (i == index)
+                    {
+                        newIndices
+                            .Append(line!.Split(';')[0])
+                            .Append(';')
+                            .Append(download.Paths[index].DownloadCount)
+                            .Append('\n');
+                    }
+                    else
+                    {
+                        newIndices.Append(line).Append('\n');
+                    }
+                    ++i;
+                }
+            }
+
+            await using (var stream = new FileStream(indices, FileMode.Open))
+            {
+                await stream.WriteAsync(Encoding.UTF8.GetBytes(newIndices.ToString()));
+            }
+            
+            return File(new FileStream(Path.Combine("Downloads", name, file), FileMode.Open), "application/java-archive", file);
         }
-        
+
         public class Uploadable
         {
             public string Name { set; get; }

@@ -1,5 +1,6 @@
 ﻿let dark = false;
 let last;
+let index = 0;
 
 function toggleDarkMode() {
     dark = true;
@@ -9,7 +10,10 @@ function toggleDarkMode() {
 
 async function getDownloads() {
     const result = await fetch("/Home/GetDownloads/" + (last ? last : ""));
-    //TODO add result
+    const downloads = await result.json();
+    for (let download of downloads) {
+        //TODO add result
+    }
 }
 
 for (const cookie of document.cookie.replace(" ", "").split("; ")) {

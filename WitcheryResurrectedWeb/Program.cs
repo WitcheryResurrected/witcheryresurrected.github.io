@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -22,8 +23,9 @@ namespace WitcheryResurrectedWeb
             {
                 foreach (var directory in Directory.EnumerateDirectories("Downloads"))
                 {
+                    var path = Path.GetRelativePath("Downloads", directory);
                     var downloadable = new Downloadable(
-                        Path.GetRelativePath("Downloads", directory),
+                        File.ReadAllText(Path.Combine(path, "name.txt")),
                         File
                                 .ReadAllLines(Path.Combine(directory, "indices.txt"))
                                 .Select(name =>
@@ -36,8 +38,9 @@ namespace WitcheryResurrectedWeb
                     );
                     AddChanges(File.ReadAllLines(Path.Combine(directory, "changelog.txt")), downloadable.Additions,
                         downloadable.Removals, downloadable.Changes);
-                    Downloads[directory] = downloadable;
-                    SortedDownloads[downloadable.Release] = directory;
+                    
+                    Downloads[path] = downloadable;
+                    SortedDownloads[downloadable.Release] = path;
                 }
             }
 

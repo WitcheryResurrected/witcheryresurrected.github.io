@@ -83,3 +83,10 @@ body {
   bottom: 42px;
   left: 5px;
 }
+
+.download {
+  display: block;
+  width: 200px;
+  height: 50px;
+  left: 50%;
+}
