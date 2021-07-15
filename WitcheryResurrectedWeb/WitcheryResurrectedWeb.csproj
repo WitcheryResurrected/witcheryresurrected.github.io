@@ -29,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Discord.Net" Version="2.4.0" />
+      <PackageReference Include="Discord.Net.Webhook" Version="2.4.0" />
     </ItemGroup>
 
 </Project>

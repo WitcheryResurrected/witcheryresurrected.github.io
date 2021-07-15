@@ -15,13 +15,14 @@ namespace WitcheryResurrectedWeb
     {
         public static readonly Dictionary<string, Downloadable> Downloads = new(); 
         public static readonly SortedDictionary<DateTimeOffset, string> SortedDownloads = new(new DescendingComparer<DateTimeOffset>());
-
+        
+        public static DiscordWebhookClient WebhookClient { get; private set; }
         public static string Pass { get; private set; } = "";
         
         public static void Main(string[] args)
         {
             Pass = File.ReadAllText("pass.txt");
-
+            WebhookClient = new DiscordWebhookClient(File.ReadAllText("webhook.txt"));
 
             if (Directory.Exists("Downloads"))
             {

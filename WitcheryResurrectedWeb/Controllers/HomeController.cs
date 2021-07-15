@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Discord;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WitcheryResurrectedWeb.Models;
@@ -27,7 +28,7 @@ namespace WitcheryResurrectedWeb.Controllers
         {
             if (upload.Pass != Program.Pass) return Content("Wrong key.");
             if (upload.Files == null || upload.Files.Count == 0) return Content("No files selected.");
-            var name = Regex.Replace(upload.Name, "[^a-z0-9_.-]", "");
+            var name = Regex.Replace(upload.Name, "[^a-zA-Z0-9_.-]", "");
             var folder = Path.Combine("Downloads", name);
             Directory.CreateDirectory("Downloads");
             Directory.CreateDirectory(folder);
@@ -46,7 +47,7 @@ namespace WitcheryResurrectedWeb.Controllers
                     await file.CopyToAsync(stream);
                 }
             }
-
+            
             await using (var text = Files.CreateText(Path.Combine(folder, "changelog.txt")))
             {
                 await text.WriteLineAsync(upload.ChangeLog);
@@ -73,13 +74,50 @@ namespace WitcheryResurrectedWeb.Controllers
             Program.Downloads[name] = downloadable;
             Program.SortedDownloads[releaseDate] = name;
 
+            var url = $"{Request.Scheme}://{Request.Host.ToString()}/Download";
+            var fileLinks = string.Join('\n', upload.Files.Select(file => $"[{file.FileName}]({url}/{name}/{file.FileName})"));
+            var additions = string.Join('\n', downloadable.Additions.Select(change => $"+{change}"));
+            var removals = string.Join('\n', downloadable.Removals.Select(change => $"-{change}"));
+            var changes = string.Join('\n', downloadable.Changes.Select(change => $"*{change}"));
+            var builder = new StringBuilder(fileLinks);
+            var hasChanges = false;
+            if (!string.IsNullOrEmpty(additions))
+            {
+                hasChanges = true;
+                builder.Append("\n\nChangelog:\n").Append(additions);
+            }
+
+            if (!string.IsNullOrEmpty(removals))
+            {
+                if (!hasChanges)
+                {
+                    hasChanges = true;
+                    builder.Append("\n\nChangelog:");
+                }
+                builder.Append('\n').Append(removals);
+            }
+
+            if (!string.IsNullOrEmpty(changes))
+            {
+                if (!hasChanges) builder.Append("\n\nChangelog:");
+                builder.Append('\n').Append(changes);
+            }
+
+            await Program.WebhookClient.SendMessageAsync(embeds: new []
+            {
+                new EmbedBuilder()
+                    .WithTitle(upload.Name)
+                    .WithDescription(builder.ToString())
+                    .Build()
+            });
+
             return Content("Success!");  
         }
 
-        [HttpGet("Home/Downloads")]
+        [HttpGet("Downloads")]
         public ActionResult<List<Program.Downloadable>> GetDownloads() => GetDownloads(null);
 
-        [HttpGet("Home/Downloads/{last}")]
+        [HttpGet("Downloads/{last}")]
         public ActionResult<List<Program.Downloadable>> GetDownloads([FromRoute] string last)
         {
             var list = new List<Program.Downloadable>();
