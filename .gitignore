@@ -5,3 +5,5 @@ obj/
 .idea
 *.iml
 Downloads
+*/pass.txt
+*/webhook.txt

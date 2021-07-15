@@ -97,18 +97,25 @@ namespace WitcheryResurrectedWeb.Controllers
             var sent = -1;
             foreach (var (date, name) in Program.SortedDownloads)
             {
-                if (sent < 1 && !lastDate.HasValue)
+                switch (sent)
                 {
-                    sent = 1;
-                    list.Add(Program.Downloads[name]);
-                } else if (lastDate.HasValue && date == lastDate.Value)
-                {
-                    sent = 0;
-                }
-                else if (sent != -1)
-                {
-                    if (sent++ >= 5) continue;
-                    list.Add(Program.Downloads[name]);
+                    case < 1 when !lastDate.HasValue:
+                        sent = 1;
+                        list.Add(Program.Downloads[name]);
+                        break;
+                    case < 0 when date == lastDate.Value:
+                        sent = 0;
+                        break;
+                    default:
+                    {
+                        if (sent != -1)
+                        {
+                            if (sent++ >= 5) continue;
+                            list.Add(Program.Downloads[name]);
+                        }
+
+                        break;
+                    }
                 }
             }
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Discord;
+using Discord.Rest;
+using Discord.Webhook;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -18,6 +21,7 @@ namespace WitcheryResurrectedWeb
         public static void Main(string[] args)
         {
             Pass = File.ReadAllText("pass.txt");
+
 
             if (Directory.Exists("Downloads"))
             {
