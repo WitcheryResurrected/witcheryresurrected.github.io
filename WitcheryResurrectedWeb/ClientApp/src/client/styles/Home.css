@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+#backvid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+#backvid video {
+  object-fit: cover;
+  object-position: center;
+}
+
+.page.home .content {
+  display: grid;
+  gap: 2%;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: repeat(20, 1fr);
+  padding: 3% 5%;
+  height: 150vh;
+}
+
+.page.home .content .card.info {
+  display: flex;
+  flex-flow: row;
+  width: 90%;
+  padding: 0 10%;
+  justify-self: right;
+  justify-content: center;
+  align-items: flex-start;
+  grid-column: 1;
+  grid-row: 1 / 18;
+  text-align: center;
+}
+
+.page.home .content .card.info .welcome .header {
+  border-bottom: 2px solid var(--bs-dark);
+  margin-bottom: 4%;
+}
+
+.page.home .content .card.info .welcome .header h2 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold !important;
+}
+
+.page.home .content .card.info .welcome .body {
+  padding: 0 5%;
+}
+
+.page.home .content .card.info .welcome .trailer {
+  width: 80%;
+  aspect-ratio: 15.99 / 9; /* HAVE TO DO THIS TO REMOVE WEIRD BLACK LINE ON LEFT OF VIDEO */
+}
+
+.page.home .content .card.widget {
+  grid-column: 2;
+  justify-self: left;
+  height: 100%;
+  width: 80%;
+}
+
+.page.home .content .card.discord {
+  grid-row: 1 / 7;
+}
+
+.page.home .content .card.trello {
+  grid-row: 7 / 12;
+}
+
+.page.home .content .card.info .logo {
+  width: 10vw;
+}

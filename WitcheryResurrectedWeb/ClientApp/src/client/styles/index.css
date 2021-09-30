@@ -1,0 +1,82 @@
+:root {
+  --main: #7a2a91;
+  --accent: #9a39b4;
+  --complement: #3dd34a;
+  --background: url('../../assets/images/background.png');
+  --frost-back: rgba(38, 39, 43, 0.4);
+  --superfrost-back: rgba(38, 39, 43, 0.2);
+  --link: #5969d4;
+  --link-hover: #4653a1;
+}
+
+#app {
+  background-image: var(--background);
+  background-size: cover;
+}
+
+a {
+  color: var(--link) !important;
+}
+a:hover {
+  color: var(--link-hover) !important;
+}
+
+.content {
+  height: 100vh;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.frosted {
+  background: var(--frost-back);
+  backdrop-filter: blur(10px);
+}
+
+.superfrosted {
+  background: var(--superfrost-back);
+  backdrop-filter: blur(15px);
+}
+
+.error {
+  position: fixed;
+  top: 0;
+  margin: 1vw;
+  display: flex;
+  flex-direction: column;
+  max-width: fit-content;
+  padding-right: 1.25rem !important;
+}
+.error .header {
+  margin-bottom: 1vh;
+}
+.error .close {
+  padding: .3rem .5rem !important;
+}
+.error .code {
+  font-style: italic;
+}
+
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 10px 10px var(--dark);
+  border: solid 5px transparent;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 10px 10px var(--main);
+  border: solid 5px transparent;
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  box-shadow: inset 0 0 10px 10px var(--complement);
+}
+
+*::-webkit-scrollbar-corner {
+  opacity: 0;
+}

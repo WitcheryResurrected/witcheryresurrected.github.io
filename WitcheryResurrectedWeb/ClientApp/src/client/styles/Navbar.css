@@ -1,0 +1,38 @@
+#navbar {
+  transition: 0.7s;
+  position: sticky;
+  top: -1px;
+  padding-left: 0.8%;
+  padding-bottom: 0.2%;
+  background: var(--bs-dark);
+  z-index: 2;
+}
+#navbar.stuck {
+  background: rgba(19, 19, 19, 0.2);
+  border-radius: 0 0 20px 20px;
+  backdrop-filter: blur(2px);
+}
+
+#navbar .logo {
+  display: inline;
+  width: 4rem;
+}
+
+#navbar .links {
+  display: inline-flex;
+  vertical-align: middle;
+  font-size: x-large;
+}
+
+#navbar .nav-link::after {
+  content: '';
+  transition: 0.2s ease;
+  margin: 0 auto;
+  display: block;
+  width: 0%;
+  height: 2px;
+  background-color: var(--link);
+}
+#navbar .nav-link:hover::after {
+  width: 100%;
+}
