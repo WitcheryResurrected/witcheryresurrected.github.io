@@ -62,7 +62,7 @@ namespace WitcheryResurrectedWeb.Controllers
             Program.Downloads[directoryName] = downloadable;
             Program.SortedDownloads[releaseDate] = directoryName;
 
-            var url = $"{Request.Scheme}://{Request.Host.ToString()}/Download";
+            var url = $"{Request.Scheme}://{Request.Host.ToString()}/download";
             var fileLinks = string.Join('\n', files.Select(file => $"[{file.File.FileName}]({url}/{directoryName}/{file.File.FileName})"));
             var additions = string.Join('\n', downloadable.Changelog.Additions.Select(change => $"+{change}"));
             var removals = string.Join('\n', downloadable.Changelog.Removals.Select(change => $"-{change}"));
@@ -91,7 +91,7 @@ namespace WitcheryResurrectedWeb.Controllers
                 builder.Append('\n').Append(changes);
             }
 
-            await Program.WebhookClient.SendMessageAsync(embeds: new []
+            await Program.WebhookClient.SendMessageAsync("<@&874401180804087878>", embeds: new []
             {
                 new EmbedBuilder()
                     .WithTitle(name)
@@ -99,7 +99,7 @@ namespace WitcheryResurrectedWeb.Controllers
                     .Build()
             });
 
-            return Content("Success!");  
+            return Content("Success!");
         }
 
         [HttpGet("downloads")]

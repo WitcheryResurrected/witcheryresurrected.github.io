@@ -85,20 +85,20 @@ function FileComponent(props) {
         <div className='download-file'>
             <div className='download-title'>
                 <p className='file-title'>{name}</p>
-                <a className='download-button' href={`../download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
+                <a className='download-button' href={`../download/${downloadId}/${name}`} target='_blank'><GetApp/></a>
             </div>
 
             <div className='file-stats'>
                 <StatComponent title='Size' data={bytesToStr(size)} color='#01d701' Icon={PhotoSizeSelectSmall}/>
                 <StatComponent title='Loader' data={loader === 0 ? 'Forge' : 'Fabric'} color='#01d701' Icon={Keyboard}/>
-                <StatComponent title='version' data={version} color='#01d701' Icon={BarChart}/>
+                <StatComponent title='Game Version' data={version} color='#01d701' Icon={BarChart}/>
                 <StatComponent title='Downloads' data={downloadCount} color='#01d701' Icon={GetApp}/>
             </div>
 
             {dependencies.length > 0 && <h3 className='dependency-title'>Dependencies:</h3>}
             <div className='file-dependencies'>
                 {dependencies.map(dependency => (
-                    <a key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' href={dependency.link}>
+                    <a key={dependency.name} className='file-dependency' target='_blank' href={dependency.link}>
                         {dependency.name}
                     </a>
                 ))}

@@ -15,6 +15,7 @@ export default class DownloadsPage extends React.Component {
 
     componentDidMount() {
         this.loadNext(true);
+        document.title += " - Downloads";
     }
 
     handleResponse = (response) => response.json().then(json => {

@@ -4,6 +4,9 @@ import './../styles/Navbar.css';
 
 //const wikiLink = 'https://github.com/WitcheryResurrected/WitcheryResurrectedWiki/wiki';
 const discordLink = 'https://discord.gg/y2EN7Uy';
+const redditLink = 'https://reddit.com/r/WitcheryResurrected';
+const twitterLink = 'https://twitter.com/WitcheryMod';
+const trelloLink = 'https://trello.com/b/uEqGT8F7/witchery-resurrected';
 
 export function NavbarComponent(props) {
     const [open, setOpen] = useState(false);
@@ -39,8 +42,12 @@ const NavbarLinks = () => (
     <>
         <a className='navbar-link' href='/home'>Home</a>
         <a className='navbar-link' href='/home/downloads'>Downloads</a>
-        {/*<a className='navbar-link' target='_blank' rel='noreferrer' href={wikiLink}>Wiki</a>*/}
-        <a className='navbar-link' target='_blank' rel='noreferrer' href={discordLink}>Discord</a>
+        {/*<a className='navbar-link' target='_blank' href={wikiLink}>Wiki</a>*/}
+        <a className='navbar-link' target='_blank' href={discordLink}>Discord</a>
+        <a className='navbar-link' target='_blank' href={redditLink}>Reddit</a>
+        <a className='navbar-link' target='_blank' href={twitterLink}>Twitter</a>
+        <a className='navbar-link' target='_blank' href={trelloLink}>Trello</a>
+        <a className='navbar-link' href='/home/about'>About</a>
     </>
 );
 
