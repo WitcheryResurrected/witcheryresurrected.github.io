@@ -27,7 +27,7 @@ export default class DownloadsPage extends React.Component {
         if (!lastTime && !firstLoad) return;
 
         const time = Math.round(Date.parse(lastTime) / 1000);
-        fetch('../downloads/' + (!firstLoad ? time : '')).then(this.handleResponse).then(data => {
+        fetch('../downloads' + (!firstLoad ? `?last=${time}` : '')).then(this.handleResponse).then(data => {
             const keys = Object.keys(data);
             const newDownloads = {...downloads, ...data};
 

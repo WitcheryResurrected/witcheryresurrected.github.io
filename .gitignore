@@ -5,5 +5,6 @@ obj/
 .idea
 *.iml
 Downloads
-*/pass.txt
-*/webhook.txt
+config.json
+suggestions.bin
+*.sln.DotSettings.user

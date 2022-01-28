@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WitcheryResurrectedWeb
+namespace WitcheryResurrectedWeb.Download
 {
     public class Downloadable
     {

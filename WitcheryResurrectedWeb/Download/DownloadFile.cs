@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace WitcheryResurrectedWeb
+namespace WitcheryResurrectedWeb.Download
 {
     public struct DownloadFile
     {

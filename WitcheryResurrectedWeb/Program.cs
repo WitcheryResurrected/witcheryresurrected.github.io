@@ -1,73 +1,49 @@
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
-using Discord.Webhook;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using WitcheryResurrectedWeb.Discord;
+using WitcheryResurrectedWeb.Download;
+using WitcheryResurrectedWeb.Suggestions;
 
 namespace WitcheryResurrectedWeb
 {
     public static class Program
     {
-        public static readonly Dictionary<string, Downloadable> Downloads = new(); 
-        public static readonly SortedDictionary<DateTimeOffset, string> SortedDownloads = new(new DescendingComparer<DateTimeOffset>());
-        
-        public static DiscordWebhookClient WebhookClient { get; private set; }
-        public static string Pass { get; private set; } = "";
+        public static SuggestionsHandler SuggestionsHandler { get; private set; }
+        public static Configuration Config { get; private set; }
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Pass = File.ReadAllText("pass.txt").Replace("\n", "").Trim();
-            WebhookClient = new DiscordWebhookClient(File.ReadAllText("webhook.txt"));
-            if (Directory.Exists("Downloads"))
-            {
-                foreach (var directory in Directory.EnumerateDirectories("Downloads"))
-                {
-                    var path = Path.GetRelativePath("Downloads", directory);
-                    var downloadable = new Downloadable(
-                        File.ReadAllText(Path.Combine(directory, "name.txt")).Replace("\n", "").Trim(),
-                        JsonSerializer.Deserialize<DownloadFile[]>(File.ReadAllText(Path.Combine(directory, "indices.json"))),
-                        DateTimeOffset.FromUnixTimeSeconds(
-                            BitConverter.ToInt64(File.ReadAllBytes(Path.Combine(directory, "release")))),
-                        new Changelog(File.ReadAllLines(Path.Combine(directory, "changelog.txt")))
-                    );
+            Config = JsonSerializer.Deserialize<Configuration>(await File.ReadAllTextAsync("config.json"));
+            Debug.Assert(Config != null, nameof(Config) + " != null");
 
-                    Downloads[path] = downloadable;
-                    SortedDownloads[downloadable.Release] = path;
-                }
-            }
+            SuggestionsHandler = new SuggestionsHandler("suggestions.bin");
 
-            CreateHostBuilder(args).Build().Run();
+            SuggestionsHandler.AddShutdownHandling();
+
+            await DownloadManager.Load();
+            await DiscordHandler.Load(Config);
+            await CreateHostBuilder(args).Build().RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-        
-        public class DescendingBackedComparer<TKey, TOrdered > : IComparer<TKey>
-            where TKey : IComparable<TKey>
-            where TOrdered : IComparable<TOrdered>
+
+        public class Configuration
         {
-            private readonly Func<TKey, TOrdered> _backer;
+            public string Webhook { get; set; }
 
-            public DescendingBackedComparer(Func<TKey, TOrdered> backer) => _backer = backer;
+            public string BotToken { get; set; }
 
-            public int Compare(TKey x, TKey y) {
-                if (y == null)
-                    return x == null ? 0 : 1;
+            public string UploadCode { get; set; }
 
-                return _backer(y).CompareTo(_backer(x));
-            }
-        }
-        
-        public class DescendingComparer<T> : IComparer<T> where T : IComparable<T> {
-            public int Compare(T x, T y) {
-                if (y == null)
-                    return x == null ? 0 : 1;
+            public string GuildId { get; set; }
 
-                return y.CompareTo(x);
-            }
+            public string SuggestionsChannel { get; set; }
         }
     }
 }

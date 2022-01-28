@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 using Discord;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WitcheryResurrectedWeb.Discord;
+using WitcheryResurrectedWeb.Download;
 using Files = System.IO.File;
 
 namespace WitcheryResurrectedWeb.Controllers
 {
-    public class HomeController : Controller
+    public class DownloadsController : Controller
     {
         [HttpPost("upload")]  
-        public async Task<IActionResult> UploadFiles(string name, List<ModFile> files, string changelog, string pass)
+        public async Task<IActionResult> UploadFiles([FromForm] string name, [FromForm] List<ModFile> files, [FromForm] string changelog, [FromForm] string pass)
         {
-            if (pass != Program.Pass) return Content("Wrong key.");
-            if (files.All(file => file.File == null)) return Content("No files selected.");
+            if (pass != Program.Config.UploadCode) return StatusCode(401);
+            if (files.All(file => file.File == null)) return StatusCode(400);
             var directoryName = Regex.Replace(name, "[^a-zA-Z0-9_.-]", "");
             var folder = Path.Combine("Downloads", directoryName);
             Directory.CreateDirectory("Downloads");
@@ -34,10 +36,8 @@ namespace WitcheryResurrectedWeb.Controllers
             );
             
             await using (var release = Files.Create(Path.Combine(folder, "release")))
-            {
                 await release.WriteAsync(BitConverter.GetBytes(DateTimeOffset.Now.ToUnixTimeSeconds()));
-            }
-            
+
             await using (var text = Files.Create(Path.Combine(folder, "indices.json")))
             {
                 await text.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(downloadable.Paths));
@@ -50,17 +50,13 @@ namespace WitcheryResurrectedWeb.Controllers
             }
             
             await using (var text = Files.CreateText(Path.Combine(folder, "changelog.txt")))
-            {
                 await text.WriteLineAsync(changelog);
-            }
 
-            await using (var text = Files.CreateText(Path.Combine(folder, "name.txt")))
-            {
+            await using (var text = Files.CreateText(Path.Combine(folder, "name.txt"))) 
                 await text.WriteLineAsync(name);
-            }
 
-            Program.Downloads[directoryName] = downloadable;
-            Program.SortedDownloads[releaseDate] = directoryName;
+            DownloadManager.Downloads[directoryName] = downloadable;
+            DownloadManager.SortedDownloads[releaseDate] = directoryName;
 
             var url = $"{Request.Scheme}://{Request.Host.ToString()}/download";
             var fileLinks = string.Join('\n', files.Select(file => $"[{file.File.FileName}]({url}/{directoryName}/{file.File.FileName})"));
@@ -91,7 +87,7 @@ namespace WitcheryResurrectedWeb.Controllers
                 builder.Append('\n').Append(changes);
             }
 
-            await Program.WebhookClient.SendMessageAsync("<@&874401180804087878>", embeds: new []
+            await DiscordHandler.WebhookClient.SendMessageAsync("<@&874401180804087878>", embeds: new []
             {
                 new EmbedBuilder()
                     .WithTitle(name)
@@ -99,16 +95,13 @@ namespace WitcheryResurrectedWeb.Controllers
                     .Build()
             });
 
-            return Content("Success!");
+            return StatusCode(200);
         }
 
         [HttpGet("downloads")]
-        public ActionResult<IDictionary<string, Downloadable>> GetDownloads() => GetDownloads(null);
-
-        [HttpGet("downloads/{last}")]
-        public ActionResult<IDictionary<string, Downloadable>> GetDownloads([FromRoute] string last)
+        public ActionResult<IDictionary<string, Downloadable>> GetDownloads(string last)
         {
-            var downloads = new SortedDictionary<string, Downloadable>(new Program.DescendingBackedComparer<string, DateTimeOffset>(key => Program.Downloads[key].Release));
+            var downloads = new SortedDictionary<string, Downloadable>(new DownloadManager.DescendingBackedComparer<string, DateTimeOffset>(key => DownloadManager.Downloads[key].Release));
             DateTimeOffset? lastDate;
             if (last == null)
             {
@@ -121,13 +114,13 @@ namespace WitcheryResurrectedWeb.Controllers
             }
 
             var sent = -1;
-            foreach (var (date, name) in Program.SortedDownloads)
+            foreach (var (date, name) in DownloadManager.SortedDownloads)
             {
                 switch (sent)
                 {
                     case < 1 when !lastDate.HasValue:
                         sent = 1;
-                        downloads[name] = Program.Downloads[name];
+                        downloads[name] = DownloadManager.Downloads[name];
                         break;
                     case < 0 when date == lastDate.Value:
                         sent = 0;
@@ -137,7 +130,7 @@ namespace WitcheryResurrectedWeb.Controllers
                         if (sent != -1)
                         {
                             if (sent++ >= 5) continue;
-                            downloads[name] = Program.Downloads[name];
+                            downloads[name] = DownloadManager.Downloads[name];
                         }
 
                         break;
@@ -151,9 +144,9 @@ namespace WitcheryResurrectedWeb.Controllers
         [HttpGet("download/{name}/{file}")]
         public async Task<IActionResult> Download([FromRoute] string name, [FromRoute] string file)
         {
-            if (!Program.Downloads.ContainsKey(name))
+            if (!DownloadManager.Downloads.ContainsKey(name))
                 return StatusCode(404);
-            var download = Program.Downloads[name];
+            var download = DownloadManager.Downloads[name];
             var index = -1;
             for (var i = 0; i < download.Paths.Length; ++i)
             {
@@ -168,15 +161,20 @@ namespace WitcheryResurrectedWeb.Controllers
 
             lock (download) ++download.Paths[index].DownloadCount;
             var indices = Path.Combine("Downloads", name, "indices.json");
+            
             var downloadFiles = JsonSerializer.Deserialize<DownloadFile[]>(
                 await Files.ReadAllTextAsync(indices));
-            ++downloadFiles![index].DownloadCount;
 
-            await Files.WriteAllTextAsync(indices, JsonSerializer.Serialize(downloadFiles));
-            
+            lock (this)
+            {
+                downloadFiles![index].DownloadCount = download.Paths[index].DownloadCount;
+
+                Files.WriteAllText(indices, JsonSerializer.Serialize(downloadFiles));
+            }
+
             return File(new FileStream(Path.Combine("Downloads", name, file), FileMode.Open), "application/java-archive", file);
         }
-        
+
         public class ModFile
         {
             public IFormFile File { get; set; }

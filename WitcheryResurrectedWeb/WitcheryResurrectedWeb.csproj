@@ -7,9 +7,11 @@
         <IsPackable>false</IsPackable>
         <SpaRoot>ClientApp\</SpaRoot>
         <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Discord.Net" Version="2.4.0" />
         <PackageReference Include="Discord.Net.Webhook" Version="2.4.0" />
     </ItemGroup>
     
