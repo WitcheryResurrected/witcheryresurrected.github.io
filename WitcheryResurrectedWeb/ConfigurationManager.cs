@@ -76,6 +76,13 @@ public class ConfigurationManager : IConfigurationManager
             using var reader = new BinaryReader(tokenStream);
             var hasher = HashAlgorithm.Create(reader.ReadString());
             if (hasher != null) _hasher = hasher;
+            var count = reader.ReadInt32();
+            var buffer = new byte[64];
+            for (var i = 0; i < count; ++i)
+            {
+                reader.Read(buffer);
+                AccessTokens.Add(BitConverter.ToString(buffer));
+            }
         }
     }
 

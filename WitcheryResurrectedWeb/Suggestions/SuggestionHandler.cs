@@ -25,8 +25,8 @@ public class SuggestionsHandler : ISuggestionsHandler
     private readonly string _file;
 
     public IDictionary<int, Suggestion> Suggestions { get; } = new SortedDictionary<int, Suggestion>();
-    public IDictionary<ulong, int> ByMessage { get; } = new SortedDictionary<ulong, int>();
-    public IDictionary<ulong, ISet<int>> ByAuthor { get; } = new SortedDictionary<ulong, ISet<int>>();
+    public IDictionary<ulong, int> ByMessage { get; } = new Dictionary<ulong, int>();
+    public IDictionary<ulong, ISet<int>> ByAuthor { get; } = new Dictionary<ulong, ISet<int>>();
 
     public SuggestionsHandler(string file) => _file = file;
 
