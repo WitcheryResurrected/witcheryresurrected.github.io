@@ -21,7 +21,8 @@ namespace SuggestionDataTests
                         new HashSet<string> { "Some", "Keywords" })
                 }
             };
-            writeHandler.Flush();
+
+            writeHandler.Flush().GetAwaiter().GetResult();
 
             var readHandler = new SuggestionsHandler("test.bin");
 

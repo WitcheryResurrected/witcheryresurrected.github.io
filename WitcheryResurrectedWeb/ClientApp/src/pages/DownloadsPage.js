@@ -6,11 +6,10 @@ import './../styles/Downloads.css';
 import './../styles/LoadingCircle.css';
 
 export default class DownloadsPage extends React.Component {
-
     state = {
         downloads: [],
         loaded: false,
-        lastTime: null
+        downloadStream: null
     }
 
     componentDidMount() {
@@ -18,29 +17,57 @@ export default class DownloadsPage extends React.Component {
         document.title += " - Downloads";
     }
 
-    handleResponse = (response) => response.json().then(json => {
-        return response.ok ? json : Promise.reject(json);
-    });
+    mergeDownloads = (original, added) => added.length === 0 ? original : [...original, ...added];
 
-    loadNext = (firstLoad) => {
-        const {downloads, lastTime} = this.state;
-        if (!lastTime && !firstLoad) return;
+    loadNext = firstLoad => {
+        const addedDownloads = [];
+        const callback = downloadStream => {
+            const {downloads} = this.state;
+            downloadStream.read().then(({done, value}) => {
+                if (done) {
+                    downloadStream.releaseLock();
+                    this.setState({
+                        downloads: this.mergeDownloads(downloads, addedDownloads),
+                        loaded: true,
+                        downloadStream: null
+                    });
+                } else {
+                    for (const downloadJson of new TextDecoder().decode(value).split('\0')) {
+                        if (downloadJson.length > 0) {
+                            try {
+                                addedDownloads.push(JSON.parse(downloadJson));
+                            } catch (e) {
+                                console.error("Received error while attempting to parse text: " + downloadJson)
+                            }
+                        }
+                    }
 
-        const time = Math.round(Date.parse(lastTime) / 1000);
-        fetch('../downloads' + (!firstLoad ? `?last=${time}` : '')).then(this.handleResponse).then(data => {
-            const keys = Object.keys(data);
-            const newDownloads = {...downloads, ...data};
+                    if (addedDownloads.length < 5) {
+                        callback(downloadStream);
+                    } else {
+                        this.setState({
+                            downloads: this.mergeDownloads(downloads, addedDownloads),
+                            loaded: true,
+                            downloadStream
+                        });
+                    }
+                }
+            }).catch(console.error);
+        }
 
-            this.setState({
-                downloads: newDownloads,
-                loaded: true,
-                lastTime: keys.length > 0 ? data[keys[keys.length - 1]].release : null
-            });
-        }).catch(console.error);
+        if (firstLoad) {
+            fetch('../alldownloads').then(response => {
+                callback(response.body.getReader());
+            }).catch(console.error);
+        } else {
+            const downloadStream = this.state.downloadStream;
+            if (!downloadStream) return;
+            callback(downloadStream);
+        }
     }
 
     render() {
-        const {downloads, loaded, lastTime} = this.state;
+        const {downloads, loaded, downloadStream} = this.state;
 
         if (!loaded)
             return <LoaderComponent/>;
@@ -51,10 +78,11 @@ export default class DownloadsPage extends React.Component {
                     <InfiniteScroll
                         pageStart={0}
                         loadMore={() => this.loadNext(false)}
-                        hasMore={!!lastTime}
+                        hasMore={!!downloadStream}
                         loader={<h3 key={0}>Loading...</h3>}
                     >
-                        {Object.keys(downloads).map(keyVal => <DownloadComponent key={keyVal} downloadId={keyVal} download={downloads[keyVal]} />)}
+                        {downloads.map(download => <DownloadComponent key={download.id} downloadId={download.id}
+                                                                      download={download}/>)}
                     </InfiniteScroll>
                 </div>
             </div>
@@ -62,7 +90,7 @@ export default class DownloadsPage extends React.Component {
     }
 }
 
-const LoaderComponent = (props) => (
+const LoaderComponent = () => (
     <div id="loader-page">
         <div className="loader-name">Loading</div>
         <div className="loader-circle"/>

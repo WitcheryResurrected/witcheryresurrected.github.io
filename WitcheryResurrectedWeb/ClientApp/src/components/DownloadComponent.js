@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
@@ -11,7 +11,7 @@ import {
     Keyboard,
     PhotoSizeSelectSmall,
     BarChart
-} from "@material-ui/icons";
+} from '@material-ui/icons';
 
 export function DownloadComponent(props) {
     const [opened, setOpened] = useState(false);
@@ -85,7 +85,7 @@ function FileComponent(props) {
         <div className='download-file'>
             <div className='download-title'>
                 <p className='file-title'>{name}</p>
-                <a className='download-button' href={`../download/${downloadId}/${name}`} target='_blank'><GetApp/></a>
+                <a className='download-button' href={`../download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
             </div>
 
             <div className='file-stats'>
@@ -98,7 +98,7 @@ function FileComponent(props) {
             {dependencies.length > 0 && <h3 className='dependency-title'>Dependencies:</h3>}
             <div className='file-dependencies'>
                 {dependencies.map(dependency => (
-                    <a key={dependency.name} className='file-dependency' target='_blank' href={dependency.link}>
+                    <a key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' href={dependency.link}>
                         {dependency.name}
                     </a>
                 ))}

@@ -5,10 +5,6 @@ import {UploadFileComponent} from "../components/UploadFIleComponent";
 import AddIcon from "@material-ui/icons/Add";
 
 export default class AdminPage extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
     state = {
         lastFileIndex: 0
     }

@@ -19,7 +19,7 @@ export default class HomePage extends React.Component {
                     <div className='welcome-text'>
                         <p className='text'>
                             Witchery: Resurrected aims to recreate and improve the popular&nbsp;
-                            <a className='welcome-link' target='_blank' href='https://www.curseforge.com/minecraft/mc-mods/witchery'>Witchery</a>
+                            <a className='welcome-link' target='_blank' rel='noreferrer' href='https://www.curseforge.com/minecraft/mc-mods/witchery'>Witchery</a>
                             &nbsp;Minecraft mod in modern versions; with a focus on customizability.
                         </p>
 
@@ -30,8 +30,8 @@ export default class HomePage extends React.Component {
                             Currently, the project is incomplete asset wise. As such, we require the original mod file to be loaded alongside Witchery: Resurrected.
                             Feature wise, everything is implemented; however the backend of the mod is being rewritten to increase maintanability, performance and quality.
                             After both assets and rewriting is complete, the mod will be released to sites such as&nbsp;
-                            <a className='welcome-link' target='_blank' href='https://www.curseforge.com/minecraft/mc-mods'>CurseForge</a>
-                            &nbsp;and <a className='welcome-link' target='_blank' href='https://modrinth.com/mods'>Modrinth</a>
+                            <a className='welcome-link' target='_blank' rel='noreferrer' href='https://www.curseforge.com/minecraft/mc-mods'>CurseForge</a>
+                            &nbsp;and <a className='welcome-link' target='_blank' rel='noreferrer' href='https://modrinth.com/mods'>Modrinth</a>
                             &nbsp;You can find functional test downloads in the <a className='welcome-link' href='/home/downloads'>Downloads</a> page.
                         </p>
 

@@ -2,41 +2,47 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WitcheryResurrectedWeb.Discord;
 
-namespace WitcheryResurrectedWeb.Suggestions
+namespace WitcheryResurrectedWeb.Suggestions;
+
+public struct Suggestion
 {
-    public struct Suggestion
-    {
-        public ulong Message { get; }
-        public ulong Author { get; }
-        public SuggestionState State { get; set; }
+    public ulong Message { get; }
+    public ulong Author { get; }
+    public SuggestionState State { get; set; }
         
-        public string AuthorName { get; set; }
-        public HashSet<string> Keywords { get; }
+    public string AuthorName { get; }
+    public HashSet<string> Keywords { get; }
 
-        private string _content;
+    private string? _content;
 
-        public Suggestion(ulong message, ulong author, SuggestionState state, string authorName, HashSet<string> keywords)
+    public Suggestion(ulong message, ulong author, SuggestionState state, string authorName, HashSet<string> keywords)
+    {
+        Message = message;
+        Author = author;
+        State = state;
+        AuthorName = authorName;
+        Keywords = keywords;
+        _content = null;
+    }
+
+    public async Task<string?> GetContent(IDiscordHandler discordHandler)
+    {
+        if (discordHandler.SuggestionsChannel != null)
         {
-            Message = message;
-            Author = author;
-            State = state;
-            AuthorName = authorName;
-            Keywords = keywords;
-            _content = null;
+            _content ??= (await discordHandler.SuggestionsChannel.GetMessageAsync(Message)).Content;
         }
-        
-        public async Task<string> GetContent() =>
-            _content ??= (await DiscordHandler.SuggestionsChannel.GetMessageAsync(Message)).Content;
-    }
 
-    public enum SuggestionState : byte
-    {
-        Pending,
-        Approved,
-        Implemented,
-        PartiallyApproved,
-        PartiallyImplemented,
-        Denied,
-        Duplicate
+        return _content;
     }
+}
+
+public enum SuggestionState : byte
+{
+    Pending,
+    Approved,
+    Implemented,
+    PartiallyApproved,
+    PartiallyImplemented,
+    Denied,
+    Duplicate
 }
