@@ -34,6 +34,10 @@ class Navbar extends React.Component {
             : (
               <Link to={r.path} className='nav-link' key={i}>{r.name}</Link>
               ))}
+
+          {this.props.links.map((r, i) => (
+            <a href={r.link} target='_blank' rel='noreferrer' className='nav-link' key={i}>{r.name}</a>
+          ))}
         </div>
       </div>
     )

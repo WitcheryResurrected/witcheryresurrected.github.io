@@ -1,11 +1,15 @@
 #navbar {
   transition: 0.7s;
   position: sticky;
+  display: flex;
+  align-items: center;
   top: -1px;
-  padding-left: 0.8%;
-  padding-bottom: 0.2%;
+  width: 100%;
+  padding-left: 0.8vh;
+  padding-bottom: 0.2rem;
   background: var(--bs-dark);
-  z-index: 2;
+  white-space: nowrap;
+  z-index: 50;
 }
 #navbar.stuck {
   background: rgba(19, 19, 19, 0.2);
@@ -14,14 +18,28 @@
 }
 
 #navbar .logo {
-  display: inline;
+  transition: 0.2s;
+  position: relative;
   width: 4rem;
+  z-index: 51;
+}
+#navbar.stuck .logo {
+  width: 3.8rem;
 }
 
 #navbar .links {
-  display: inline-flex;
-  vertical-align: middle;
+  position: relative;
+  display: flex;
+  margin-left: 1vw;
+  padding-left: 1vw;
+  border-left: 2px solid var(--bs-darker);
   font-size: x-large;
+  z-index: 51;
+}
+
+#navbar .nav-link {
+  padding: .5rem 1rem;
+  z-index: 51;
 }
 
 #navbar .nav-link::after {
@@ -35,4 +53,64 @@
 }
 #navbar .nav-link:hover::after {
   width: 100%;
+}
+
+@media (max-width: 800px) {
+  #navbar {
+    display: block;
+  }
+  #navbar.stuck {
+    background: rgba(19, 19, 19, 0.8);
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(2px);
+  }
+  #navbar:hover {
+    transition: 0.2s;
+    border-radius: 0 0 2% 2%;
+    transform: scale(1.02) translate(0, 1%);
+  }
+  #navbar::before {
+    content: '';
+    transition: 0.2s;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    pointer-events: none;
+  }
+  #navbar:hover::before {
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 49;
+  }
+  #navbar::after {
+    content: '\2263';
+    transition: right 0.2s;
+    display: block;
+    position: absolute;
+    right: 5vw;
+    font-size: xx-large;
+    transform: scaleX(1.4) translateY(-120%);
+    z-index: 51;
+  }
+  #navbar:hover::after {
+    content: '\02C5';
+    right: 7vw;
+    transform: scaleX(1.5) translateY(-120%);
+  }
+
+  #navbar .links {
+    transition: 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    max-height: 0vh;
+    border-radius: 0 0 0 20px;
+    overflow: hidden;
+  }
+
+  #navbar:hover .links {
+    max-height: 60vh;
+  }
 }

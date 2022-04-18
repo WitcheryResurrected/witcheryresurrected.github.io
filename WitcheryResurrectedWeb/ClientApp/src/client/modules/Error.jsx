@@ -1,7 +1,4 @@
 import React from 'react'
-import {
-  Redirect
-} from 'react-router-dom'
 
 class Error extends React.Component {
   constructor (props) {
@@ -22,23 +19,17 @@ class Error extends React.Component {
   }
 
   render () {
-    if (this.state.error.message === 'invalid token') {
-      localStorage.removeItem('auth')
+    return (
+      <div className='alert alert-dismissible alert-danger error'>
+        <button type='button' className='close' data-dismiss='alert' onClick={this.props.onClose}>&times;</button>
 
-      return <Redirect to='/login?error=logged_out'/>
-    } else {
-      return (
-        <div className='alert alert-dismissible alert-danger error'>
-          <button type='button' className='close' data-dismiss='alert' onClick={this.props.onClose}>&times;</button>
+        <strong className='header'>Something went wrong.</strong>
 
-          <strong className='header'>Something went wrong.</strong>
-
-          <div className='message'>
-            <span className='code'>{this.state.status}</span> <strong className='type'>{this.state.error.type}</strong> {this.state.error.message}
-          </div>
+        <div className='message'>
+          <span className='code'>{this.state.status}</span> <strong className='type'>{this.state.error.type}</strong> {this.state.error.message}
         </div>
-      )
-    }
+      </div>
+    )
   }
 
   update () {

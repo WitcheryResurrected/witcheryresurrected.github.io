@@ -2,16 +2,38 @@
   --main: #7a2a91;
   --accent: #9a39b4;
   --complement: #3dd34a;
+  --complement-accent: #33ad3d;
   --background: url('../../assets/images/background.png');
+  --semifrost-back: rgba(38, 39, 43, 0.2);
   --frost-back: rgba(38, 39, 43, 0.4);
   --superfrost-back: rgba(38, 39, 43, 0.2);
   --link: #5969d4;
   --link-hover: #4653a1;
+  --bs-darker: #292929;
+}
+
+#root {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
 }
 
 #app {
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 auto;
   background-image: var(--background);
   background-size: cover;
+  background-attachment: fixed;
+}
+
+.page {
+  display: flex;
+  flex-flow: column;
+  flex: 1 1 auto;
+}
+.content {
+  flex: 1 1 auto;
 }
 
 a {
@@ -21,8 +43,8 @@ a:hover {
   color: var(--link-hover) !important;
 }
 
-.content {
-  height: 100vh;
+ul:last-child {
+  margin-bottom: 0;
 }
 
 .card {
@@ -33,10 +55,26 @@ a:hover {
   background: var(--frost-back);
   backdrop-filter: blur(10px);
 }
-
 .superfrosted {
   background: var(--superfrost-back);
   backdrop-filter: blur(15px);
+}
+.semifrosted {
+  background: var(--semifrost-back);
+  backdrop-filter: blur(5px);
+}
+
+.question {
+  font-style: italic;
+}
+
+.loading-placeholder {
+  font-size: 5vw;
+  opacity: 0.6;
+}
+.loading-placeholder::after {
+  content: '';
+  animation: tick 1s linear 0s infinite normal forwards;
 }
 
 .error {
@@ -46,13 +84,31 @@ a:hover {
   display: flex;
   flex-direction: column;
   max-width: fit-content;
-  padding-right: 1.25rem !important;
+  padding: .75rem 1.25rem;
+  z-index: 100;
 }
 .error .header {
   margin-bottom: 1vh;
+  font-size: xx-large;
+  text-align: center;
 }
 .error .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  float: right;
   padding: .3rem .5rem !important;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: white;
+  background: transparent;
+  border: none;
+  text-shadow: none;
+  opacity: 0.4;
+}
+.error .close:hover {
+  opacity: 0.75;
 }
 .error .code {
   font-style: italic;
@@ -79,4 +135,19 @@ a:hover {
 
 *::-webkit-scrollbar-corner {
   opacity: 0;
+}
+
+@keyframes tick {
+  0% {
+    content: '';
+  }
+  25% {
+    content: '.';
+  }
+  50% {
+    content: '..';
+  }
+  75% {
+    content: '...';
+  }
 }

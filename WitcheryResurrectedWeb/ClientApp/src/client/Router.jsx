@@ -10,9 +10,12 @@ import RevealOverlay from './modules/RevealOverlay.jsx'
 import Error from './modules/Error.jsx'
 
 import routes from './util/routes.js'
-// import NotFound from './NotFound.jsx'
+import links from './util/links.json'
+import NotFound from './NotFound.jsx'
 
 class Routes extends React.Component {
+  static title = document.title
+
   constructor (props) {
     super(props)
 
@@ -33,7 +36,7 @@ class Routes extends React.Component {
       <Router>
         <RevealOverlay/>
 
-        <Navbar routes={routes}/>
+        <Navbar routes={routes} links={links}/>
 
         <div id='app'>
           <Switch>
@@ -42,11 +45,11 @@ class Routes extends React.Component {
                 key={index}
                 path={route.path}
                 exact={route.exact}
-                render={(props) => <route.Component onError={this.onError} title={document.title} {...props}/>}
+                render={(props) => <route.Component onError={this.onError} title={Routes.title} {...props}/>}
               />
             ))}
 
-            {/* <Route component={NotFound}/> */}
+            <Route component={NotFound}/>
           </Switch>
         </div>
 
@@ -58,6 +61,8 @@ class Routes extends React.Component {
   }
 
   onError (error) {
+    console.error(error)
+
     this.setState({
       error
     })
