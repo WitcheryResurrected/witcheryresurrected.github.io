@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Babylonica&family=Square+Peg&display=swap');
+
+.page.notfound {
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 5%;
+}
+
+.page.notfound #return {
+  position: absolute;
+  top: 1%;
+  left: 2%;
+  color: var(--accent) !important;
+  font-family: monospace;
+  font-size: 7rem;
+  font-weight: bolder;
+  text-decoration: none;
+}
+.page.notfound #return:hover {
+  color: var(--complement) !important;
+}
+.page.notfound #return::after {
+  content: 'Return';
+  margin-left: 1rem;
+  vertical-align: middle;
+  font-size: 2rem;
+}
+
+.page.notfound .backdrop-container {
+  position: relative;
+}
+.page.notfound .backdrop-container .backdrop {
+  opacity: 0.8;
+  width: 34rem;
+  height: 32rem;
+  pointer-events: none;
+}
+/* .page.notfound .backdrop-container::before {
+  content: '404';
+  display: block;
+  position: absolute;
+  margin: 20%;
+  transform: rotate(-40deg);
+  font-size: 10rem;
+  font-family: 'Babylonica', cursive;
+  color: dimgray;
+} */
+
+.page.notfound .header {
+  font-size: 8rem;
+  font-family: 'Square Peg', cursive;
+}
