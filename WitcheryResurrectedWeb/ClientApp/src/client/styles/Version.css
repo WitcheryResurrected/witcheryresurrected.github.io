@@ -1,0 +1,167 @@
+.version-card {
+  transition: 0.3s;
+  padding: 2%;
+  background: #1f1f1f;
+  border-radius: 10px;
+  font-family: Roboto, Lato;
+  cursor: pointer;
+}
+.version-card:hover {
+  transform: scale(1.01);
+  background: #151515;
+}
+
+.version-card .stats {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.version-card .stat {
+  display: flex;
+  margin-right: 2rem;
+}
+.version-card .stat .icon {
+  background: #171719;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+}
+.version-card .stat .data {
+  display: flex;
+  flex-flow: column;
+}
+
+.version-card .expansion {
+  transition: 0.4s;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.version-card.expanded .expansion {
+  height: auto;
+  opacity: 1;
+}
+
+.version-card .expansion .notes {
+  margin: 1% 0;
+  padding: 1% 0;
+  border-top: 2px solid var(--bs-darker);
+  border-bottom: 2px solid var(--bs-darker);
+}
+
+.version-card .expansion .notes .note-container:not(:last-child) {
+  margin-bottom: 3%;
+}
+.version-card .expansion .notes .note-container ul {
+  list-style-type: none;
+}
+.version-card .expansion .notes .note-container ul li::before {
+  margin-right: 0.5rem;
+  font-family: monospace;
+}
+.version-card .expansion .notes .note-container.additions ul li::before {
+  content: '+';
+  /* color: #01d701; */
+}
+.version-card .expansion .notes .note-container.removals ul li::before {
+  content: '-';
+  /* color: #ce1414; */
+}
+.version-card .expansion .notes .note-container.changes ul li::before {
+  content: '\2022';
+  /* color: #db780d; */
+}
+
+.version-card .expansion .files {
+  padding: 1%;
+}
+
+.version-card .file {
+  display: flex;
+  padding: 1%;
+  background: #101010;
+  border-radius: 10px;
+  width: fit-content;
+  cursor: default;
+}
+.version-card .file:not(:last-child) {
+  margin-bottom: 2%;
+}
+
+.version-card .file h5 {
+  margin-bottom: 1rem;
+}
+
+.version-card .file .dependencies {
+  padding-top: 4%;
+}
+.version-card .file .dependencies .header {
+  font-size: 0.8rem;
+}
+.version-card .file .dependencies .dependency-container {
+  padding: 4%;
+}
+.version-card .file .dependencies .dependency {
+  transition: 0.2s;
+  padding: 2%;
+  border-radius: 10px;
+  margin-right: 2%;
+  background: #0b0b0b;
+  text-decoration: none;
+  color: white !important;
+}
+.version-card .file .dependencies .dependency:hover {
+  background: #090909;
+  color: lightgray !important;
+}
+
+.version-card .file .download .icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  padding: 0.4rem;
+  background: #222224;
+  fill: white;
+  border-radius: 8px;
+}
+.version-card .file .download .icon:hover {
+  background: #1a1a1a;
+}
+
+.version-card .file .header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stat.additions .icon {
+  fill: #01d701;
+}
+.stat.removals .icon {
+  fill: #ce1414;
+}
+.stat.changes .icon {
+  fill: #db780d;
+}
+.stat.files .icon {
+  fill: #4fbaf7;
+}
+.stat.uploaded .icon {
+  fill: #ffbf00;
+}
+
+.file .stat .icon {
+  fill: #01d701;
+}
+/* .stat.size .icon {
+  fill: #eb2334;
+}
+.stat.loader .icon {
+  fill: #5d42f5;
+}
+.stat.gameversion .icon {
+  fill: #15e65a;
+}
+.stat.downloads .icon {
+  fill: #f02020;
+} */

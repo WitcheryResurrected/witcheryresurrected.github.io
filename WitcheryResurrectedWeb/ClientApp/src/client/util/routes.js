@@ -1,4 +1,5 @@
 import Home from '../Home.jsx'
+import Downloads from '../Downloads.jsx'
 
 const routes = [
   {
@@ -6,6 +7,11 @@ const routes = [
     exact: true,
     name: 'Home',
     Component: Home
+  },
+  {
+    path: '/downloads',
+    name: 'Downloads',
+    Component: Downloads
   }
 ]
 
