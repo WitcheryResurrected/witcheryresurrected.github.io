@@ -134,13 +134,17 @@ class Version extends React.Component {
                     ))}
                   </div>
 
-                  <div className='dependencies'>
-                    <span className='header'>Dependencies</span>
+                  {f.dependencies.length
+                    ? (
+                      <div className='dependencies'>
+                        <span className='header'>Dependencies</span>
 
-                    <div className='dependency-container'>
-                      {f.dependencies.map((d, i) => <a className='dependency' href={d.link} target='_blank' rel='noreferrer' key={i}>{d.name}</a>)}
-                    </div>
-                  </div>
+                        <div className='dependency-container'>
+                          {f.dependencies.map((d, i) => <a className='dependency' href={d.link} target='_blank' rel='noreferrer' key={i}>{d.name}</a>)}
+                        </div>
+                      </div>
+                      )
+                    : null}
                 </div>
 
                 <a className='download' href={`../download/${this.props.data.id}/${f.name}`} target='_blank' rel='noreferrer'>
