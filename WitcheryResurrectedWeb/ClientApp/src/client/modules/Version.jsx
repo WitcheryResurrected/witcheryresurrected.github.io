@@ -81,17 +81,6 @@ class Version extends React.Component {
   }
 
   render () {
-    this.props.data.paths[0].dependencies = [
-      {
-        name: 'Google',
-        link: 'https://google.com'
-      },
-      {
-        name: 'Youtube',
-        link: 'https://youtube.com'
-      }
-    ]
-
     return (
       <div className={'version-card' + (this.state.expanded ? ' expanded' : '')} onClick={this.toggleExpansion.bind(this)}>
         <h4>{this.props.data.name}</h4>
