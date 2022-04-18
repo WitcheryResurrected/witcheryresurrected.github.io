@@ -15,6 +15,8 @@ public class Startup
 {
     public static void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(options => options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
         services.AddControllersWithViews();
 
         services.AddSingleton<ISuggestionsHandler>(_ => new SuggestionsHandler("suggestions.bin"));
@@ -56,7 +58,7 @@ public class Startup
         app.UseSpaStaticFiles();
 
         app.UseRouting();
-        app.UseCors();
+        app.UseCors("CorsPolicy");
 
         app.UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller}/{action=Index}/{id?}"));
 

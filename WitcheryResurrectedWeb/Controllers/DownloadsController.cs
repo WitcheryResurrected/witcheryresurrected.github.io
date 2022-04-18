@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using WitcheryResurrectedWeb.Discord;
 using WitcheryResurrectedWeb.Download;
 
 namespace WitcheryResurrectedWeb.Controllers;
 
-[EnableCors]
+[EnableCors("CorsPolicy")]
 public class DownloadsController : Controller
 {
     private readonly IConfigurationManager _configurationManager;
