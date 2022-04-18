@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace WitcheryResurrectedWeb.Download;
 
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public class Downloadable : IComparable<Downloadable>
 {
     public string Id { get; }
 
-    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public string Name { get; }
 
     public DownloadFile[] Paths { get; }

@@ -12,21 +12,20 @@ namespace WitcheryResurrectedWeb.Download;
 
 public interface IDownloadManager : IHostedService
 {
-    public List<Downloadable> Downloads { get; }
-
     public Task<(Downloadable downloadable, string directoryName)> AddDownloads(
         string name,
         string? changelog,
         IEnumerable<(DownloadFile File, Func<Stream, Task> CopyTo)> downloadFiles
     );
 
+    public List<Downloadable>? Downloads(int limit, string? after);
     public Task<FileStream?> Download(string name, string file);
 }
 
 public class DownloadManager : IDownloadManager
 {
-    public List<Downloadable> Downloads { get; } = new();
-    private readonly Dictionary<string, Downloadable> _byPath = new();
+    private readonly List<Downloadable> _downloads = new();
+    private readonly Dictionary<string, int> _byPath = new();
 
     private readonly string _directory;
 
@@ -61,11 +60,12 @@ public class DownloadManager : IDownloadManager
                 new Changelog(changes)
             );
 
-            Downloads.Add(download);
-            _byPath[path] = download;
+            _downloads.Add(download);
         }
 
-        Downloads.Sort();
+        _downloads.Sort();
+
+        for (var i = 0; i < _downloads.Count; i++) _byPath[_downloads[i].Id] = i;
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
@@ -110,10 +110,31 @@ public class DownloadManager : IDownloadManager
         await using (var text = File.CreateText(Path.Combine(folder, "name.txt")))
             await text.WriteLineAsync(name);
 
-        Downloads.Insert(0, downloadable);
-        _byPath[directoryName] = downloadable;
+        _downloads.Insert(0, downloadable);
+        foreach (var key in _byPath.Keys) ++_byPath[key];
+        _byPath[directoryName] = 0;
 
         return (downloadable, directoryName);
+    }
+
+    public List<Downloadable>? Downloads(int limit, string? after)
+    {
+        int index;
+        if (after == null)
+        {
+            index = 0;
+        }
+        else
+        {
+            if (!_byPath.ContainsKey(after)) return null;
+            index = _byPath[after] + 1;
+            if (index >= _downloads.Count) return new List<Downloadable>();
+        }
+
+        var result = new List<Downloadable>(limit);
+        for (var i = index; i < Math.Min(index + limit, _downloads.Count - 1); ++i) result.Add(_downloads[i]);
+
+        return result;
     }
 
     public async Task<FileStream?> Download(string name, string file)
@@ -121,7 +142,8 @@ public class DownloadManager : IDownloadManager
         if (!_byPath.ContainsKey(name))
             return null;
 
-        var download = _byPath[name];
+        var download = _downloads[_byPath[name]];
+
         var index = -1;
         for (var i = 0; i < download.Paths.Length; ++i)
         {
@@ -148,33 +170,5 @@ public class DownloadManager : IDownloadManager
         }
 
         return new FileStream(Path.Combine(_directory, name, file), FileMode.Open);
-    }
-
-    private class DescendingBackedComparer<TKey, TOrdered> : IComparer<TKey?>
-        where TKey : IComparable<TKey?>?
-        where TOrdered : IComparable<TOrdered>
-    {
-        private readonly Func<TKey, TOrdered> _backer;
-
-        public DescendingBackedComparer(Func<TKey, TOrdered> backer) => _backer = backer;
-
-        public int Compare(TKey? x, TKey? y)
-        {
-            if (y == null)
-                return x == null ? 0 : 1;
-
-            return _backer(y).CompareTo(x == null ? default : _backer(x));
-        }
-    }
-
-    private class DescendingComparer<T> : IComparer<T?> where T : IComparable<T?>?
-    {
-        public int Compare(T? x, T? y)
-        {
-            if (y == null)
-                return x == null ? 0 : 1;
-
-            return y.CompareTo(x);
-        }
     }
 }

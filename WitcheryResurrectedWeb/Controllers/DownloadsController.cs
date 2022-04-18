@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -66,31 +67,18 @@ public class DownloadsController : Controller
         return StatusCode(200);
     }
 
-    [HttpGet("alldownloads")]
-    public async Task Downloads()
+    [HttpGet("downloads")]
+    public ActionResult<List<Downloadable>> Downloads([FromQuery] int limit, [FromQuery] string? after)
     {
-        var terminator = BitConverter.GetBytes('\0');
-        var downloads = _downloadManager.Downloads;
-        var serializeOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
-        Response.ContentType = "text/plain";
-
-        foreach (var download in downloads)
-        {
-            await JsonSerializer.SerializeAsync(Response.Body, download, serializeOptions);
-            await Response.Body.WriteAsync(terminator);
-            await Response.Body.FlushAsync();
-        }
+        var downloads = _downloadManager.Downloads(limit, after);
+        return downloads == null ? StatusCode(404) : downloads;
     }
 
     [HttpGet("download/{name}/{file}")]
     public async Task<IActionResult> Download([FromRoute] string name, [FromRoute] string file)
     {
         var stream = await _downloadManager.Download(name, file);
-
-        if (stream == null) return StatusCode(404);
-
-        return File(stream, "application/java-archive", file);
+        return stream == null ? StatusCode(404) : File(stream, "application/java-archive", file);
     }
 
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]

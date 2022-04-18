@@ -9,7 +9,7 @@ export default class DownloadsPage extends React.Component {
     state = {
         downloads: [],
         loaded: false,
-        downloadStream: null
+        lastId: null
     }
 
     componentDidMount() {
@@ -17,57 +17,25 @@ export default class DownloadsPage extends React.Component {
         document.title += " - Downloads";
     }
 
-    mergeDownloads = (original, added) => added.length === 0 ? original : [...original, ...added];
+    handleResponse = response => response.json().then(json => response.ok ? json : Promise.reject(json));
 
     loadNext = firstLoad => {
-        const addedDownloads = [];
-        const callback = downloadStream => {
-            const {downloads} = this.state;
-            downloadStream.read().then(({done, value}) => {
-                if (done) {
-                    downloadStream.releaseLock();
-                    this.setState({
-                        downloads: this.mergeDownloads(downloads, addedDownloads),
-                        loaded: true,
-                        downloadStream: null
-                    });
-                } else {
-                    for (const downloadJson of new TextDecoder().decode(value).split('\0')) {
-                        if (downloadJson.length > 0) {
-                            try {
-                                addedDownloads.push(JSON.parse(downloadJson));
-                            } catch (e) {
-                                console.error("Received error while attempting to parse text: " + downloadJson)
-                            }
-                        }
-                    }
+        const {downloads, lastId} = this.state;
+        if (!lastId && !firstLoad) return;
 
-                    if (addedDownloads.length < 5) {
-                        callback(downloadStream);
-                    } else {
-                        this.setState({
-                            downloads: this.mergeDownloads(downloads, addedDownloads),
-                            loaded: true,
-                            downloadStream
-                        });
-                    }
-                }
-            }).catch(console.error);
-        }
+        fetch('../downloads?limit=5' + (!firstLoad ? `&after=${lastId}` : '')).then(this.handleResponse).then(data => {
+            const newDownloads = [...downloads, ...data];
 
-        if (firstLoad) {
-            fetch('../alldownloads').then(response => {
-                callback(response.body.getReader());
-            }).catch(console.error);
-        } else {
-            const downloadStream = this.state.downloadStream;
-            if (!downloadStream) return;
-            callback(downloadStream);
-        }
+            this.setState({
+                downloads: newDownloads,
+                loaded: true,
+                lastId: data.length > 0 ? data[data.length - 1].id : null
+            });
+        }).catch(console.error);
     }
 
     render() {
-        const {downloads, loaded, downloadStream} = this.state;
+        const {downloads, loaded, lastId} = this.state;
 
         if (!loaded)
             return <LoaderComponent/>;
@@ -78,7 +46,7 @@ export default class DownloadsPage extends React.Component {
                     <InfiniteScroll
                         pageStart={0}
                         loadMore={() => this.loadNext(false)}
-                        hasMore={!!downloadStream}
+                        hasMore={!!lastId}
                         loader={<h3 key={0}>Loading...</h3>}
                     >
                         {downloads.map(download => <DownloadComponent key={download.id} downloadId={download.id}
