@@ -47,7 +47,7 @@ public class DiscordHandler : IDiscordHandler
             {
                 if (_configurationManager.Config.GuildId != null)
                 {
-                    Guild = BotClient.GetGuild(ulong.Parse(_configurationManager.Config.BotToken));
+                    Guild = BotClient.GetGuild(ulong.Parse(_configurationManager.Config.GuildId));
                 }
 
                 if (Guild != null && _configurationManager.Config.SuggestionsChannel != null)
