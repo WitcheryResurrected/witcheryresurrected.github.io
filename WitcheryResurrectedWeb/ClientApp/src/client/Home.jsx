@@ -25,15 +25,10 @@ class Home extends React.Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      posts: [],
-      about: '',
-      expanded: false
-    }
-
     document.title = props.title + ' - Home'
 
-    if (!('ontouchstart' in window)) document.onmousemove = this.shiftBaubles
+    this.shiftBaubles = this.shiftBaubles.bind(this)
+    if (!('ontouchstart' in window)) window.addEventListener('mousemove', this.shiftBaubles)
   }
 
   componentDidMount () {
@@ -48,7 +43,10 @@ class Home extends React.Component {
       .catch(this.props.onError)
   }
 
-  /* eslint-disable max-len */
+  componentWillUnmount () {
+    window.removeEventListener('mousemove', this.shiftBaubles)
+  }
+
   render () {
     return (
       <div className='page home'>
@@ -81,12 +79,14 @@ class Home extends React.Component {
                 </p>
 
                 <p>
-                  Witchery: Resurrected is not a port, Emoniph's original resources were not packaged in any way, this is simply a remake that intends to stay as close as possible to the original.
+                  Witchery: Resurrected is not a port, Emoniph's original resources were not packaged in any way,
+                  this is simply a remake that intends to stay as close as possible to the original.
                 </p>
 
                 <p>
                   Currently, the project is incomplete asset-wise. As such, we require the original mod file to be loaded alongside Witchery: Resurrected.
-                  Feature wise, everything is implemented; however, the backend of the mod is being rewritten to increase maintanability, performance and quality.
+                  Feature wise, everything is implemented;
+                  &nbsp;however, the backend of the mod is being rewritten to increase maintanability, performance and quality.
                   After both asset-creation and rewriting is complete, the mod will be released to sites such as&nbsp;
                   <a target='_blank' rel='noreferrer' href='https://curseforge.com/minecraft/mc-mods'>CurseForge</a>
                   &nbsp;and <a target='_blank' rel='noreferrer' href='https://modrinth.com/mods'>Modrinth</a>
@@ -116,15 +116,18 @@ class Home extends React.Component {
 
               <ul className='body'>
                 <li>
-                  Augment your combat experience by enhancing your abilities or diminishing your opponents' by use of spells, rituals, potions, and transformations.
+                  Augment your combat experience by enhancing your abilities or diminishing your opponents' by use of
+                  spells, rituals, potions, and transformations.
                 </li>
 
                 <li>
-                  Add a spice of magic to your world and transform the tame mundane wilderness into a fierce magical battle consisting of numerous sides including various new species of metahuman and enemy witches.
+                  Add a spice of magic to your world and transform the tame mundane wilderness into a fierce magical battle consisting of
+                  numerous sides including various new species of metahuman and enemy witches.
                 </li>
 
                 <li>
-                  Defend your home via usage of magical wards, curse your foes, make groundbreaking discoveries in the fields of magic, bend demons to your will, engage in the forbidden arts, and much more in this brand new realm.
+                  Defend your home via usage of magical wards, curse your foes, make groundbreaking discoveries in the fields of magic,
+                  bend demons to your will, engage in the forbidden arts, and much more in this brand new realm.
                 </li>
               </ul>
             </div>
@@ -209,6 +212,22 @@ class Home extends React.Component {
                   </video>
                 </div>
               </div>
+            </div>
+
+            <div className='about'>
+              <p>
+                Witchery: Resurrected was started in early 2020 by <a href='https://github.com/MsRandom' target='_blank' rel='noreferrer'>Ashley Wright</a>
+                , who is the owner and maintainer of the project. This mod is written in the&nbsp;
+                <a href='https://kotlinlang.org' target='_blank' rel='noreferrer'>Kotlin</a>
+                &nbsp;programming language and is designed to be as data-driven and customizable as possible,
+                allowing for freedom over features for server admins and users.
+              </p>
+
+              <p>
+                This website was designed by <a href='https://github.com/abused' target='_blank' rel='noreferrer'>abused_master</a>
+                &nbsp;and <a href='https://github.com/exoRift' target='_blank' rel='noreferrer'>exoRift</a>
+                . The backend server was programmed by Ashley.
+              </p>
             </div>
           </div>
 

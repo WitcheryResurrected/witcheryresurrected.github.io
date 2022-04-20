@@ -51,7 +51,7 @@
 
 #bauble-container .bauble {
   width: 15%;
-  animation: float 3s ease-in-out 0s infinite alternate forwards;
+  animation: float 3s ease-in-out 0s infinite alternate-reverse forwards;
 }
 #bauble-container .bauble:nth-child(odd) {
   margin-right: auto;
@@ -62,7 +62,7 @@
 
 .page.home .content .card.info {
   width: 90%;
-  padding: 0 10% 5%;
+  padding: 0 10% 2%;
   justify-self: right;
   grid-column: 1;
   grid-row: 1 / 4;
@@ -79,12 +79,16 @@
 }
 .page.home .content .card.info .welcome .header .name {
   font-family: 'Child Witch', var(--bs-font-sans-serif);
+  letter-spacing: 0.05rem;
 }
 
 .page.home .content .card.info > *:not(:last-child) {
   border-bottom: 1px solid var(--bs-dark);
   margin-bottom: 2rem;
   padding-bottom: 1rem;
+}
+.page.home .content .card.info > *:nth-last-child(2) { /* To separate about */
+  margin-bottom: 5rem;
 }
 
 .page.home .content .card.info .welcome .header .logo {
@@ -124,6 +128,11 @@
   height: fit-content;
   border-radius: 10% 5%;
   box-shadow: -2px 5px 5px var(--bs-darker);
+}
+
+.page.home .content .card.info .about {
+  padding: 0 8%;
+  font-size: 0.9rem;
 }
 
 .page.home .content .card.widget {
