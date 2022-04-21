@@ -1,0 +1,151 @@
+.page.admin-panel::after {
+  content: '';
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: white;
+  animation: flash 0.2s linear 0s 1 alternate forwards;
+  pointer-events: none;
+}
+
+.page.admin-panel .content {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4%;
+}
+
+.page.admin-panel form {
+  display: flex;
+  flex-flow: column;
+  min-width: 50%;
+  padding: 1%;
+  border-radius: 20px;
+  background: var(--bs-dark);
+}
+
+.page.admin-panel form > * {
+  margin: 1% 0;
+}
+
+.page.admin-panel form input,
+.page.admin-panel form textarea {
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid #1a1a1a;
+  padding: 0.8%;
+  background: var(--bs-darker);
+  color: white;
+}
+
+.page.admin-panel form select {
+  border-radius: 6px;
+  outline: none;
+  border: 1px solid #1a1a1a;
+  padding: 0.8%;
+  background-color: var(--bs-darker);
+  background-image: url('data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27><path fill=%27none%27 stroke=%27%23aaaaaa%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%272%27 d=%27M2 5l6 6 6-6%27/></svg>');
+  color: white;
+  box-shadow: none;
+}
+
+.page.admin-panel form button:not(.file-button) {
+  border-radius: 8px;
+  width: fit-content;
+  margin-right: 1rem;
+}
+
+.page.admin-panel .files {
+  display: flex;
+  align-items: flex-start;
+}
+
+.page.admin-panel .files .file-container {
+  display: flex;
+}
+
+.page.admin-panel form .file {
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  align-items: flex-start;
+  margin-right: 0.5rem;
+  padding: 1rem;
+  background: #3c3c3c;
+  border: 1px solid #3f3f3f;
+  border-radius: 5px;
+}
+
+.page.admin-panel form .file input,
+.page.admin-panel form .file select {
+  width: 60%;
+  margin: 4% 0;
+}
+
+.page.admin-panel form .file input[type='file'] {
+  transition: 0.2s;
+  width: 80%;
+  margin-left: 2%;
+  padding: 2%;
+  cursor: pointer;
+}
+.page.admin-panel form .file input[type='file']::file-selector-button {
+  display: none;
+}
+.page.admin-panel form .file input[type='file']:hover {
+  transform: scale(1.005);
+  background: var(--bs-gray-800);
+}
+
+.page.admin-panel form .file-button.remove {
+  position: absolute;
+  right: 0;
+  padding-right: 5%;
+  color: var(--bs-danger);
+}
+
+.page.admin-panel form .file-button.add {
+  color: var(--bs-success);
+}
+
+.page.admin-panel form .file-button {
+  border: none;
+  background: none;
+  font-size: 3rem;
+  outline: none;
+  line-height: 0.7;
+}
+.page.admin-panel form .file-button:hover {
+  color: lightgray;
+}
+
+.page.admin-panel form .dependency-container {
+  display: flex;
+  flex-flow: column;
+}
+
+.page.admin-panel form .dependency {
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: #353535;
+  border: 1px solid #373737;
+  border-radius: 5px;
+}
+
+.page.admin-panel form .dep-button {
+  font-size: 2rem;
+}
+
+@keyframes flash {
+  from {
+    opacity: 1;
+  } to {
+    opacity: 0;
+  }
+}

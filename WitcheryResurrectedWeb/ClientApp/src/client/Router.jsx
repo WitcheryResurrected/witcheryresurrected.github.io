@@ -11,24 +11,35 @@ import Error from './modules/Error.jsx'
 
 import routes from './util/routes.js'
 import links from './util/links.json'
+import AdminPanel from './AdminPanel.jsx'
 import NotFound from './NotFound.jsx'
 
 class Routes extends React.Component {
   static title = document.title
 
+  static code = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+
   constructor (props) {
     super(props)
 
     this.state = {
-      error: null
+      error: null,
+      admin: false
     }
+
+    this.codeProgress = 0
 
     this.onError = this.onError.bind(this)
     this.closeError = this.closeError.bind(this)
+
+    this.advanceCode = this.advanceCode.bind(this)
+    if (!('ontouchstart' in window)) document.addEventListener('keydown', this.advanceCode)
   }
 
   componentWillUnmount () {
     clearTimeout(this.errorTimeout)
+
+    window.removeEventListener('keydown', this.advanceCode)
   }
 
   render () {
@@ -40,6 +51,10 @@ class Routes extends React.Component {
 
         <div id='app'>
           <Switch>
+            {this.state.admin
+              ? <Route component={AdminPanel}/>
+              : null}
+
             {routes.map((route, index) => (
               <Route
                 key={index}
@@ -77,6 +92,14 @@ class Routes extends React.Component {
     this.setState({
       error: null
     })
+  }
+
+  advanceCode (event) {
+    if (Routes.code[this.codeProgress] === event.keyCode) {
+      this.codeProgress++
+
+      if (this.codeProgress >= Routes.code.length) this.setState({ admin: true })
+    } else this.codeProgress = 0
   }
 }
 
