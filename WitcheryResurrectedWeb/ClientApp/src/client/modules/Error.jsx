@@ -1,13 +1,9 @@
 import React from 'react'
 
 class Error extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      status: null,
-      error: {}
-    }
+  state = {
+    status: null,
+    error: {}
   }
 
   componentDidMount () {

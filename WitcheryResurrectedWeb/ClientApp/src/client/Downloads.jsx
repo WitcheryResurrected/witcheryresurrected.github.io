@@ -8,12 +8,12 @@ import './styles/Downloads.css'
 class Downloads extends React.Component {
   static increment = 10
 
+  state = {
+    versions: []
+  }
+
   constructor (props) {
     super(props)
-
-    this.state = {
-      versions: []
-    }
 
     document.title = props.title + ' - Downloads'
   }

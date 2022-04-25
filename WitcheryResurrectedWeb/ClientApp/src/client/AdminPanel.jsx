@@ -3,11 +3,7 @@ import React from 'react'
 import './styles/AdminPanel.css'
 
 class Dependency extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.id = `${this.props.fileID}.dependencies[${this.props.index}]`
-  }
+  id = `${this.props.fileID}.dependencies[${this.props.index}]`
 
   render () {
     return (
@@ -22,14 +18,10 @@ class Dependency extends React.Component {
 }
 
 class File extends React.Component {
-  constructor (props) {
-    super(props)
+  id = `files[${this.props.index}]`
 
-    this.state = {
-      dependencies: []
-    }
-
-    this.id = `files[${this.props.index}]`
+  state = {
+    dependencies: []
   }
 
   render () {
@@ -88,12 +80,8 @@ class File extends React.Component {
 }
 
 class AdminPanel extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      files: []
-    }
+  state = {
+    files: []
   }
 
   componentDidMount () {

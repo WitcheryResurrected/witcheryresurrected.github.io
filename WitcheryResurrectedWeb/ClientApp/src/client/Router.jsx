@@ -16,24 +16,23 @@ import NotFound from './NotFound.jsx'
 
 class Routes extends React.Component {
   static title = document.title
-
   static code = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+
+  onError = this.onError.bind(this)
+  closeError = this.closeError.bind(this)
+  advanceCode = this.advanceCode.bind(this)
+
+  codeProgress = 0
+
+  state = {
+    error: null,
+    admin: false
+  }
 
   constructor (props) {
     super(props)
 
-    this.state = {
-      error: null,
-      admin: false
-    }
-
-    this.codeProgress = 0
-
-    this.onError = this.onError.bind(this)
-    this.closeError = this.closeError.bind(this)
-
-    this.advanceCode = this.advanceCode.bind(this)
-    if (!('ontouchstart' in window)) document.addEventListener('keydown', this.advanceCode)
+    if (!('ontouchstart' in window)) window.addEventListener('keydown', this.advanceCode)
   }
 
   componentWillUnmount () {

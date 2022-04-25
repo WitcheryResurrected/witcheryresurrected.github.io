@@ -22,12 +22,13 @@ import './styles/Home.css'
 class Home extends React.Component {
   static baubleShiftRate = 2
 
+  shiftBaubles = this.shiftBaubles.bind(this)
+
   constructor (props) {
     super(props)
 
     document.title = props.title + ' - Home'
 
-    this.shiftBaubles = this.shiftBaubles.bind(this)
     if (!('ontouchstart' in window)) window.addEventListener('mousemove', this.shiftBaubles)
   }
 

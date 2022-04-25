@@ -72,12 +72,8 @@ class Version extends React.Component {
   static byteTypes = ['Bytes', 'KB', 'MB', 'GB']
   static loaders = ['Forge', 'Fabric']
 
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      expanded: false
-    }
+  state = {
+    expanded: false
   }
 
   render () {
