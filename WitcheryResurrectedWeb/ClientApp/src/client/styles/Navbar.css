@@ -1,3 +1,5 @@
+@import url('https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0');
+
 #navbar {
   transition: 0.7s;
   position: sticky;
@@ -41,7 +43,13 @@
   padding: .5rem 1rem;
   z-index: 51;
 }
-
+#navbar .nav-link.external::before {
+  content: '\e89e';
+  margin-right: 0.3rem;
+  vertical-align: text-bottom;
+  font-family: 'Material Symbols Outlined';
+  font-size: 1rem;
+}
 #navbar .nav-link::after {
   content: '';
   transition: 0.2s ease;

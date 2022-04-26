@@ -32,11 +32,11 @@ class Navbar extends React.Component {
           {this.props.routes.map((r, i) => r.hidden
             ? null
             : (
-              <Link to={r.path} className='nav-link' key={i}>{r.name}</Link>
+              <Link to={r.path} className='nav-link internal' key={i}>{r.name}</Link>
               ))}
 
           {this.props.links.map((r, i) => (
-            <a href={r.link} target='_blank' rel='noreferrer' className='nav-link' key={i}>{r.name}</a>
+            <a href={r.link} target='_blank' rel='noreferrer' className='nav-link external' key={i}>{r.name}</a>
           ))}
         </div>
       </div>
