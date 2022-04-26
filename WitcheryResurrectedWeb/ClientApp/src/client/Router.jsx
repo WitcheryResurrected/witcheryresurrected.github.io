@@ -1,9 +1,12 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
-  Switch,
+  BrowserRouter,
+  Routes,
   Route
 } from 'react-router-dom'
+
+import AdminPanel from './AdminPanel.jsx'
+import NotFound from './NotFound.jsx'
 
 import Navbar from './modules/Navbar.jsx'
 import RevealOverlay from './modules/RevealOverlay.jsx'
@@ -11,16 +14,10 @@ import Error from './modules/Error.jsx'
 
 import routes from './util/routes.js'
 import links from './util/links.json'
-import AdminPanel from './AdminPanel.jsx'
-import NotFound from './NotFound.jsx'
 
-class Routes extends React.Component {
+class Router extends React.Component {
   static title = document.title
   static code = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
-
-  onError = this.onError.bind(this)
-  closeError = this.closeError.bind(this)
-  advanceCode = this.advanceCode.bind(this)
 
   codeProgress = 0
 
@@ -43,38 +40,36 @@ class Routes extends React.Component {
 
   render () {
     return (
-      <Router>
+      <BrowserRouter>
         <RevealOverlay/>
 
         <Navbar routes={routes} links={links}/>
 
         <div id='app'>
-          <Switch>
+          <Routes>
             {this.state.admin
-              ? <Route component={AdminPanel}/>
-              : null}
+              ? <Route path='*' element={<AdminPanel onError={this.onError} title={Router.title}/>}/>
+              : routes.map((route, index) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  element={<route.Component onError={this.onError} title={Router.title}/>}
+                />
+              ))}
 
-            {routes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                render={(props) => <route.Component onError={this.onError} title={Routes.title} {...props}/>}
-              />
-            ))}
-
-            <Route component={NotFound}/>
-          </Switch>
+            <Route path='*' element={<NotFound onError={this.onError} title={Router.title}/>}/>
+          </Routes>
         </div>
 
         {this.state.error
           ? <Error error={this.state.error} onClose={this.closeError}/>
           : null}
-      </Router>
+      </BrowserRouter>
     )
   }
 
-  onError (error) {
+  onError = (error) => {
     console.error(error)
 
     this.setState({
@@ -85,7 +80,7 @@ class Routes extends React.Component {
     this.errorTimeout = setTimeout(() => this.setState({ error: null }), 300000 /* 5 minutes */)
   }
 
-  closeError () {
+  closeError = () => {
     clearTimeout(this.errorTimeout)
 
     this.setState({
@@ -93,13 +88,13 @@ class Routes extends React.Component {
     })
   }
 
-  advanceCode (event) {
-    if (Routes.code[this.codeProgress] === event.keyCode) {
+  advanceCode = (event) => {
+    if (Router.code[this.codeProgress] === event.keyCode) {
       this.codeProgress++
 
-      if (this.codeProgress >= Routes.code.length) this.setState({ admin: true })
+      if (this.codeProgress >= Router.code.length) this.setState({ admin: true })
     } else this.codeProgress = 0
   }
 }
 
-export default Routes
+export default Router

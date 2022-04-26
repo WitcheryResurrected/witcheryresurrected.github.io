@@ -22,8 +22,6 @@ import './styles/Home.css'
 class Home extends React.Component {
   static baubleShiftRate = 2
 
-  shiftBaubles = this.shiftBaubles.bind(this)
-
   constructor (props) {
     super(props)
 
@@ -250,7 +248,7 @@ class Home extends React.Component {
     )
   }
 
-  shiftBaubles (event) {
+  shiftBaubles = (event) => {
     const container = document.getElementById('bauble-container')
 
     const xOffset = (event.clientX - (window.innerWidth / 2)) / window.innerWidth
