@@ -16,6 +16,7 @@ import transformExample from '../assets/videos/examples/transformations.webm'
 import batBauble from '../assets/images/bat_bauble.png'
 import potionBauble from '../assets/images/potion_bauble.png'
 import candleBauble from '../assets/images/candle_bauble.png'
+import skullBauble from '../assets/images/skull_bauble.png'
 
 import './styles/Home.css'
 
@@ -50,9 +51,7 @@ class Home extends React.Component {
     return (
       <div className='page home'>
         <div id='backvid'>
-          <video autoPlay muted loop>
-            {/* <source src={backvid} type='video/webm'/> */}
-          </video>
+          <video autoPlay muted loop/>
         </div>
 
         <div className='content superfrosted'>
@@ -61,6 +60,7 @@ class Home extends React.Component {
               <img className='bauble' src={batBauble} alt='bauble'/>
               <img className='bauble' src={potionBauble} alt='bauble'/>
               <img className='bauble' src={candleBauble} alt='bauble'/>
+              <img className='bauble' src={skullBauble} alt='bauble'/>
             </div>
 
             <div className='welcome'>
@@ -225,7 +225,9 @@ class Home extends React.Component {
               <p>
                 This website was designed by <a href='https://github.com/abused' target='_blank' rel='noreferrer'>abused_master</a>
                 &nbsp;and <a href='https://github.com/exoRift' target='_blank' rel='noreferrer'>exoRift</a>
-                . The backend server was programmed by Ashley.
+                &nbsp;and its artwork was drawn by&nbsp;
+                <a href='https://www.deviantart.com/fungalzombiex' target='_blank' rel='noreferrer'>FungalDragon</a>
+                . The backend server was written by Ashley.
               </p>
             </div>
           </div>
@@ -240,7 +242,8 @@ class Home extends React.Component {
 
           <iframe
             className='card widget trello'
-            src='https://trello.com/b/uEqGT8F7.html' title='Trello'
+            src='https://trello.com/b/uEqGT8F7.html'
+            title='Trello'
             loading='lazy'
           />
         </div>
