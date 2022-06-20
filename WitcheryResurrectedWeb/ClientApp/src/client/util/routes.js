@@ -1,5 +1,6 @@
 import Home from '../Home.jsx'
 import Downloads from '../Downloads.jsx'
+import Glossary from '../Glossary.jsx'
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/downloads',
     name: 'Downloads',
     Component: Downloads
+  },
+  {
+    path: '/glossary',
+    name: 'Glossary',
+    Component: Glossary
   }
 ]
 

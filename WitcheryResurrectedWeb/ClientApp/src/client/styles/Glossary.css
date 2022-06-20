@@ -1,0 +1,96 @@
+.page.glossary .content {
+  display: flex;
+}
+
+.page.glossary .content .index {
+  flex: 1;
+  height: calc(100vh - var(--navbar-height));
+  padding: 0.3% 0;
+}
+
+.page.glossary .content .blowup {
+  flex: 2;
+}
+
+.page.glossary .index .categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.page.glossary .index .categories .category {
+  transition: 0.2s;
+  background: var(--accent);
+  padding: 0.5% 2%;
+  margin: 1.5%;
+  clip-path: polygon(0.5vw 0%, calc(100% - 0.5vw) 0%, 100% 50%, calc(100% - 0.5vw) 100%, 0.5vw 100%, 0% 50%);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.page.glossary .index .categories .category::before,
+.page.glossary .index .categories .category::after {
+  content: '\25C6';
+  color: rgb(50, 50, 50);
+  opacity: 0.2;
+}
+.page.glossary .index .categories .category::before {
+  margin-left: -0.5rem;
+}
+
+.page.glossary .index .categories .category::after {
+  margin-right: -0.5rem;
+}
+.page.glossary .index .categories .category:hover {
+  background: var(--main);
+}
+.page.glossary .index .categories .category.selected {
+  background: var(--complement);
+}
+.page.glossary .index .categories .category.selected:hover {
+  background: var(--complement-accent);
+}
+
+.page.glossary .index .entries {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  height: 100%;
+  padding-bottom: 10%;
+  overflow: auto;
+}
+
+.page.glossary .index .entries .entry {
+  transition: 0.2s;
+  position: relative;
+  width: 7vw;
+  margin: 1%;
+  cursor: pointer;
+}
+.page.glossary .index .entries .entry::before {
+  transition: 0.2s;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 85%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  clip-path: polygon(0 0, 0% 30%, 40% 0);
+}
+.page.glossary .index .entries .entry:hover {
+  transform: scale(1.05);
+}
+.page.glossary .index .entries .entry:hover::before {
+  clip-path: polygon(0 0, 0% 70%, 80% 0);
+  background: rgba(255, 255, 255, 0.6);
+}
+.page.glossary .index .entries .entry img {
+  width: 100%;
+  image-rendering: pixelated;
+  border: 1px solid gray;
+  border-radius: 25px;
+}
+.page.glossary .index .entries .entry .caption {
+  display: block;
+  text-align: center;
+}
