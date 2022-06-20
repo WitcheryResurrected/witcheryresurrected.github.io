@@ -10,6 +10,8 @@
   --link: #5969d4;
   --link-hover: #4653a1;
   --bs-darker: #292929;
+
+  --navbar-height: 64px;
 }
 
 #root {
