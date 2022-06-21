@@ -25,6 +25,10 @@ class Glossary extends React.Component {
     crafting_table: CraftingTable
   }
 
+  static idRegex = /.*:(.+)/
+
+  static vanillaRegex = /minecraft(?=:.+)/
+
   state = {
     entries: { // TEMP
       items: new Array(50).fill({
@@ -42,7 +46,8 @@ class Glossary extends React.Component {
       })
     },
     category: 'Items', // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
-    blowup: null
+    blowup: null,
+    itemCache: {}
   }
 
   render () {
@@ -112,12 +117,53 @@ class Glossary extends React.Component {
     this.setState({
       blowup: item
     })
+
+    const requests = []
+
+    for (const slot of item.recipe.slots) {
+      if (!slot || this.state.itemCache[slot]) continue
+
+      if (slot.match(Glossary.vanillaRegex)) {
+        requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            query: slot.match(Glossary.idRegex)[1]
+          })
+        })
+          .then(postFetch)
+          .then((item) => item.json())
+          .then(({ data: [item] }) => item))
+      }
+    }
+
+    return Promise.all(requests)
+      .then((items) => {
+        const addition = {}
+
+        for (const item of items) {
+          addition[item.name] = {
+            name: item.displayName,
+            iconURL: `https://minecraftitemids.com/item/64/${item.name}.png`
+          }
+        }
+
+        this.setState({
+          itemCache: {
+            ...this.state.itemCache,
+            ...addition
+          }
+        })
+      })
+      .catch(this.props.onError)
   }
 
   getGrid (recipe) {
     const Grid = Glossary.grids[recipe.type]
 
-    return <Grid data={recipe.slots}/>
+    return <Grid data={recipe.slots} items={this.state.itemCache}/>
   }
 }
 
