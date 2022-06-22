@@ -111,35 +111,56 @@
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-.page.glossary .content .blowup-area .blowup .identity {
+.page.glossary .content .blowup-area .blowup .printout {
   display: flex;
+  position: relative;
   flex-flow: column;
   padding: 1% 5%;
   background: var(--frost-back);
   border-radius: 30px;
+  overflow: hidden;
 }
-.page.glossary .content .blowup-area .blowup .identity .icon {
-  width: 8rem;
+
+.page.glossary .content .blowup-area .blowup .printout .identity {
+  display: flex;
   align-self: center;
 }
-.page.glossary .content .blowup-area .blowup .identity .icon img {
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate {
+  position: absolute;
+  transform: translateX(-105%);
+  white-space: nowrap;
+  line-height: 1;
+  text-align: end;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate .name {
+  font-size: 3rem;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate .id {
+  display: block;
+  font-size: 1rem;
+  font-style: italic;
+  color: lightgray;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .icon {
+  width: 8rem;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .icon img {
   width: 100%;
   image-rendering: pixelated;
 }
-.page.glossary .content .blowup-area .blowup .identity .underscore {
+
+.page.glossary .content .blowup-area .blowup .printout .underscore {
   display: flex;
   justify-content: space-between;
   padding-top: 2%;
 }
-.page.glossary .content .blowup-area .blowup .identity .name {
-  font-size: 3rem;
-}
-.page.glossary .content .blowup-area .blowup .identity .id {
-  display: block;
-  font-size: 1rem;
+.page.glossary .content .blowup-area .blowup .printout .underscore .description {
+  padding-right: 10%;
+  font-size: larger;
+  text-indent: 2rem;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .page.glossary .content .index {
     transition: 0.2s ease-out;
     position: absolute;
@@ -158,7 +179,8 @@
     height: 100%;
     z-index: 1;
   }
-  .page.glossary .content .index:not(:hover)::after { /* Disable selecting an item on mobile until extended */
+  .page.glossary .content .index::after {
+    transition: 0.2s;
     content: '>';
     display: flex;
     position: absolute;
@@ -168,6 +190,7 @@
     height: 100%;
     padding-right: 1rem;
     background: var(--frost-back);
+    opacity: 1;
     font-size: 10rem;
     justify-content: flex-end;
     align-items: center;
@@ -180,5 +203,28 @@
   }
   .page.glossary .content .index:hover::before {
     z-index: -1;
+  }
+  .page.glossary .content .index:hover::after {
+    opacity: 0;
+  }
+
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate {
+    position: relative;
+    transform: none;
+    margin-right: 5%;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate .name {
+    font-size: 4vh;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate .id {
+    font-size: 2vh;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .icon {
+    width: 10vh;
+  }
+
+  .page.glossary .content .blowup-area .blowup .printout .underscore {
+    flex-flow: column-reverse;
+    align-items: flex-end;
   }
 }

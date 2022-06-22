@@ -42,6 +42,9 @@
   height: calc(36px * var(--crafting-table-grid-scaler));
   padding: 2px;
 }
+.crafting-grid .slot.clickable {
+  cursor: pointer;
+}
 
 .crafting-grid .slot .tooltip { /* Parts borrowed from https://ftb.fandom.com */
   position: fixed;

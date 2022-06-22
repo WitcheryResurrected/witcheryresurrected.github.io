@@ -12,23 +12,25 @@ import './styles/Glossary.css'
 import attunedIcon from '../assets/TEMP/attuned_stone.png'
 import whiffIcon from '../assets/TEMP/magic_whiff.png'
 const categories = [
-  'Items',
-  'Blocks',
-  'Mobs',
-  'Brew Effects',
-  'Rites',
-  'Spells'
+  'items',
+  'blocks',
+  'mobs',
+  'brew effects',
+  'rites',
+  'spells'
 ]
 // TEMP
+
+// TODO: FETCH ENTRIES FROM CATEGORY ON LOAD. IF CATEGORY DOESN'T EXIST, DEFAULT TO ITEMS
 
 class Glossary extends React.Component {
   static grids = {
     crafting_table: CraftingTable
   }
 
-  static idRegex = /.*:(.+)/
-
-  static vanillaRegex = /minecraft(?=:.+)/
+  static capitalizationRegex = /(?:^|\s)(.)/g
+  static hashRegex = /#(?<category>[^/]+)(?:\/(?<id>.+))?/
+  static idRegex = /^(.+):(.+)$/
 
   state = {
     entries: { // TEMP
@@ -43,16 +45,23 @@ class Glossary extends React.Component {
             'minecraft:diamond', null, null,
             'minecraft:lava_bucket', null, null
           ]
-        }
+        },
+        description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
       }).concat({
         id: 'witchery:magic_whiff',
         name: 'Whiff of Magic',
         iconURL: whiffIcon
       })
     },
-    category: 'Items', // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
+    category: categories[0], // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
     blowup: null,
     itemCache: {}
+  }
+
+  componentDidMount () {
+    const location = window.location.hash.match(Glossary.hashRegex)
+
+    if (location) this.switchLocation(location.groups.category, location.groups.id)
   }
 
   render () {
@@ -62,14 +71,16 @@ class Glossary extends React.Component {
           <div className='index frosted'>
             <div className='categories'>
               {categories.map((c) =>
-                <div className={'category' + (this.state.category === c ? ' selected' : '')} key={c} onClick={() => this.switchCategory(c)}>{c}</div>
+                <div className={'category' + (this.state.category === c ? ' selected' : '')} key={c} onClick={() => this.switchLocation(c)}>
+                  {c.replace(Glossary.capitalizationRegex, (l) => l.toUpperCase())}
+                </div>
               )}
             </div>
 
             <div className='entries'>
-              {this.state.category === 'Items' // TODO: REMOVE === 'Items'
-                ? this.state.entries[this.state.category.toLowerCase()].map((e) => (
-                  <div className='entry' key={e.name} onClick={() => this.switchBlowup(e)}>
+              {this.state.category in this.state.entries
+                ? this.state.entries[this.state.category].map((e) => (
+                  <div className='entry' key={e.id} onClick={() => this.switchLocation(this.state.category, e.id)}>
                     <div className='icon'>
                       <img alt={e.name} src={e.iconURL}/>
                     </div>
@@ -85,19 +96,28 @@ class Glossary extends React.Component {
             {this.state.blowup
               ? (
                 <div className='blowup antifrosted'>
-                  <div className='identity'>
-                    <div className='icon slot'>
-                      <img alt={this.state.blowup.name} src={this.state.blowup.iconURL}/>
-                    </div>
-
-                    <div className='underscore'>
+                  <div className='printout'>
+                    <div className='identity'>
                       <div className='nameplate'>
                         <strong className='name'>{this.state.blowup.name}</strong>
                         <span className='id'>{this.state.blowup.id}</span>
                       </div>
 
+                      <div className='icon slot'>
+                        <img
+                          alt={this.state.blowup.name}
+                          src={this.state.blowup?.iconURL}
+                        />
+                      </div>
+                    </div>
+
+                    <div className='underscore'>
+                      <p className='description'>
+                        {this.state.blowup?.description}
+                      </p>
+
                       <div className='crafting-grid-container'>
-                        {this.state.blowup.recipe
+                        {'recipe' in this.state.blowup
                           ? this.getGrid(this.state.blowup.recipe)
                           : null}
                       </div>
@@ -112,63 +132,93 @@ class Glossary extends React.Component {
     )
   }
 
-  switchCategory (category) {
+  switchLocation (category, entry) {
+    if (!(category in this.state.entries)) return
+
+    window.location.hash = category
     this.setState({
       category
     })
-  }
 
-  switchBlowup (item) {
+    const data = this.state.entries[category].find((e) => e.id === entry)
+    if (!data) return
+
+    window.location += '/' + entry
     this.setState({
-      blowup: item
+      blowup: data
     })
 
-    const requests = []
+    if (data.recipe) {
+      const requests = []
 
-    for (const slot of item.recipe.slots) {
-      if (!slot || this.state.itemCache[slot]) continue
+      for (const slot of data.recipe.slots) {
+        if (!slot || this.state.itemCache[slot]) continue
 
-      if (slot.match(Glossary.vanillaRegex)) {
-        requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            query: slot.match(Glossary.idRegex)[1]
+        if (slot.match(Glossary.idRegex)[1] === 'minecraft') {
+          requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              query: slot.match(Glossary.idRegex)[2]
+            })
+          })
+            .then(postFetch)
+            .then((entry) => entry.json())
+            .then(({ data: [entry] }) => entry))
+        }
+      }
+
+      return Promise.all(requests)
+        .then((entries) => {
+          const addition = {}
+
+          for (const entry of entries) {
+            addition['minecraft:' + entry.name] = {
+              name: entry.displayName,
+              iconURL: `https://minecraftitemids.com/item/64/${entry.name}.png`
+            }
+          }
+
+          this.setState({
+            itemCache: {
+              ...this.state.itemCache,
+              ...addition
+            }
           })
         })
-          .then(postFetch)
-          .then((item) => item.json())
-          .then(({ data: [item] }) => item))
-      }
+        .catch(this.props.onError)
     }
-
-    return Promise.all(requests)
-      .then((items) => {
-        const addition = {}
-
-        for (const item of items) {
-          addition['minecraft:' + item.name] = {
-            name: item.displayName,
-            iconURL: `https://minecraftitemids.com/item/64/${item.name}.png`
-          }
-        }
-
-        this.setState({
-          itemCache: {
-            ...this.state.itemCache,
-            ...addition
-          }
-        })
-      })
-      .catch(this.props.onError)
   }
 
   getGrid (recipe) {
     const Grid = Glossary.grids[recipe.type]
 
-    return <Grid recipe={recipe.slots} product={this.state.blowup} vanillaItems={this.state.itemCache} moddedItems={this.state.entries.items}/>
+    return <Grid recipe={recipe.slots} product={this.state.blowup} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+  }
+
+  getItem (id) {
+    if (this.state.itemCache[id]) {
+      return {
+        modded: false,
+        item: this.state.itemCache[id]
+      }
+    } else {
+      for (const category in this.state.entries) {
+        const entry = this.state.entries[category].find((i) => i.id === id)
+
+        if (entry) {
+          return {
+            modded: true,
+            item: entry,
+            category
+          }
+        }
+      }
+    }
+
+    return {}
   }
 }
 
