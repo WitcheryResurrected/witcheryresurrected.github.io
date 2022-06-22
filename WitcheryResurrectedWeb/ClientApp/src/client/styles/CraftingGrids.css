@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'Mojang';
+  src: url('../../assets/fonts/Mojang-Regular.ttf') format('truetype');
+  font-weight: normal
+}
+
+.crafting-grid.crafting-table {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: flex-start;
+  width: calc(256px * var(--crafting-table-grid-scaler));
+  height: calc(132px * var(--crafting-table-grid-scaler));
+  background: url('../../assets/images/crafting_table_gui.png') no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.crafting-grid.crafting-table .recipe {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: calc((36px * var(--crafting-table-grid-scaler) * 3) + 12px);
+  padding-top: calc(12px * var(--crafting-table-grid-scaler));
+  padding-left: calc(12px * var(--crafting-table-grid-scaler));
+}
+
+.crafting-grid.crafting-table .product {
+  display: flex;
+  justify-content: flex-end;
+  align-self: center;
+  padding-right: calc(12px * var(--crafting-table-grid-scaler));
+}
+
+.crafting-grid.crafting-table .product .slot {
+  width: calc(52px * var(--crafting-table-grid-scaler));
+  height: calc(52px * var(--crafting-table-grid-scaler));
+  padding: 3px;
+}
+
+.crafting-grid .slot {
+  width: calc(36px * var(--crafting-table-grid-scaler));
+  height: calc(36px * var(--crafting-table-grid-scaler));
+  padding: 2px;
+}
+
+.crafting-grid .slot .tooltip { /* Parts borrowed from https://ftb.fandom.com */
+  position: fixed;
+  background: rgba(16, 0, 16, 0.9);
+  color: white;
+  padding: 0.375em;
+  font-family: Mojang, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.5px;
+  word-spacing: 6px;
+  line-height: 1.25em;
+  text-shadow: 0.125em 0.125em 0 #3f3f3f;
+  white-space: nowrap;
+  margin: 0.125em 0.25em;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 1;
+  z-index: 100;
+}
+.crafting-grid .slot:hover .tooltip {
+  visibility: visible;
+}
+.crafting-grid .slot .tooltip::before {
+  content: '';
+  position: absolute;
+  top: 0.125em;
+  right: -0.125em;
+  bottom: 0.125em;
+  left: -0.125em;
+  border: 0.125em solid #100010;
+  border-style: none solid;
+  border-color: rgba(16, 0, 16, 0.9);
+}
+.crafting-grid .slot .tooltip::after {
+  content: '';
+  position: absolute;
+  top: 0.125em;
+  right: 0;
+  bottom: 0.125em;
+  left: 0;
+  border: 0.125em solid #2D0A63;
+  border-image: linear-gradient(rgba(80, 0, 255, 0.3), rgba(40, 0, 127, 0.3)) 1;
+}
+
+.crafting-grid .slot img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}

@@ -9,7 +9,8 @@ import postFetch from './util/postFetch.js'
 import './styles/Glossary.css'
 
 // TEMP
-import icon from '../assets/TEMP/attuned_stone.png'
+import attunedIcon from '../assets/TEMP/attuned_stone.png'
+import whiffIcon from '../assets/TEMP/magic_whiff.png'
 const categories = [
   'Items',
   'Blocks',
@@ -34,7 +35,7 @@ class Glossary extends React.Component {
       items: new Array(50).fill({
         id: 'witchery:attuned_stone',
         name: 'Attuned Stone',
-        icon: icon,
+        iconURL: attunedIcon,
         recipe: {
           type: 'crafting_table',
           slots: [
@@ -43,6 +44,10 @@ class Glossary extends React.Component {
             'minecraft:lava_bucket', null, null
           ]
         }
+      }).concat({
+        id: 'witchery:magic_whiff',
+        name: 'Whiff of Magic',
+        iconURL: whiffIcon
       })
     },
     category: 'Items', // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
@@ -66,7 +71,7 @@ class Glossary extends React.Component {
                 ? this.state.entries[this.state.category.toLowerCase()].map((e) => (
                   <div className='entry' key={e.name} onClick={() => this.switchBlowup(e)}>
                     <div className='icon'>
-                      <img alt={e.name} src={e.icon}/>
+                      <img alt={e.name} src={e.iconURL}/>
                     </div>
 
                     <span className='caption'>{e.name}</span>
@@ -81,8 +86,8 @@ class Glossary extends React.Component {
               ? (
                 <div className='blowup antifrosted'>
                   <div className='identity'>
-                    <div className='icon'>
-                      <img alt={this.state.blowup.name} src={this.state.blowup.icon}/>
+                    <div className='icon slot'>
+                      <img alt={this.state.blowup.name} src={this.state.blowup.iconURL}/>
                     </div>
 
                     <div className='underscore'>
@@ -144,7 +149,7 @@ class Glossary extends React.Component {
         const addition = {}
 
         for (const item of items) {
-          addition[item.name] = {
+          addition['minecraft:' + item.name] = {
             name: item.displayName,
             iconURL: `https://minecraftitemids.com/item/64/${item.name}.png`
           }
@@ -163,7 +168,7 @@ class Glossary extends React.Component {
   getGrid (recipe) {
     const Grid = Glossary.grids[recipe.type]
 
-    return <Grid data={recipe.slots} items={this.state.itemCache}/>
+    return <Grid recipe={recipe.slots} product={this.state.blowup} vanillaItems={this.state.itemCache} moddedItems={this.state.entries.items}/>
   }
 }
 

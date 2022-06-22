@@ -119,9 +119,6 @@
 .page.glossary .content .blowup-area .blowup .identity .icon {
   width: 8vw;
   align-self: center;
-  background: rgba(139, 139, 139, 0.8);
-  border: 2px solid;
-  border-color: #373737 #FFF #FFF #373737;
 }
 .page.glossary .content .blowup-area .blowup .identity .icon img {
   width: 100%;
@@ -130,6 +127,7 @@
 .page.glossary .content .blowup-area .blowup .identity .underscore {
   display: flex;
   justify-content: space-between;
+  padding-top: 2%;
 }
 .page.glossary .content .blowup-area .blowup .identity .name {
   font-size: 3rem;
@@ -137,4 +135,14 @@
 .page.glossary .content .blowup-area .blowup .identity .id {
   display: block;
   font-size: 1rem;
+}
+
+@media (max-width: 800px) {
+  .page.glossary .content .index {
+    transition: 0.2s ease-out;
+    flex: 0;
+  }
+  .page.glossary .content .index:hover {
+    flex: 1;
+  }
 }

@@ -13,6 +13,7 @@
   --bs-darker: #292929;
 
   --navbar-height: 64px;
+  --crafting-table-grid-scaler: 1.2;
 }
 
 #root {
@@ -83,6 +84,12 @@ ul:last-child {
 .loading-placeholder::after {
   content: '';
   animation: tick 1s linear 0s infinite normal forwards;
+}
+
+.slot {
+  background: rgba(139, 139, 139, 0.8);
+  border: 2px solid;
+  border-color: #373737 #FFF #FFF #373737;
 }
 
 .error {
