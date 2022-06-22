@@ -54,6 +54,7 @@ class Glossary extends React.Component {
       })
     },
     category: categories[0], // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
+    search: '',
     blowup: null,
     itemCache: {}
   }
@@ -77,17 +78,26 @@ class Glossary extends React.Component {
               )}
             </div>
 
+            <input
+              className='searchbar antifrosted'
+              placeholder='Search'
+              value={this.state.search}
+              onChange={(e) => this.setState({ search: e.target.value })}
+            />
+
             <div className='entries'>
               {this.state.category in this.state.entries
-                ? this.state.entries[this.state.category].map((e) => (
-                  <div className='entry' key={e.id} onClick={() => this.switchLocation(this.state.category, e.id)}>
-                    <div className='icon'>
-                      <img alt={e.name} src={e.iconURL}/>
-                    </div>
+                ? this.state.entries[this.state.category]
+                  .filter((e) => e.name.toLowerCase().replace(/\s/g, '').includes(this.state.search.toLowerCase().replace(/\s/g, '')))
+                  .map((e) => (
+                    <div className='entry' key={e.id} onClick={() => this.switchLocation(this.state.category, e.id)}>
+                      <div className='icon'>
+                        <img alt={e.name} src={e.iconURL}/>
+                      </div>
 
-                    <span className='caption'>{e.name}</span>
-                  </div>
-                ))
+                      <span className='caption'>{e.name}</span>
+                    </div>
+                  ))
                 : null}
             </div>
           </div>

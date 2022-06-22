@@ -6,6 +6,9 @@
 }
 
 .page.glossary .content .index {
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
   flex: 1;
   padding-top: 0.3%;
 }
@@ -53,6 +56,16 @@
 }
 .page.glossary .index .categories .category.selected:hover {
   background: var(--complement-accent);
+}
+
+.page.glossary .index .searchbar {
+  width: 85%;
+  margin: 2% 0 1%;
+  padding: 1%;
+  align-self: center;
+  border-radius: 5px;
+  outline: none;
+  color: white;
 }
 
 .page.glossary .index .entries {
@@ -169,6 +182,7 @@
     transform: translateX(-50%);
     opacity: 0.2;
     z-index: 1;
+    animation: hint 3s ease-in-out 0s 1 normal none;
   }
   .page.glossary .content .index::before { /* Disable selecting an item on mobile until extended */
     transition: 1s;
@@ -198,7 +212,7 @@
     z-index: 2;
   }
   .page.glossary .content .index:hover {
-    transform: translateX(0);
+    transform: translateX(0%);
     opacity: 1;
   }
   .page.glossary .content .index:hover::before {
@@ -226,5 +240,21 @@
   .page.glossary .content .blowup-area .blowup .printout .underscore {
     flex-flow: column-reverse;
     align-items: flex-end;
+  }
+
+  @keyframes hint {
+    0% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+
+    80% {
+      transform: translateX(-20%);
+    }
+    
+    100% {
+      transform: translateX(-50%);
+      opacity: 0.2;
+    }
   }
 }
