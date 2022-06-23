@@ -47,9 +47,18 @@ class Glossary extends React.Component {
             type: 'crafting_table',
             shaped: true,
             slots: [
-              'witchery:magic_whiff', null, null,
-              'minecraft:diamond', null, null,
-              'minecraft:lava_bucket', null, null
+              {
+                id: 'witchery:magic_whiff',
+                count: 1
+              }, null, null,
+              {
+                id: 'minecraft:diamond',
+                count: 1
+              }, null, null,
+              {
+                id: 'minecraft:lava_bucket',
+                count: 1
+              }, null, null
             ]
           }
         ],
@@ -68,14 +77,20 @@ class Glossary extends React.Component {
             {
               type: 'furnace',
               slots: [
-                'minecraft:porkchop'
+                {
+                  id: 'minecraft:porkchop',
+                  count: 1
+                }
               ]
             },
             {
               type: 'crafting_table',
               shaped: true,
               slots: [
-                'minecraft:porkchop'
+                {
+                  id: 'minecraft:porkchop',
+                  count: 4
+                }
               ]
             }
           ]
@@ -88,12 +103,30 @@ class Glossary extends React.Component {
             {
               type: 'kettle',
               slots: [
-                'minecraft:oak_sapling',
-                'minecraft:bedrock',
-                'minecraft:budding_amethyst',
-                'minecraft:deepslate_gold_ore',
-                'minecraft:tube_coral_fan',
-                'minecraft:iron_pickaxe'
+                {
+                  id: 'minecraft:oak_sapling',
+                  count: 1
+                },
+                {
+                  id: 'minecraft:bedrock',
+                  count: 1
+                },
+                {
+                  id: 'minecraft:budding_amethyst',
+                  count: 1
+                },
+                {
+                  id: 'minecraft:deepslate_gold_ore',
+                  count: 1
+                },
+                {
+                  id: 'minecraft:tube_coral_fan',
+                  count: 1
+                },
+                {
+                  id: 'minecraft:iron_pickaxe',
+                  count: 1
+                }
               ]
             }
           ]
@@ -212,16 +245,16 @@ class Glossary extends React.Component {
 
       for (const recipe of data.recipes) {
         for (const slot of recipe.slots) {
-          if (!slot || this.state.itemCache[slot]) continue
+          if (!slot || this.state.itemCache[slot.id]) continue
 
-          if (slot.match(Glossary.idRegex)[1] === 'minecraft') {
+          if (slot.id.match(Glossary.idRegex)[1] === 'minecraft') {
             requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                query: slot.match(Glossary.idRegex)[2]
+                query: slot.id.match(Glossary.idRegex)[2]
               })
             })
               .then(postFetch)

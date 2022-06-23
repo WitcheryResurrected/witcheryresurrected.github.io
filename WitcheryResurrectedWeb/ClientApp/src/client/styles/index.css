@@ -85,7 +85,7 @@ ul:last-child {
   animation: tick 1s linear 0s infinite normal forwards;
 }
 
-.slot {
+.slot:not(.no-square) {
   background: rgba(139, 139, 139, 0.8);
   border: 2px solid;
   border-color: #373737 #FFF #FFF #373737;

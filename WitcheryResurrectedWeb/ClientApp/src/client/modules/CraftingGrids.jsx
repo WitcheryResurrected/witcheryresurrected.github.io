@@ -42,16 +42,22 @@ class CraftingTable extends React.Component {
               modded,
               item,
               category
-            } = this.props.getItem(s)
+            } = this.props.getItem(s?.id)
 
             return (
               <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
                 {item
-                  ? <img alt={s} src={item?.iconURL}/>
-                  : null}
+                  ? (
+                    <>
+                      <img alt={s?.id} src={item?.iconURL}/>
 
-                {item
-                  ? <span className='minecraft tooltip'>{item.name}</span>
+                      {s.count && s.count !== 1
+                        ? <span className='minecraft count'>{s.count}</span>
+                        : null}
+
+                      <span className='minecraft tooltip'>{item.name}</span>
+                    </>
+                    )
                   : null}
               </div>
             )
@@ -95,16 +101,18 @@ class Furnace extends React.Component {
               modded,
               item,
               category
-            } = this.props.getItem(s)
+            } = this.props.getItem(s?.id)
 
             return (
               <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
                 {item
-                  ? <img alt={s} src={item?.iconURL}/>
-                  : null}
+                  ? (
+                    <>
+                      <img alt={s?.id} src={item?.iconURL}/>
 
-                {item
-                  ? <span className='minecraft tooltip'>{item.name}</span>
+                      <span className='minecraft tooltip'>{item.name}</span>
+                    </>
+                    )
                   : null}
               </div>
             )
@@ -173,16 +181,18 @@ class Kettle extends React.Component {
               modded,
               item,
               category
-            } = this.props.getItem(s)
+            } = this.props.getItem(s?.id)
 
             return (
               <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
                 {item
-                  ? <img alt={s} src={item?.iconURL}/>
-                  : null}
+                  ? (
+                    <>
+                      <img alt={s?.id} src={item?.iconURL}/>
 
-                {item
-                  ? <span className='minecraft tooltip'>{item.name}</span>
+                      <span className='minecraft tooltip'>{item.name}</span>
+                    </>
+                    )
                   : null}
               </div>
             )
