@@ -2,7 +2,8 @@ import React from 'react'
 
 import {
   CraftingTable,
-  Furnace
+  Furnace,
+  Kettle
 } from './modules/CraftingGrids.jsx'
 
 import postFetch from './util/postFetch.js'
@@ -27,7 +28,8 @@ const categories = [
 class Glossary extends React.Component {
   static grids = {
     crafting_table: CraftingTable,
-    furnace: Furnace
+    furnace: Furnace,
+    kettle: Kettle
   }
 
   static capitalizationRegex = /(?:^|\s)(.)/g
@@ -42,7 +44,7 @@ class Glossary extends React.Component {
         iconURL: attunedIcon,
         recipe: {
           type: 'crafting_table',
-          shaped: true,
+          shaped: false,
           slots: [
             'witchery:magic_whiff', null, null,
             'minecraft:diamond', null, null,
@@ -64,6 +66,22 @@ class Glossary extends React.Component {
             type: 'furnace',
             slots: [
               'minecraft:porkchop'
+            ]
+          }
+        },
+        {
+          id: 'witchery:test_brew',
+          name: 'Test Brew',
+          iconURL: 'https://minecraftitemids.com/item/32/438-0.png',
+          recipe: {
+            type: 'kettle',
+            slots: [
+              'minecraft:oak_sapling',
+              'minecraft:bedrock',
+              'minecraft:budding_amethyst',
+              'minecraft:deepslate_gold_ore',
+              'minecraft:tube_coral_fan',
+              'minecraft:iron_pickaxe'
             ]
           }
         }
