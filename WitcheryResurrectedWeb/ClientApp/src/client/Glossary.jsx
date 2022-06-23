@@ -44,7 +44,7 @@ class Glossary extends React.Component {
         iconURL: attunedIcon,
         recipe: {
           type: 'crafting_table',
-          shaped: false,
+          shaped: true,
           slots: [
             'witchery:magic_whiff', null, null,
             'minecraft:diamond', null, null,

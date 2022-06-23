@@ -114,30 +114,19 @@
 /* KETTLE */
 .crafting-grid.kettle {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   align-items: flex-start;
-  width: calc(256px * var(--kettle-grid-scaler));
-  height: calc(132px * var(--kettle-grid-scaler));
+  width: calc(136px * var(--kettle-grid-scaler));
+  height: calc(252px * var(--kettle-grid-scaler));
   background: url('../../assets/images/crafting_guis/kettle.png') no-repeat;
   background-size: cover;
   image-rendering: pixelated;
 }
 
-.crafting-grid.kettle .recipe {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  width: calc((24px * var(--kettle-grid-scaler) * 3) + (30px * var(--kettle-grid-scaler)));
-  height: calc((36px * var(--kettle-grid-scaler) * 3) + (12px * var(--kettle-grid-scaler)));
-  padding-top: calc(12px * var(--kettle-grid-scaler));
-  padding-left: calc(30px * var(--kettle-grid-scaler));
-}
-
 .crafting-grid.kettle .product {
   display: flex;
-  justify-content: flex-end;
-  align-self: center;
-  padding-right: calc(28px * var(--kettle-grid-scaler));
+  justify-content: center;
+  padding-top: calc(26px * var(--kettle-grid-scaler));
 }
 
 .crafting-grid.kettle .product .slot {
@@ -146,12 +135,22 @@
   padding: 3px;
 }
 
-.crafting-grid.kettle .progress-arrow {
-  width: calc(48px * var(--kettle-grid-scaler));
-  height: calc(32px * var(--kettle-grid-scaler));
-  top: calc(50px * var(--kettle-grid-scaler));
-  left: calc(116px * var(--kettle-grid-scaler));
-  animation: progress 2s steps(16, end) 0s infinite normal forwards;
+.crafting-grid.kettle .recipe {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: calc((36px * var(--kettle-grid-scaler) * 3) + (14px * var(--kettle-grid-scaler)));
+  height: calc((24px * var(--kettle-grid-scaler) * 3) + (36px * var(--kettle-grid-scaler)));
+  padding-top: calc(36px * var(--kettle-grid-scaler));
+  padding-left: calc(14px * var(--kettle-grid-scaler));
+}
+
+.crafting-grid.kettle .progress-bubbles {
+  width: calc(22px * var(--kettle-grid-scaler));
+  height: calc(56px * var(--kettle-grid-scaler));
+  top: calc(94px * var(--kettle-grid-scaler));
+  left: calc(58px * var(--kettle-grid-scaler));
+  animation: bubble 2s steps(16, end) 0s infinite normal forwards;
 }
 /* KETTLE */
 
@@ -221,15 +220,8 @@
   border-radius: 10px 0;
 }
 
-.crafting-grid .decorations {
-  position: absolute;
-}
-
-.crafting-grid .progress-arrow {
-  position: absolute;
-}
-
-.crafting-grid .smelting-flames {
+.crafting-grid .decorations,
+.crafting-grid .decorations > * {
   position: absolute;
 }
 
@@ -246,5 +238,13 @@
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   } to {
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  }
+}
+
+@keyframes bubble {
+  from {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  } to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   }
 }

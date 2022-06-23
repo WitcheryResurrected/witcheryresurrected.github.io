@@ -2,6 +2,7 @@ import React from 'react'
 
 import smelingFlames from '../../assets/images/crafting_guis/smelting_flames.png'
 import progressArrow from '../../assets/images/crafting_guis/progress_arrow.png'
+import progressBubbles from '../../assets/images/crafting_guis/progress_bubbles.png'
 
 import '../styles/CraftingGrids.css'
 
@@ -154,6 +155,14 @@ class Kettle extends React.Component {
 
         <h2 className='minecraft title'>Kettle</h2>
 
+        <div className='product'>
+          <div className='slot'>
+            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
+
+            <span className='minecraft tooltip'>{this.props.entry.name}</span>
+          </div>
+        </div>
+
         <div className='recipe' ref={this.grid}>
           {this.props.entry.recipe.slots.map((s, i) => {
             const {
@@ -176,16 +185,8 @@ class Kettle extends React.Component {
           })}
         </div>
 
-        <div className='product'>
-          <div className='slot'>
-            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
-
-            <span className='minecraft tooltip'>{this.props.entry.name}</span>
-          </div>
-        </div>
-
         <div className='decorations'>
-          <img className='progress-arrow' alt='progress' src={progressArrow}/>
+          <img className='progress-bubbles' alt='progress' src={progressBubbles}/>
         </div>
       </div>
     )
