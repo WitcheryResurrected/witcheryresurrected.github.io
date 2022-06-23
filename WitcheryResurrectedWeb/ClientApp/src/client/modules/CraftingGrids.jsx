@@ -18,7 +18,7 @@ class CraftingTable extends React.Component {
   constructor (props) {
     super(props)
 
-    if (!props.entry.recipe.shaped) this.setPause(false)
+    if (!props.recipe.shaped) this.setPause(false)
   }
 
   componentWillUnmount () {
@@ -28,7 +28,7 @@ class CraftingTable extends React.Component {
   render () {
     return (
       <div className='crafting-grid crafting-table'>
-        {this.props.entry.recipe.shaped
+        {this.props.recipe.shaped
           ? null
           : <button className='pause material-symbols-outlined' onClick={() => this.setPause(!this.state.paused)}>
               {this.state.paused ? 'play_arrow' : 'pause'}
@@ -37,7 +37,7 @@ class CraftingTable extends React.Component {
         <h2 className='minecraft title'>Crafting Table</h2>
 
         <div className='recipe' ref={this.grid}>
-          {this.props.entry.recipe.slots.map((s, i) => {
+          {this.props.recipe.slots.map((s, i) => {
             const {
               modded,
               item,
@@ -90,7 +90,7 @@ class Furnace extends React.Component {
         <h2 className='minecraft title'>Furnace</h2>
 
         <div className='recipe'>
-          {this.props.entry.recipe.slots.map((s, i) => {
+          {this.props.recipe.slots.map((s, i) => {
             const {
               modded,
               item,
@@ -141,13 +141,17 @@ class Kettle extends React.Component {
   constructor (props) {
     super(props)
 
-    if (!props.entry.recipe.shaped) this.setPause(false)
+    if (!props.recipe.shaped) this.setPause(false)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.interval)
   }
 
   render () {
     return (
       <div className='crafting-grid kettle'>
-        {this.props.entry.recipe.shaped
+        {this.props.recipe.shaped
           ? null
           : <button className='pause material-symbols-outlined' onClick={() => this.setPause(!this.state.paused)}>
             {this.state.paused ? 'play_arrow' : 'pause'}
@@ -164,7 +168,7 @@ class Kettle extends React.Component {
         </div>
 
         <div className='recipe' ref={this.grid}>
-          {this.props.entry.recipe.slots.map((s, i) => {
+          {this.props.recipe.slots.map((s, i) => {
             const {
               modded,
               item,

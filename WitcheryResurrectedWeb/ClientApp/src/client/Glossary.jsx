@@ -42,15 +42,17 @@ class Glossary extends React.Component {
         id: 'witchery:attuned_stone',
         name: 'Attuned Stone',
         iconURL: attunedIcon,
-        recipe: {
-          type: 'crafting_table',
-          shaped: true,
-          slots: [
-            'witchery:magic_whiff', null, null,
-            'minecraft:diamond', null, null,
-            'minecraft:lava_bucket', null, null
-          ]
-        },
+        recipes: [
+          {
+            type: 'crafting_table',
+            shaped: true,
+            slots: [
+              'witchery:magic_whiff', null, null,
+              'minecraft:diamond', null, null,
+              'minecraft:lava_bucket', null, null
+            ]
+          }
+        ],
         description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
       }).concat([
         {
@@ -62,28 +64,39 @@ class Glossary extends React.Component {
           id: 'witchery:test_food',
           name: 'Test Food',
           iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png',
-          recipe: {
-            type: 'furnace',
-            slots: [
-              'minecraft:porkchop'
-            ]
-          }
+          recipes: [
+            {
+              type: 'furnace',
+              slots: [
+                'minecraft:porkchop'
+              ]
+            },
+            {
+              type: 'crafting_table',
+              shaped: true,
+              slots: [
+                'minecraft:porkchop'
+              ]
+            }
+          ]
         },
         {
           id: 'witchery:test_brew',
           name: 'Test Brew',
           iconURL: 'https://minecraftitemids.com/item/32/438-0.png',
-          recipe: {
-            type: 'kettle',
-            slots: [
-              'minecraft:oak_sapling',
-              'minecraft:bedrock',
-              'minecraft:budding_amethyst',
-              'minecraft:deepslate_gold_ore',
-              'minecraft:tube_coral_fan',
-              'minecraft:iron_pickaxe'
-            ]
-          }
+          recipes: [
+            {
+              type: 'kettle',
+              slots: [
+                'minecraft:oak_sapling',
+                'minecraft:bedrock',
+                'minecraft:budding_amethyst',
+                'minecraft:deepslate_gold_ore',
+                'minecraft:tube_coral_fan',
+                'minecraft:iron_pickaxe'
+              ]
+            }
+          ]
         }
       ])
     },
@@ -160,11 +173,13 @@ class Glossary extends React.Component {
                         {this.state.blowup?.description}
                       </p>
 
-                      <div className='crafting-grid-container'>
-                        {'recipe' in this.state.blowup
-                          ? this.getGrid(this.state.blowup)
-                          : null}
-                      </div>
+                      {this.state.blowup.recipes?.length
+                        ? (
+                          <div className='recipe-container'>
+                            {this.state.blowup.recipes.map((r) => this.getGrid(this.state.blowup, r))}
+                          </div>
+                          )
+                        : null}
                     </div>
                   </div>
                 </div>
@@ -192,25 +207,27 @@ class Glossary extends React.Component {
       blowup: data
     })
 
-    if (data.recipe) {
+    if (data.recipes?.length) {
       const requests = []
 
-      for (const slot of data.recipe.slots) {
-        if (!slot || this.state.itemCache[slot]) continue
+      for (const recipe of data.recipes) {
+        for (const slot of recipe.slots) {
+          if (!slot || this.state.itemCache[slot]) continue
 
-        if (slot.match(Glossary.idRegex)[1] === 'minecraft') {
-          requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              query: slot.match(Glossary.idRegex)[2]
+          if (slot.match(Glossary.idRegex)[1] === 'minecraft') {
+            requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                query: slot.match(Glossary.idRegex)[2]
+              })
             })
-          })
-            .then(postFetch)
-            .then((entry) => entry.json())
-            .then(({ data: [entry] }) => entry))
+              .then(postFetch)
+              .then((entry) => entry.json())
+              .then(({ data: [entry] }) => entry))
+          }
         }
       }
 
@@ -236,10 +253,10 @@ class Glossary extends React.Component {
     }
   }
 
-  getGrid (entry) {
-    const Grid = Glossary.grids[entry.recipe.type]
+  getGrid (entry, recipe) {
+    const Grid = Glossary.grids[recipe.type]
 
-    return <Grid entry={entry} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+    return <Grid entry={entry} recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
   }
 
   getItem (id) {

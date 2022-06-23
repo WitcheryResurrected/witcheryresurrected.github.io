@@ -1,6 +1,6 @@
 {
   "name": "witchery-resurrected",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Witchery: Resurrected aims to recreate and improve the popular Witchery Minecraft mod in modern versions; with a focus on customizability.",
   "scripts": {
     "dev": "react-scripts start",

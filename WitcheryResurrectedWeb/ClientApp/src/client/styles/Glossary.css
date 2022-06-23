@@ -179,6 +179,15 @@
   text-indent: 2rem;
 }
 
+.page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+}
+.page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container .crafting-grid {
+  margin-bottom: 3%;
+}
+
 @media (max-width: 900px) {
   .page.glossary .content .index {
     transition: 0.2s ease-out;
