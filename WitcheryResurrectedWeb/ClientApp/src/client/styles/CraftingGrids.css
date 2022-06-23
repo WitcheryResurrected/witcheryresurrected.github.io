@@ -4,13 +4,23 @@
   font-weight: normal
 }
 
+:root {
+  --crafting-table-grid-scaler: 1.2;
+  --furnace-grid-scaler: 1.2;
+}
+
+.crafting-grid {
+  position: relative;
+}
+
+/* CRAFTING TABLE */
 .crafting-grid.crafting-table {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   align-items: flex-start;
   width: calc(256px * var(--crafting-table-grid-scaler));
   height: calc(132px * var(--crafting-table-grid-scaler));
-  background: url('../../assets/images/crafting_table_gui.png') no-repeat;
+  background: url('../../assets/images/crafting_guis/crafting_table.png') no-repeat;
   background-size: cover;
   image-rendering: pixelated;
 }
@@ -19,7 +29,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: calc((36px * var(--crafting-table-grid-scaler) * 3) + 12px);
+  width: calc((36px * var(--crafting-table-grid-scaler) * 3) + (12px * var(--crafting-table-grid-scaler)));
+  height: calc((36px * var(--crafting-table-grid-scaler) * 3) + (12px * var(--crafting-table-grid-scaler)));
   padding-top: calc(12px * var(--crafting-table-grid-scaler));
   padding-left: calc(12px * var(--crafting-table-grid-scaler));
 }
@@ -36,6 +47,60 @@
   height: calc(52px * var(--crafting-table-grid-scaler));
   padding: 3px;
 }
+/* CRAFTING TABLE */
+
+/* FURNACE */
+.crafting-grid.furnace {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: flex-start;
+  width: calc(180px * var(--furnace-grid-scaler));
+  height: calc(144px * var(--furnace-grid-scaler));
+  background: url('../../assets/images/crafting_guis/furnace.png') no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.crafting-grid.furnace .recipe {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  width: calc((36px * var(--furnace-grid-scaler)) + (8px * var(--furnace-grid-scaler)));
+  height: calc((108px * var(--furnace-grid-scaler)) + (28px * var(--furnace-grid-scaler)));
+  padding-top: calc(28px * var(--furnace-grid-scaler));
+  padding-left: calc(8px * var(--furnace-grid-scaler));
+}
+
+.crafting-grid.furnace .product {
+  display: flex;
+  justify-content: flex-end;
+  align-self: center;
+  padding-right: calc(8px * var(--furnace-grid-scaler));
+  padding-top: calc(20px * var(--furnace-grid-scaler));
+}
+
+.crafting-grid.furnace .product .slot {
+  width: calc(52px * var(--furnace-grid-scaler));
+  height: calc(52px * var(--furnace-grid-scaler));
+  padding: 3px;
+}
+
+.crafting-grid.furnace .progress-arrow {
+  width: calc(48px * var(--furnace-grid-scaler));
+  height: calc(34px * var(--furnace-grid-scaler));
+  top: calc(66px * var(--furnace-grid-scaler));
+  left: calc(56px * var(--furnace-grid-scaler));
+  animation: progress 2s linear 0s infinite normal forwards;
+}
+
+.crafting-grid.furnace .smelting-flames {
+  width: calc(28px * var(--furnace-grid-scaler));
+  height: calc(28px * var(--furnace-grid-scaler));
+  top: calc(68px * var(--furnace-grid-scaler));
+  left: calc(12px * var(--furnace-grid-scaler));
+  animation: flame 2s linear 0s infinite normal forwards;
+}
+/* FURNACE */
 
 .crafting-grid .slot {
   width: calc(36px * var(--crafting-table-grid-scaler));
@@ -93,4 +158,32 @@
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+}
+
+.crafting-grid .decorations {
+  position: absolute;
+}
+
+.crafting-grid .progress-arrow {
+  position: absolute;
+}
+
+.crafting-grid .smelting-flames {
+  position: absolute;
+}
+
+@keyframes progress {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  } to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+@keyframes flame {
+  from {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  } to {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+  }
 }

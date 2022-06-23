@@ -88,10 +88,12 @@
 }
 .page.glossary .index .entries .entry .icon {
   position: relative;
+  height: 7rem;
   overflow: hidden;
 }
 .page.glossary .index .entries .entry .icon img {
   width: 100%;
+  height: 100%;
   image-rendering: pixelated;
   border: 1px solid gray;
   border-radius: 25px;

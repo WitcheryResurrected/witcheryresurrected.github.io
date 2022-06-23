@@ -1,7 +1,8 @@
 import React from 'react'
 
 import {
-  CraftingTable
+  CraftingTable,
+  Furnace
 } from './modules/CraftingGrids.jsx'
 
 import postFetch from './util/postFetch.js'
@@ -25,7 +26,8 @@ const categories = [
 
 class Glossary extends React.Component {
   static grids = {
-    crafting_table: CraftingTable
+    crafting_table: CraftingTable,
+    furnace: Furnace
   }
 
   static capitalizationRegex = /(?:^|\s)(.)/g
@@ -34,7 +36,7 @@ class Glossary extends React.Component {
 
   state = {
     entries: { // TEMP
-      items: new Array(50).fill({
+      items: new Array(10).fill({
         id: 'witchery:attuned_stone',
         name: 'Attuned Stone',
         iconURL: attunedIcon,
@@ -47,11 +49,24 @@ class Glossary extends React.Component {
           ]
         },
         description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
-      }).concat({
-        id: 'witchery:magic_whiff',
-        name: 'Whiff of Magic',
-        iconURL: whiffIcon
-      })
+      }).concat([
+        {
+          id: 'witchery:magic_whiff',
+          name: 'Whiff of Magic',
+          iconURL: whiffIcon
+        },
+        {
+          id: 'witchery:test_food',
+          name: 'Test Food',
+          iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png',
+          recipe: {
+            type: 'furnace',
+            slots: [
+              'minecraft:porkchop'
+            ]
+          }
+        }
+      ])
     },
     category: categories[0], // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
     search: '',
