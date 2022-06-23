@@ -42,6 +42,7 @@ class Glossary extends React.Component {
         iconURL: attunedIcon,
         recipe: {
           type: 'crafting_table',
+          shaped: true,
           slots: [
             'witchery:magic_whiff', null, null,
             'minecraft:diamond', null, null,
@@ -143,7 +144,7 @@ class Glossary extends React.Component {
 
                       <div className='crafting-grid-container'>
                         {'recipe' in this.state.blowup
-                          ? this.getGrid(this.state.blowup.recipe)
+                          ? this.getGrid(this.state.blowup)
                           : null}
                       </div>
                     </div>
@@ -217,10 +218,10 @@ class Glossary extends React.Component {
     }
   }
 
-  getGrid (recipe) {
-    const Grid = Glossary.grids[recipe.type]
+  getGrid (entry) {
+    const Grid = Glossary.grids[entry.recipe.type]
 
-    return <Grid recipe={recipe.slots} product={this.state.blowup} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+    return <Grid entry={entry} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
   }
 
   getItem (id) {
