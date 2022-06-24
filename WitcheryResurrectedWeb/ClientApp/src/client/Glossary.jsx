@@ -3,7 +3,8 @@ import React from 'react'
 import {
   CraftingTable,
   Furnace,
-  Kettle
+  Kettle,
+  SpinningWheel
 } from './modules/CraftingGrids.jsx'
 
 import postFetch from './util/postFetch.js'
@@ -29,7 +30,8 @@ class Glossary extends React.Component {
   static grids = {
     crafting_table: CraftingTable,
     furnace: Furnace,
-    kettle: Kettle
+    kettle: Kettle,
+    spinning_wheel: SpinningWheel
   }
 
   static capitalizationRegex = /(?:^|\s)(.)/g
@@ -130,6 +132,30 @@ class Glossary extends React.Component {
               ]
             }
           ]
+        },
+        {
+          id: 'witchery:gold_thread',
+          name: 'Gold Thread',
+          iconURL: 'https://minecraftitemids.com/item/32/string.png',
+          recipes: [
+            {
+              type: 'spinning_wheel',
+              slots: [
+                {
+                  id: 'minecraft:hay_bale',
+                  count: 1
+                },
+                {
+                  id: 'witchery:magic_whiff',
+                  count: 2
+                },
+                {
+                  id: 'invalid',
+                  count: 1
+                }
+              ]
+            }
+          ]
         }
       ])
     },
@@ -146,6 +172,7 @@ class Glossary extends React.Component {
   }
 
   render () {
+    console.log(this.state)
     return (
       <div className='page glossary'>
         <div className='content'>
@@ -247,7 +274,7 @@ class Glossary extends React.Component {
         for (const slot of recipe.slots) {
           if (!slot || this.state.itemCache[slot.id]) continue
 
-          if (slot.id.match(Glossary.idRegex)[1] === 'minecraft') {
+          if (slot.id.match(Glossary.idRegex)?.[1] === 'minecraft') {
             requests.push(fetch('https://api.minecraftitemids.com/v1/search', {
               method: 'POST',
               headers: {
@@ -259,7 +286,7 @@ class Glossary extends React.Component {
             })
               .then(postFetch)
               .then((entry) => entry.json())
-              .then(({ data: [entry] }) => entry))
+              .then(({ data: [entry] }) => [slot.id, entry]))
           }
         }
       }
@@ -268,10 +295,12 @@ class Glossary extends React.Component {
         .then((entries) => {
           const addition = {}
 
-          for (const entry of entries) {
-            addition['minecraft:' + entry.name] = {
-              name: entry.displayName,
-              iconURL: `https://minecraftitemids.com/item/64/${entry.name}.png`
+          for (const [id, entry] of entries) {
+            if (entry) {
+              addition[id] = {
+                name: entry.displayName,
+                iconURL: `https://minecraftitemids.com/item/64/${entry.name}.png`
+              }
             }
           }
 
@@ -289,7 +318,9 @@ class Glossary extends React.Component {
   getGrid (entry, recipe) {
     const Grid = Glossary.grids[recipe.type]
 
-    return <Grid entry={entry} recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+    return Grid
+      ? <Grid entry={entry} recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+      : <strong className='missing-error'>&#x3C;Crafting method missing from glossary&#x3E;</strong>
   }
 
   getItem (id) {
@@ -317,11 +348,3 @@ class Glossary extends React.Component {
 }
 
 export default Glossary
-
-/*
-// TODO: MAKE DYNAMIC VARIABLES
-  Category determination
-  Items
-  Item properties
-  Icons
-*/
