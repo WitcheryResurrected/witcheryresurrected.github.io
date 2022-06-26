@@ -22,6 +22,151 @@ const categories = [
   'rites',
   'spells'
 ]
+const entries = { // TEMP
+  items: new Array(10).fill({
+    id: 'witchery:attuned_stone',
+    name: 'Attuned Stone',
+    iconURL: attunedIcon,
+    description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
+  }).concat([
+    {
+      id: 'witchery:magic_whiff',
+      name: 'Whiff of Magic',
+      iconURL: whiffIcon
+    },
+    {
+      id: 'witchery:test_food',
+      name: 'Test Food',
+      iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png'
+    },
+    {
+      id: 'witchery:test_brew',
+      name: 'Test Brew',
+      iconURL: 'https://minecraftitemids.com/item/32/438-0.png'
+    },
+    {
+      id: 'witchery:gold_thread',
+      name: 'Gold Thread',
+      iconURL: 'https://minecraftitemids.com/item/32/string.png'
+    }
+  ])
+}
+
+const recipes = [
+  {
+    type: 'crafting_table',
+    shaped: true,
+    products: [
+      {
+        id: 'witchery:attuned_stone',
+        count: 1
+      }
+    ],
+    ingredients: [
+      {
+        id: 'witchery:magic_whiff',
+        count: 1
+      }, null, null,
+      {
+        id: 'minecraft:diamond',
+        count: 1
+      }, null, null,
+      {
+        id: 'minecraft:lava_bucket',
+        count: 1
+      }, null, null
+    ]
+  },
+  {
+    type: 'furnace',
+    products: [
+      {
+        id: 'witchery:test_food',
+        count: 1
+      }
+    ],
+    ingredients: [
+      {
+        id: 'minecraft:porkchop',
+        count: 1
+      }
+    ]
+  },
+  {
+    type: 'crafting_table',
+    shaped: true,
+    products: [
+      {
+        id: 'witchery:test_food',
+        count: 1
+      }
+    ],
+    ingredients: [
+      {
+        id: 'minecraft:porkchop',
+        count: 4
+      }
+    ]
+  },
+  {
+    type: 'kettle',
+    products: [
+      {
+        id: 'witchery:test_brew',
+        count: 1
+      }
+    ],
+    ingredients: [
+      {
+        id: 'minecraft:oak_sapling',
+        count: 1
+      },
+      {
+        id: 'minecraft:bedrock',
+        count: 1
+      },
+      {
+        id: 'minecraft:budding_amethyst',
+        count: 1
+      },
+      {
+        id: 'minecraft:deepslate_gold_ore',
+        count: 1
+      },
+      {
+        id: 'minecraft:tube_coral_fan',
+        count: 1
+      },
+      {
+        id: 'minecraft:iron_pickaxe',
+        count: 1
+      }
+    ]
+  },
+  {
+    type: 'spinning_wheel',
+    products: [
+      {
+        id: 'witchery:gold_thread',
+        count: 3
+      }
+    ],
+    ingredients: [
+      {
+        id: 'minecraft:hay_bale',
+        count: 1
+      },
+      {
+        id: 'witchery:magic_whiff',
+        count: 2
+      },
+      {
+        id: 'invalid',
+        count: 1
+      }
+    ]
+  }
+]
 // TEMP
 
 // TODO: FETCH ENTRIES FROM CATEGORY ON LOAD. IF CATEGORY DOESN'T EXIST, DEFAULT TO ITEMS
@@ -39,140 +184,28 @@ class Glossary extends React.Component {
   static idRegex = /^(.+):(.+)$/
 
   state = {
-    entries: { // TEMP
-      items: new Array(10).fill({
-        id: 'witchery:attuned_stone',
-        name: 'Attuned Stone',
-        iconURL: attunedIcon,
-        recipes: [
-          {
-            type: 'crafting_table',
-            shaped: true,
-            slots: [
-              {
-                id: 'witchery:magic_whiff',
-                count: 1
-              }, null, null,
-              {
-                id: 'minecraft:diamond',
-                count: 1
-              }, null, null,
-              {
-                id: 'minecraft:lava_bucket',
-                count: 1
-              }, null, null
-            ]
-          }
-        ],
-        description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
-      }).concat([
-        {
-          id: 'witchery:magic_whiff',
-          name: 'Whiff of Magic',
-          iconURL: whiffIcon
-        },
-        {
-          id: 'witchery:test_food',
-          name: 'Test Food',
-          iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png',
-          recipes: [
-            {
-              type: 'furnace',
-              slots: [
-                {
-                  id: 'minecraft:porkchop',
-                  count: 1
-                }
-              ]
-            },
-            {
-              type: 'crafting_table',
-              shaped: true,
-              slots: [
-                {
-                  id: 'minecraft:porkchop',
-                  count: 4
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 'witchery:test_brew',
-          name: 'Test Brew',
-          iconURL: 'https://minecraftitemids.com/item/32/438-0.png',
-          recipes: [
-            {
-              type: 'kettle',
-              slots: [
-                {
-                  id: 'minecraft:oak_sapling',
-                  count: 1
-                },
-                {
-                  id: 'minecraft:bedrock',
-                  count: 1
-                },
-                {
-                  id: 'minecraft:budding_amethyst',
-                  count: 1
-                },
-                {
-                  id: 'minecraft:deepslate_gold_ore',
-                  count: 1
-                },
-                {
-                  id: 'minecraft:tube_coral_fan',
-                  count: 1
-                },
-                {
-                  id: 'minecraft:iron_pickaxe',
-                  count: 1
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 'witchery:gold_thread',
-          name: 'Gold Thread',
-          iconURL: 'https://minecraftitemids.com/item/32/string.png',
-          recipes: [
-            {
-              type: 'spinning_wheel',
-              slots: [
-                {
-                  id: 'minecraft:hay_bale',
-                  count: 1
-                },
-                {
-                  id: 'witchery:magic_whiff',
-                  count: 2
-                },
-                {
-                  id: 'invalid',
-                  count: 1
-                }
-              ]
-            }
-          ]
-        }
-      ])
-    },
+    entries, // TEMP,
+    recipes, // TEMP
     category: categories[0], // NOTE: AUTOMATICALLY SET CATEGORY TO FIRST CATEGORY WHEN FETCHED
     search: '',
     blowup: null,
     itemCache: {}
   }
 
-  componentDidMount () {
+  constructor (props) {
+    super(props)
+
+    this.title = props.title + ' - Glossary'
+    document.title = this.title
+  }
+
+  componentDidMount () { // TODO: GET ENTRIES
     const location = window.location.hash.match(Glossary.hashRegex)
 
     if (location) this.switchLocation(location.groups.category, location.groups.id)
   }
 
   render () {
-    console.log(this.state)
     return (
       <div className='page glossary'>
         <div className='content'>
@@ -236,7 +269,7 @@ class Glossary extends React.Component {
                       {this.state.blowup.recipes?.length
                         ? (
                           <div className='recipe-container'>
-                            {this.state.blowup.recipes.map((r) => this.getGrid(this.state.blowup, r))}
+                            {this.state.blowup.recipes.map(this.getGrid.bind(this))}
                           </div>
                           )
                         : null}
@@ -263,15 +296,26 @@ class Glossary extends React.Component {
     if (!data) return
 
     window.location += '/' + entry
+    document.title = this.title + ` [${data.name}]`
     this.setState({
       blowup: data
     })
 
-    if (data.recipes?.length) {
+    // TODO: GET RECIPES
+    const recipes = this.state.recipes.filter((r) => r.products.find((p) => p.id === entry))
+
+    if (recipes.length) {
+      this.setState({
+        blowup: {
+          ...data,
+          recipes
+        }
+      })
+
       const requests = []
 
-      for (const recipe of data.recipes) {
-        for (const slot of recipe.slots) {
+      for (const recipe of recipes) {
+        for (const slot of recipe.ingredients.concat(recipe.products)) {
           if (!slot || this.state.itemCache[slot.id]) continue
 
           if (slot.id.match(Glossary.idRegex)?.[1] === 'minecraft') {
@@ -315,11 +359,11 @@ class Glossary extends React.Component {
     }
   }
 
-  getGrid (entry, recipe) {
+  getGrid (recipe) {
     const Grid = Glossary.grids[recipe.type]
 
     return Grid
-      ? <Grid entry={entry} recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+      ? <Grid recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
       : <strong className='missing-error'>&#x3C;Crafting method missing from glossary&#x3E;</strong>
   }
 

@@ -39,20 +39,20 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: calc(((36px * 3) + 12px) * var(--crafting-table-grid-scaler));
-  height: calc(((36px * 3) + 12px) * var(--crafting-table-grid-scaler));
+  width: calc(((36px * 3) + 12px) * var(--crafting-table-grid-scaler)); /* Slots, padding */
+  height: calc(((36px * 3) + 12px) * var(--crafting-table-grid-scaler)); /* Slots, padding */
   padding-top: calc(12px * var(--crafting-table-grid-scaler));
   padding-left: calc(12px * var(--crafting-table-grid-scaler));
 }
 
-.crafting-grid.crafting-table .product {
+.crafting-grid.crafting-table .products {
   display: flex;
   justify-content: flex-end;
   align-self: center;
   padding-right: calc(12px * var(--crafting-table-grid-scaler));
 }
 
-.crafting-grid.crafting-table .product .slot {
+.crafting-grid.crafting-table .products .slot {
   width: calc(52px * var(--crafting-table-grid-scaler));
   height: calc(52px * var(--crafting-table-grid-scaler));
   padding: 3px;
@@ -75,20 +75,20 @@
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  width: calc((36px + 8px) * var(--furnace-grid-scaler));
-  height: calc(((36px * 2) + 8px + 36px) * var(--furnace-grid-scaler));
+  width: calc((36px + 8px) * var(--furnace-grid-scaler)); /* Slots, padding */
+  height: calc(((36px * 2) + 8px + 36px) * var(--furnace-grid-scaler)); /* Slots, padding, flame */
   padding-top: calc(8px * var(--furnace-grid-scaler));
   padding-left: calc(8px * var(--furnace-grid-scaler));
 }
 
-.crafting-grid.furnace .product {
+.crafting-grid.furnace .products {
   display: flex;
   justify-content: flex-end;
   align-self: center;
   padding-right: calc(8px * var(--furnace-grid-scaler));
 }
 
-.crafting-grid.furnace .product .slot {
+.crafting-grid.furnace .products .slot {
   width: calc(52px * var(--furnace-grid-scaler));
   height: calc(52px * var(--furnace-grid-scaler));
   padding: 3px;
@@ -123,13 +123,13 @@
   image-rendering: pixelated;
 }
 
-.crafting-grid.kettle .product {
+.crafting-grid.kettle .products {
   display: flex;
   justify-content: center;
   padding-top: calc(26px * var(--kettle-grid-scaler));
 }
 
-.crafting-grid.kettle .product .slot {
+.crafting-grid.kettle .products .slot {
   width: calc(52px * var(--kettle-grid-scaler));
   height: calc(52px * var(--kettle-grid-scaler));
   padding: 3px;
@@ -139,8 +139,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  width: calc(((36px * 3) + 14px) * var(--kettle-grid-scaler));
-  height: calc(((36px * 2) + 36px) * var(--kettle-grid-scaler));
+  width: calc(((36px * 3) + 14px) * var(--kettle-grid-scaler)); /* Slots, padding */
+  height: calc(((36px * 2) + 36px) * var(--kettle-grid-scaler)); /* Slots, padding */
   padding-top: calc(36px * var(--kettle-grid-scaler));
   padding-left: calc(14px * var(--kettle-grid-scaler));
 }
@@ -177,13 +177,25 @@
   padding: 4px;
 }
 
+
+/* SPINNING WHEEL */
+.crafting-grid.spinning-wheel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: calc(136px * var(--spinning-wheel-grid-scaler));
+  height: calc(84px * var(--spinning-wheel-grid-scaler));
+  background: url('../../assets/images/crafting_guis/spinning_wheel.png') no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
 .crafting-grid.spinning-wheel .recipe {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   row-gap: calc(4px * var(--spinning-wheel-grid-scaler));
-  width: calc(((18px * 3) + 17px) * var(--spinning-wheel-grid-scaler));
-  height: calc(((18px * 2) + 25px + 4px) * var(--spinning-wheel-grid-scaler));
+  width: calc(((18px * 3) + 17px) * var(--spinning-wheel-grid-scaler)); /* Slots, padding */
+  height: calc(((18px * 2) + 25px + 4px) * var(--spinning-wheel-grid-scaler)); /* Slots, padding, vertical slot gap */
   padding-top: calc(25px * var(--spinning-wheel-grid-scaler));
   padding-left: calc(17px * var(--spinning-wheel-grid-scaler));
 }
@@ -198,6 +210,18 @@
 }
 .crafting-grid.spinning-wheel .recipe > *:not(:first-child) {
   grid-row: 2;
+}
+
+.crafting-grid.spinning-wheel .products {
+  display: flex;
+  justify-content: center;
+  padding-top: calc(22px * var(--spinning-wheel-grid-scaler));
+}
+
+.crafting-grid.spinning-wheel .products .slot {
+  width: calc(26px * var(--spinning-wheel-grid-scaler));
+  height: calc(26px * var(--spinning-wheel-grid-scaler));
+  padding: 4px;
 }
 
 .crafting-grid.spinning-wheel .progress-arrow {
@@ -273,7 +297,7 @@
   border: 0.125em solid #2D0A63;
   border-image: linear-gradient(rgba(80, 0, 255, 0.3), rgba(40, 0, 127, 0.3)) 1;
 }
-.crafting-grid .slot.missing span:not(.tooltip) {
+.crafting-grid .slot.unknown span:not(.tooltip) {
   padding: 0;
   color: #ff5555;
   text-shadow: 0.125em 0.125em 0 #3f1515;
@@ -281,7 +305,7 @@
   font-size: x-large;
   cursor: default;
 }
-.crafting-grid .slot.missing .tooltip {
+.crafting-grid .slot.unknown .tooltip {
   color: #aa0000;
   text-shadow: 0.125em 0.125em 0 #2a0000;
 }

@@ -7,6 +7,40 @@ import progressSpinningArrow from '../../assets/images/crafting_guis/progress_sp
 
 import '../styles/CraftingGrids.css'
 
+class Slot extends React.Component {
+  render () {
+    const {
+      modded,
+      item,
+      category
+    } = this.props.getItem(this.props.data?.id)
+
+    if (item) {
+      return (
+        <div
+          className={`slot${modded && !this.props.preventClick ? ' clickable' : ''}`}
+          onClick={modded && !this.props.preventClick ? () => this.props.switchLocation(category, item.id) : null}>
+            <img alt={this.props.data?.id} src={item?.iconURL}/>
+
+            {this.props.data?.count && this.props.data.count !== 1
+              ? <span className='minecraft count'>{this.props.data.count}</span>
+              : null}
+
+            <span className='minecraft tooltip'>{item.name}</span>
+        </div>
+      )
+    } else if (this.props.data) {
+      return (
+        <div className='slot unknown'>
+          <span className='minecraft'>?</span>
+
+          <span className='minecraft tooltip unknown'>UNKNOWN ITEM</span>
+        </div>
+      )
+    } else return <div className='slot'/>
+  }
+}
+
 class CraftingTable extends React.Component {
   static shuffleInterval = 1000
 
@@ -19,7 +53,7 @@ class CraftingTable extends React.Component {
   constructor (props) {
     super(props)
 
-    if (!props.recipe.shaped) this.setPause(false)
+    if (!props.recipe.shaped) this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
   }
 
   componentWillUnmount () {
@@ -38,59 +72,20 @@ class CraftingTable extends React.Component {
         <h2 className='minecraft title'>Crafting Table</h2>
 
         <div className='recipe' ref={this.grid}>
-          {this.props.recipe.slots.map((s, i) => {
-            const {
-              modded,
-              item,
-              category
-            } = this.props.getItem(s?.id)
-
-            if (item) {
-              return (
-                <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
-                  <img alt={s?.id} src={item?.iconURL}/>
-
-                  {s.count && s.count !== 1
-                    ? <span className='minecraft count'>{s.count}</span>
-                    : null}
-
-                  <span className='minecraft tooltip'>{item.name}</span>
-                </div>
-              )
-            } else {
-              return (
-                <div className='slot missing' key={i}>
-                  <span className='minecraft'>?</span>
-
-                  <span className='minecraft tooltip missing'>UNKNOWN ITEM</span>
-                </div>
-              )
-            }
-          })}
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
-        <div className='product'>
-          <div className='slot'>
-            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
-
-            <span className='minecraft tooltip'>{this.props.entry.name}</span>
-          </div>
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
       </div>
     )
   }
 
   shuffle () {
-    for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
-  }
-
-  setPause (paused) {
-    if (paused) clearInterval(this.interval)
-    else this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
-
-    this.setState({
-      paused
-    })
+    if (!this.state.paused) {
+      for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
+    }
   }
 }
 
@@ -100,44 +95,12 @@ class Furnace extends React.Component {
       <div className='crafting-grid furnace'>
         <h2 className='minecraft title'>Furnace</h2>
 
-        <div className='recipe'>
-          {this.props.recipe.slots.map((s, i) => {
-            const {
-              modded,
-              item,
-              category
-            } = this.props.getItem(s?.id)
-
-            if (item) {
-              return (
-                <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
-                  <img alt={s?.id} src={item?.iconURL}/>
-
-                  {s.count && s.count !== 1
-                    ? <span className='minecraft count'>{s.count}</span>
-                    : null}
-
-                  <span className='minecraft tooltip'>{item.name}</span>
-                </div>
-              )
-            } else {
-              return (
-                <div className='slot missing' key={i}>
-                  <span className='minecraft'>?</span>
-
-                  <span className='minecraft tooltip missing'>UNKNOWN ITEM</span>
-                </div>
-              )
-            }
-          })}
+        <div className='recipe' ref={this.grid}>
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
-        <div className='product'>
-          <div className='slot'>
-            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
-
-            <span className='minecraft tooltip'>{this.props.entry.name}</span>
-          </div>
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
         <div className='decorations'>
@@ -162,7 +125,7 @@ class Kettle extends React.Component {
   constructor (props) {
     super(props)
 
-    if (!props.recipe.shaped) this.setPause(false)
+    if (!props.recipe.shaped) this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
   }
 
   componentWillUnmount () {
@@ -180,44 +143,12 @@ class Kettle extends React.Component {
 
         <h2 className='minecraft title'>Kettle</h2>
 
-        <div className='product'>
-          <div className='slot'>
-            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
-
-            <span className='minecraft tooltip'>{this.props.entry.name}</span>
-          </div>
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
         <div className='recipe' ref={this.grid}>
-          {this.props.recipe.slots.map((s, i) => {
-            const {
-              modded,
-              item,
-              category
-            } = this.props.getItem(s?.id)
-
-            if (item) {
-              return (
-                <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
-                  <img alt={s?.id} src={item?.iconURL}/>
-
-                  {s.count && s.count !== 1
-                    ? <span className='minecraft count'>{s.count}</span>
-                    : null}
-
-                  <span className='minecraft tooltip'>{item.name}</span>
-                </div>
-              )
-            } else {
-              return (
-                <div className='slot missing' key={i}>
-                  <span className='minecraft'>?</span>
-
-                  <span className='minecraft tooltip missing'>UNKNOWN ITEM</span>
-                </div>
-              )
-            }
-          })}
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
         <div className='decorations'>
@@ -228,8 +159,12 @@ class Kettle extends React.Component {
   }
 
   shuffle () {
-    for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
+    if (!this.state.paused) {
+      for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
+    }
   }
+}
+
 
   setPause (paused) {
     if (paused) clearInterval(this.interval)
@@ -253,7 +188,7 @@ class SpinningWheel extends React.Component {
   constructor (props) {
     super(props)
 
-    if (!props.recipe.shaped) this.setPause(false)
+    if (!props.recipe.shaped) this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
   }
 
   componentWillUnmount () {
@@ -272,43 +207,11 @@ class SpinningWheel extends React.Component {
         <h2 className='minecraft title'>Spinning Wheel</h2>
 
         <div className='recipe' ref={this.grid}>
-          {this.props.recipe.slots.map((s, i) => {
-            const {
-              modded,
-              item,
-              category
-            } = this.props.getItem(s?.id)
-
-            if (item) {
-              return (
-                <div className={`slot${modded ? ' clickable' : ''}`} key={i} onClick={modded ? () => this.props.switchLocation(category, item.id) : null}>
-                  <img alt={s?.id} src={item?.iconURL}/>
-
-                  {s.count && s.count !== 1
-                    ? <span className='minecraft count'>{s.count}</span>
-                    : null}
-
-                  <span className='minecraft tooltip'>{item.name}</span>
-                </div>
-              )
-            } else {
-              return (
-                <div className='slot missing' key={i}>
-                  <span className='minecraft'>?</span>
-
-                  <span className='minecraft tooltip missing'>UNKNOWN ITEM</span>
-                </div>
-              )
-            }
-          })}
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
-        <div className='product'>
-          <div className='slot'>
-            <img alt={this.props.entry.name} src={this.props.entry.iconURL}/>
-
-            <span className='minecraft tooltip'>{this.props.entry.name}</span>
-          </div>
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
         </div>
 
         <div className='decorations'>
@@ -319,18 +222,9 @@ class SpinningWheel extends React.Component {
   }
 
   shuffle () {
-    for (let s = this.grid.current.children.length; s >= 1; s--) {
-      this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * (s = 1)) + 1])
+    if (!this.state.paused) {
+      for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
     }
-  }
-
-  setPause (paused) {
-    if (paused) clearInterval(this.interval)
-    else this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
-
-    this.setState({
-      paused
-    })
   }
 }
 
