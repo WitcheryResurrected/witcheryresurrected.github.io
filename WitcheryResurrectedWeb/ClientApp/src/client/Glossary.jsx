@@ -31,12 +31,13 @@ const categories = [
 ]
 
 const entries = { // TEMP
-  items: new Array(10).fill({
-    id: 'witchery:attuned_stone',
-    name: 'Attuned Stone',
-    iconURL: attunedIcon,
-    description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
-  }).concat([
+  items: [
+    {
+      id: 'witchery:attuned_stone',
+      name: 'Attuned Stone',
+      iconURL: attunedIcon,
+      description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
+    },
     {
       id: 'witchery:magic_whiff',
       name: 'Whiff of Magic',
@@ -45,7 +46,8 @@ const entries = { // TEMP
     {
       id: 'witchery:test_food',
       name: 'Test Food',
-      iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png'
+      iconURL: 'https://minecraftitemids.com/item/32/cooked_porkchop.png',
+      description: 'Wow, this item has multiple recipes. Let\'s see how it looks with a super long description. I wonder how it will turn out. It might turn out great since I am so good at CSS and edge cases. Who knows? Maybe it will look wonderful, in fact. Perhaps, and I say this tentatively, it will look superb. I guess we will just have to see after I save this file whence I am done typing.\nSo, it turns out, after saving this file, I actually did not type enough. I underestimated the amount of space I would have for so many descriptive characters of this item on its blowup page. It truly is a shame that my spatial estimative skills are lacking. Oh well, I guess I will have to continue honing this skill in the near future when I am in college and need to meet and fulfill various quotas in my assignments. Maybe I\'ll write a dissertation one day. Who knows?'
     },
     {
       id: 'witchery:test_brew',
@@ -77,7 +79,7 @@ const entries = { // TEMP
       name: 'Breath of the Goddess',
       iconURL: goddessBreathIcon
     }
-  ])
+  ]
 }
 
 const recipes = [
@@ -343,9 +345,9 @@ class Glossary extends React.Component {
                     </div>
 
                     <div className='underscore'>
-                      <p className='description'>
-                        {this.state.blowup?.description}
-                      </p>
+                      <div className='description'>
+                        {this.state.blowup?.description?.split('\n').map((p, i) => <p key={i}>{p}</p>)}
+                      </div>
 
                       {this.state.blowup.recipes?.length
                         ? (
