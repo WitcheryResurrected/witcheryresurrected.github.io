@@ -4,6 +4,7 @@ import {
   CraftingTable,
   Furnace,
   Kettle,
+  WitchesOven,
   SpinningWheel
 } from './modules/CraftingGrids.jsx'
 
@@ -14,6 +15,9 @@ import './styles/Glossary.css'
 // TEMP
 import attunedIcon from '../assets/TEMP/attuned_stone.png'
 import whiffIcon from '../assets/TEMP/magic_whiff.png'
+import foulFumeIcon from '../assets/TEMP/foul_fume.png'
+import jarIcon from '../assets/TEMP/clay_jar.png'
+
 const categories = [
   'items',
   'blocks',
@@ -22,6 +26,7 @@ const categories = [
   'rites',
   'spells'
 ]
+
 const entries = { // TEMP
   items: new Array(10).fill({
     id: 'witchery:attuned_stone',
@@ -48,6 +53,16 @@ const entries = { // TEMP
       id: 'witchery:gold_thread',
       name: 'Gold Thread',
       iconURL: 'https://minecraftitemids.com/item/32/string.png'
+    },
+    {
+      id: 'witchery:foul_fume',
+      name: 'Foul Fume',
+      iconURL: foulFumeIcon
+    },
+    {
+      id: 'witchery:clay_jar',
+      name: 'Clay Jar',
+      iconURL: jarIcon
     }
   ])
 }
@@ -165,6 +180,28 @@ const recipes = [
         count: 1
       }
     ]
+  },
+  {
+    type: 'witches_oven',
+    products: [
+      {
+        id: 'minecraft:coal',
+        count: 1
+      },
+      {
+        id: 'witchery:foul_fume',
+        uncertain: true
+      }
+    ],
+    ingredients: [
+      {
+        id: 'minecraft:oak_wood'
+      },
+      {
+        id: 'witchery:clay_jar',
+        count: 1
+      }
+    ]
   }
 ]
 // TEMP
@@ -176,6 +213,7 @@ class Glossary extends React.Component {
     crafting_table: CraftingTable,
     furnace: Furnace,
     kettle: Kettle,
+    witches_oven: WitchesOven,
     spinning_wheel: SpinningWheel
   }
 

@@ -18,6 +18,7 @@
   --crafting-table-grid-scaler: 1.2;
   --furnace-grid-scaler: 1.2;
   --kettle-grid-scaler: 1.2;
+  --witches-oven-grid-scaler: 1.2;
   --spinning-wheel-grid-scaler: 2;
 
   position: relative;
@@ -43,6 +44,11 @@
   height: calc(((36px * 3) + 12px) * var(--crafting-table-grid-scaler)); /* Slots, padding */
   padding-top: calc(12px * var(--crafting-table-grid-scaler));
   padding-left: calc(12px * var(--crafting-table-grid-scaler));
+}
+
+.crafting-grid.crafting-table .recipe .slot {
+  width: calc(36px * var(--crafting-table-grid-scaler));
+  height: calc(36px * var(--crafting-table-grid-scaler));
 }
 
 .crafting-grid.crafting-table .products {
@@ -79,6 +85,11 @@
   height: calc(((36px * 2) + 8px + 36px) * var(--furnace-grid-scaler)); /* Slots, padding, flame */
   padding-top: calc(8px * var(--furnace-grid-scaler));
   padding-left: calc(8px * var(--furnace-grid-scaler));
+}
+
+.crafting-grid.furnace .recipe .slot {
+  width: calc(36px * var(--furnace-grid-scaler));
+  height: calc(36px * var(--furnace-grid-scaler));
 }
 
 .crafting-grid.furnace .products {
@@ -145,6 +156,11 @@
   padding-left: calc(14px * var(--kettle-grid-scaler));
 }
 
+.crafting-grid.kettle .recipe .slot {
+  width: calc(36px * var(--kettle-grid-scaler));
+  height: calc(36px * var(--kettle-grid-scaler));
+}
+
 .crafting-grid.kettle .progress-bubbles {
   width: calc(22px * var(--kettle-grid-scaler));
   height: calc(56px * var(--kettle-grid-scaler));
@@ -154,29 +170,69 @@
 }
 /* KETTLE */
 
-/* SPINNING WHEEL */
-.crafting-grid.spinning-wheel {
+/* WITCHES' OVEN */
+.crafting-grid.witches-oven {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  width: calc(136px * var(--spinning-wheel-grid-scaler));
-  height: calc(84px * var(--spinning-wheel-grid-scaler));
-  background: url('../../assets/images/crafting_guis/spinning_wheel.png') no-repeat;
+  width: calc(206px * var(--witches-oven-grid-scaler));
+  height: calc(164px * var(--witches-oven-grid-scaler));
+  background: url('../../assets/images/crafting_guis/witches_oven.png') no-repeat;
   background-size: cover;
   image-rendering: pixelated;
 }
 
-.crafting-grid.spinning-wheel .product {
+.crafting-grid.witches-oven .recipe {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  column-gap: calc(18px * var(--witches-oven-grid-scaler));
+  row-gap: calc(36px * var(--witches-oven-grid-scaler));
+  width: calc(((36px * 2) + 20px + 18px) * var(--witches-oven-grid-scaler)); /* Slots, padding, horizontal slot gap */
+  height: calc(((36px * 2) + 40px + 36px) * var(--witches-oven-grid-scaler)); /* Slots, padding, vertical slot gap */
+  padding-top: calc(40px * var(--witches-oven-grid-scaler));
+  padding-left: calc(20px * var(--witches-oven-grid-scaler));
+}
+
+.crafting-grid.witches-oven .recipe .slot {
+  width: calc(36px * var(--witches-oven-grid-scaler));
+  height: calc(36px * var(--witches-oven-grid-scaler));
+}
+
+.crafting-grid.witches-oven .recipe > .slot:nth-child(2) {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.crafting-grid.witches-oven .products {
   display: flex;
-  justify-content: center;
-  padding-top: calc(22px * var(--spinning-wheel-grid-scaler));
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: calc(40px * var(--witches-oven-grid-scaler));
+  padding-left: calc(8px * var(--witches-oven-grid-scaler));
+  padding-bottom: calc(16px * var(--witches-oven-grid-scaler));
 }
 
-.crafting-grid.spinning-wheel .product .slot {
-  width: calc(26px * var(--spinning-wheel-grid-scaler));
-  height: calc(26px * var(--spinning-wheel-grid-scaler));
-  padding: 4px;
+.crafting-grid.witches-oven .products .slot:first-child {
+  width: calc(52px * var(--witches-oven-grid-scaler));
+  height: calc(52px * var(--witches-oven-grid-scaler));
+  padding: 3px;
 }
 
+.crafting-grid.witches-oven .products .slot {
+  width: calc(36px * var(--witches-oven-grid-scaler));
+  height: calc(36px * var(--witches-oven-grid-scaler));
+  padding: 2px;
+}
+
+.crafting-grid.witches-oven .progress-double-arrow {
+  width: calc(58px * var(--witches-oven-grid-scaler));
+  height: calc(42px * var(--witches-oven-grid-scaler));
+  top: calc(52px * var(--witches-oven-grid-scaler));
+  left: calc(64px * var(--witches-oven-grid-scaler));
+  animation: double-progress 2s steps(17, end) 0s infinite normal forwards;
+}
+/* WITCHES' OVEN */
 
 /* SPINNING WHEEL */
 .crafting-grid.spinning-wheel {
@@ -205,10 +261,10 @@
   height: calc(18px * var(--spinning-wheel-grid-scaler));
 }
 
-.crafting-grid.spinning-wheel .recipe > *:first-child {
+.crafting-grid.spinning-wheel .recipe > .slot:first-child {
   grid-column: 2;
 }
-.crafting-grid.spinning-wheel .recipe > *:not(:first-child) {
+.crafting-grid.spinning-wheel .recipe > .slot:not(:first-child) {
   grid-row: 2;
 }
 
@@ -243,8 +299,6 @@
 
 .crafting-grid .slot {
   position: relative;
-  width: calc(36px * var(--crafting-table-grid-scaler));
-  height: calc(36px * var(--crafting-table-grid-scaler));
   padding: 2px;
 }
 .crafting-grid .slot.clickable {
@@ -348,5 +402,13 @@
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
   } to {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+@keyframes double-progress {
+  from {
+    clip-path: polygon(0 0, 0 25%, 35% 100%, 55% 100%, 55% 100%, 35% 100%, 0 25%, 0 0);
+  } to {
+    clip-path: polygon(0 0, 0 25%, 35% 100%, 55% 100%, 100% 100%, 100% 45%, 100% 0, 100% 0);
   }
 }

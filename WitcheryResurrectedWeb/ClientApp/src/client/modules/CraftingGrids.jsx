@@ -3,6 +3,7 @@ import React from 'react'
 import smelingFlames from '../../assets/images/crafting_guis/smelting_flames.png'
 import progressArrow from '../../assets/images/crafting_guis/progress_arrow.png'
 import progressBubbles from '../../assets/images/crafting_guis/progress_bubbles.png'
+import progressDoubleArrow from '../../assets/images/crafting_guis/progress_double_arrow.png'
 import progressSpinningArrow from '../../assets/images/crafting_guis/progress_spinning_arrow.png'
 
 import '../styles/CraftingGrids.css'
@@ -76,7 +77,9 @@ class CraftingTable extends React.Component {
         </div>
 
         <div className='products'>
-          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
         </div>
       </div>
     )
@@ -100,7 +103,9 @@ class Furnace extends React.Component {
         </div>
 
         <div className='products'>
-          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
         </div>
 
         <div className='decorations'>
@@ -144,7 +149,9 @@ class Kettle extends React.Component {
         <h2 className='minecraft title'>Kettle</h2>
 
         <div className='products'>
-          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
         </div>
 
         <div className='recipe' ref={this.grid}>
@@ -165,14 +172,27 @@ class Kettle extends React.Component {
   }
 }
 
+class WitchesOven extends React.Component {
+  render () {
+    return (
+      <div className='crafting-grid witches-oven'>
+        <h2 className='minecraft title'>Witches' Oven</h2>
 
-  setPause (paused) {
-    if (paused) clearInterval(this.interval)
-    else this.interval = setInterval(this.shuffle.bind(this), CraftingTable.shuffleInterval)
+        <div className='recipe' ref={this.grid}>
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+        </div>
 
-    this.setState({
-      paused
-    })
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
+        </div>
+
+        <div className='decorations'>
+          <img className='progress-double-arrow' alt='progress' src={progressDoubleArrow}/>
+        </div>
+      </div>
+    )
   }
 }
 
@@ -211,7 +231,9 @@ class SpinningWheel extends React.Component {
         </div>
 
         <div className='products'>
-          {this.props.recipe.products.map((p, i) => <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
         </div>
 
         <div className='decorations'>
@@ -223,7 +245,9 @@ class SpinningWheel extends React.Component {
 
   shuffle () {
     if (!this.state.paused) {
-      for (let s = this.grid.current.children.length; s >= 0; s--) this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * s)])
+      for (let s = this.grid.current.children.length; s >= 1; s--) {
+        this.grid.current.appendChild(this.grid.current.children[Math.floor(Math.random() * (s - 1)) + 1])
+      }
     }
   }
 }
@@ -232,5 +256,6 @@ export {
   CraftingTable,
   Furnace,
   Kettle,
+  WitchesOven,
   SpinningWheel
 }
