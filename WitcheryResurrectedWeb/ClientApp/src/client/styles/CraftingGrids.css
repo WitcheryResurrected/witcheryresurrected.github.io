@@ -105,20 +105,20 @@
   padding: 3px;
 }
 
-.crafting-grid.furnace .progress-arrow {
-  width: calc(48px * var(--furnace-grid-scaler));
-  height: calc(34px * var(--furnace-grid-scaler));
-  top: calc(46px * var(--furnace-grid-scaler));
-  left: calc(56px * var(--furnace-grid-scaler));
-  animation: progress 2s steps(16, end) 0s infinite normal forwards;
-}
-
 .crafting-grid.furnace .smelting-flames {
   width: calc(28px * var(--furnace-grid-scaler));
   height: calc(28px * var(--furnace-grid-scaler));
   top: calc(48px * var(--furnace-grid-scaler));
   left: calc(12px * var(--furnace-grid-scaler));
   animation: flame 2s steps(16, end) 0s infinite normal forwards;
+}
+
+.crafting-grid.furnace .progress-arrow {
+  width: calc(48px * var(--furnace-grid-scaler));
+  height: calc(34px * var(--furnace-grid-scaler));
+  top: calc(46px * var(--furnace-grid-scaler));
+  left: calc(56px * var(--furnace-grid-scaler));
+  animation: progress 2s steps(16, end) 0s infinite normal forwards;
 }
 /* FURNACE */
 
@@ -225,12 +225,20 @@
   padding: 2px;
 }
 
+.crafting-grid.witches-oven .smelting-flames {
+  width: calc(28px * var(--witches-oven-grid-scaler));
+  height: calc(28px * var(--witches-oven-grid-scaler));
+  top: calc(80px * var(--witches-oven-grid-scaler));
+  left: calc(23px * var(--witches-oven-grid-scaler));
+  animation: flame 2s steps(16, end) 0s infinite normal forwards;
+}
+
 .crafting-grid.witches-oven .progress-double-arrow {
   width: calc(58px * var(--witches-oven-grid-scaler));
   height: calc(42px * var(--witches-oven-grid-scaler));
   top: calc(52px * var(--witches-oven-grid-scaler));
   left: calc(64px * var(--witches-oven-grid-scaler));
-  animation: double-progress 2s steps(17, end) 0s infinite normal forwards;
+  animation: double-progress 2s steps(16, end) 0s infinite normal forwards;
 }
 /* WITCHES' OVEN */
 
@@ -406,9 +414,13 @@
 }
 
 @keyframes double-progress {
-  from {
-    clip-path: polygon(0 0, 0 25%, 35% 100%, 55% 100%, 55% 100%, 35% 100%, 0 25%, 0 0);
-  } to {
-    clip-path: polygon(0 0, 0 25%, 35% 100%, 55% 100%, 100% 100%, 100% 45%, 100% 0, 100% 0);
+  0% {
+    clip-path: polygon(0 100%, 0 0, 0 0, 0 25%, 35% 100%, 50% 100%, 50% 100%);
+  }
+  50% {
+    clip-path: polygon(0 100%, 0 0, 50% 0, 50% 25%, 35% 0, 50% 0, 50% 100%);
+  }
+  100% {
+    clip-path: polygon(0 100%, 0 0, 100% 0, 100% 25%, 35% 0, 100% 0, 100% 100%);
   }
 }

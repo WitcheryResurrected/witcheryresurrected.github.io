@@ -90,6 +90,9 @@ ul:last-child {
   border: 2px solid;
   border-color: #373737 #FFF #FFF #373737;
 }
+.slot.uncertain img {
+  animation: flicker 1s ease-in-out 0s infinite alternate forwards;
+}
 
 .error {
   position: fixed;
@@ -163,5 +166,20 @@ ul:last-child {
   }
   75% {
     content: '...';
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

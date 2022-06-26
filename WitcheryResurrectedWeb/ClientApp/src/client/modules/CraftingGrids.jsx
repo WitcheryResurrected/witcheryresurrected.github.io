@@ -19,7 +19,7 @@ class Slot extends React.Component {
     if (item) {
       return (
         <div
-          className={`slot${modded && !this.props.preventClick ? ' clickable' : ''}`}
+          className={`slot${modded && !this.props.preventClick ? ' clickable' : ''}${this.props.data?.uncertain ? ' uncertain' : ''}`}
           onClick={modded && !this.props.preventClick ? () => this.props.switchLocation(category, item.id) : null}>
             <img alt={this.props.data?.id} src={item?.iconURL}/>
 
@@ -189,6 +189,8 @@ class WitchesOven extends React.Component {
         </div>
 
         <div className='decorations'>
+          <img className='smelting-flames' alt='flames' src={smelingFlames}/>
+
           <img className='progress-double-arrow' alt='progress' src={progressDoubleArrow}/>
         </div>
       </div>
