@@ -4,6 +4,7 @@ import smelingFlames from '../../assets/images/crafting_guis/smelting_flames.png
 import progressArrow from '../../assets/images/crafting_guis/progress_arrow.png'
 import progressBubbles from '../../assets/images/crafting_guis/progress_bubbles.png'
 import progressDoubleArrow from '../../assets/images/crafting_guis/progress_double_arrow.png'
+import progressTripleArrow from '../../assets/images/crafting_guis/progress_triple_arrow.png'
 import progressSpinningArrow from '../../assets/images/crafting_guis/progress_spinning_arrow.png'
 
 import '../styles/CraftingGrids.css'
@@ -198,6 +199,32 @@ class WitchesOven extends React.Component {
   }
 }
 
+class Distillery extends React.Component {
+  render () {
+    return (
+      <div className='crafting-grid distillery'>
+        <h2 className='minecraft title'>Distillery</h2>
+
+        <div className='recipe' ref={this.grid}>
+          {this.props.recipe.ingredients.map((s, i) => <Slot data={s} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>)}
+        </div>
+
+        <div className='products'>
+          {this.props.recipe.products.map((p, i) =>
+            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+          )}
+        </div>
+
+        <div className='decorations'>
+          <img className='progress-bubbles' alt='progress' src={progressBubbles}/>
+
+          <img className='progress-triple-arrow' alt='progress' src={progressTripleArrow}/>
+        </div>
+      </div>
+    )
+  }
+}
+
 class SpinningWheel extends React.Component {
   static shuffleInterval = 1000
 
@@ -259,5 +286,6 @@ export {
   Furnace,
   Kettle,
   WitchesOven,
+  Distillery,
   SpinningWheel
 }

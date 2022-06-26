@@ -19,6 +19,7 @@
   --furnace-grid-scaler: 1.2;
   --kettle-grid-scaler: 1.2;
   --witches-oven-grid-scaler: 1.2;
+  --distillery-grid-scaler: 1.2;
   --spinning-wheel-grid-scaler: 2;
 
   position: relative;
@@ -213,16 +214,16 @@
   padding-bottom: calc(16px * var(--witches-oven-grid-scaler));
 }
 
-.crafting-grid.witches-oven .products .slot:first-child {
-  width: calc(52px * var(--witches-oven-grid-scaler));
-  height: calc(52px * var(--witches-oven-grid-scaler));
-  padding: 3px;
-}
-
 .crafting-grid.witches-oven .products .slot {
   width: calc(36px * var(--witches-oven-grid-scaler));
   height: calc(36px * var(--witches-oven-grid-scaler));
   padding: 2px;
+}
+
+.crafting-grid.witches-oven .products .slot:first-child {
+  width: calc(52px * var(--witches-oven-grid-scaler));
+  height: calc(52px * var(--witches-oven-grid-scaler));
+  padding: 3px;
 }
 
 .crafting-grid.witches-oven .smelting-flames {
@@ -241,6 +242,68 @@
   animation: double-progress 2s steps(16, end) 0s infinite normal forwards;
 }
 /* WITCHES' OVEN */
+
+/* DISTILLERY */
+.crafting-grid.distillery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: calc(262px * var(--distillery-grid-scaler));
+  height: calc(172px * var(--distillery-grid-scaler));
+  background: url('../../assets/images/crafting_guis/distillery.png') no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
+.crafting-grid.distillery .recipe {
+  display: flex;
+  flex-flow: column;
+  width: calc((36px + 46px) * var(--distillery-grid-scaler)); /* Slots, padding, horizontal slot gap */
+  height: calc(((36px * 3) + 40px + 4px) * var(--distillery-grid-scaler)); /* Slots, padding, vertical slot gap */
+  padding-top: calc(40px * var(--distillery-grid-scaler));
+  padding-left: calc(46px * var(--distillery-grid-scaler));
+}
+
+.crafting-grid.distillery .recipe .slot {
+  width: calc(36px * var(--distillery-grid-scaler));
+  height: calc(36px * var(--distillery-grid-scaler));
+}
+
+.crafting-grid.distillery .recipe .slot:last-child {
+  margin-top: calc(4px * var(--distillery-grid-scaler));
+}
+
+.crafting-grid.distillery .products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: calc(((36px * 2) + 40px) * var(--distillery-grid-scaler)); /* Slots, padding, horizontal slot gap */
+  height: calc(((36px * 2) + 40px) * var(--distillery-grid-scaler)); /* Slots, padding, vertical slot gap */
+  padding-top: calc(40px * var(--distillery-grid-scaler));
+  padding-left: calc(40px * var(--distillery-grid-scaler));
+}
+
+.crafting-grid.distillery .products .slot {
+  width: calc(36px * var(--distillery-grid-scaler));
+  height: calc(36px * var(--distillery-grid-scaler));
+  padding: 2px;
+}
+
+.crafting-grid.distillery .progress-bubbles {
+  width: calc(22px * var(--distillery-grid-scaler));
+  height: calc(56px * var(--distillery-grid-scaler));
+  top: calc(54px * var(--distillery-grid-scaler));
+  left: calc(19px * var(--distillery-grid-scaler));
+  animation: bubble 2s steps(16, end) 0s infinite normal forwards;
+}
+
+.crafting-grid.distillery .progress-triple-arrow {
+  width: calc(76px * var(--distillery-grid-scaler));
+  height: calc(70px * var(--witches-oven-grid-scaler));
+  top: calc(40px * var(--distillery-grid-scaler));
+  left: calc(88px * var(--distillery-grid-scaler));
+  animation: progress 2s steps(16, end) 0s infinite normal forwards;
+}
+/* DISTILLERY */
 
 /* SPINNING WHEEL */
 .crafting-grid.spinning-wheel {

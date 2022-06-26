@@ -5,6 +5,7 @@ import {
   Furnace,
   Kettle,
   WitchesOven,
+  Distillery,
   SpinningWheel
 } from './modules/CraftingGrids.jsx'
 
@@ -17,6 +18,8 @@ import attunedIcon from '../assets/TEMP/attuned_stone.png'
 import whiffIcon from '../assets/TEMP/magic_whiff.png'
 import foulFumeIcon from '../assets/TEMP/foul_fume.png'
 import jarIcon from '../assets/TEMP/clay_jar.png'
+import goddessTearIcon from '../assets/TEMP/goddess_tear.png'
+import goddessBreathIcon from '../assets/TEMP/goddess_breath.png'
 
 const categories = [
   'items',
@@ -63,6 +66,16 @@ const entries = { // TEMP
       id: 'witchery:clay_jar',
       name: 'Clay Jar',
       iconURL: jarIcon
+    },
+    {
+      id: 'witchery:goddess_tear',
+      name: 'Tear of the Goddess',
+      iconURL: goddessTearIcon
+    },
+    {
+      id: 'witchery:goddess_breath',
+      name: 'Breath of the Goddess',
+      iconURL: goddessBreathIcon
     }
   ])
 }
@@ -202,6 +215,35 @@ const recipes = [
         count: 1
       }
     ]
+  },
+  {
+    type: 'distillery',
+    products: [
+      {
+        id: 'witchery:goddess_tear'
+      },
+      {
+        id: 'witchery:goddess_breath'
+      },
+      {
+        id: 'minecraft:slimeball'
+      },
+      {
+        id: 'witchery:foul_fume'
+      }
+    ],
+    ingredients: [
+      {
+        id: 'witchery:goddess_breath'
+      },
+      {
+        id: 'minecraft:lapis_lazuli'
+      },
+      {
+        id: 'witchery:clay_jar',
+        count: 3
+      }
+    ]
   }
 ]
 // TEMP
@@ -214,6 +256,7 @@ class Glossary extends React.Component {
     furnace: Furnace,
     kettle: Kettle,
     witches_oven: WitchesOven,
+    distillery: Distillery,
     spinning_wheel: SpinningWheel
   }
 
