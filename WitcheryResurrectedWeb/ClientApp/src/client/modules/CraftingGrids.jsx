@@ -67,7 +67,7 @@ class CraftingTable extends React.Component {
       <div className='crafting-grid crafting-table'>
         {this.props.recipe.shaped
           ? null
-          : <button className='pause material-symbols-outlined' onClick={() => this.setPause(!this.state.paused)}>
+          : <button className='pause material-symbols-outlined' onClick={() => this.setState({ paused: !this.state.paused })}>
               {this.state.paused ? 'play_arrow' : 'pause'}
             </button>}
 
@@ -79,7 +79,7 @@ class CraftingTable extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
       </div>
@@ -105,7 +105,7 @@ class Furnace extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
 
@@ -143,7 +143,7 @@ class Kettle extends React.Component {
       <div className='crafting-grid kettle'>
         {this.props.recipe.shaped
           ? null
-          : <button className='pause material-symbols-outlined' onClick={() => this.setPause(!this.state.paused)}>
+          : <button className='pause material-symbols-outlined' onClick={() => this.setState({ paused: !this.state.paused })}>
             {this.state.paused ? 'play_arrow' : 'pause'}
           </button>}
 
@@ -151,7 +151,7 @@ class Kettle extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
 
@@ -185,7 +185,7 @@ class WitchesOven extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
 
@@ -211,7 +211,7 @@ class Distillery extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
 
@@ -249,7 +249,7 @@ class SpinningWheel extends React.Component {
       <div className='crafting-grid spinning-wheel'>
         {this.props.recipe.shaped
           ? null
-          : <button className='pause material-symbols-outlined' onClick={() => this.setPause(!this.state.paused)}>
+          : <button className='pause material-symbols-outlined' onClick={() => this.setState({ paused: !this.state.paused })}>
             {this.state.paused ? 'play_arrow' : 'pause'}
           </button>}
 
@@ -261,7 +261,7 @@ class SpinningWheel extends React.Component {
 
         <div className='products'>
           {this.props.recipe.products.map((p, i) =>
-            <Slot data={p} preventClick={true} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
+            <Slot data={p} preventClick={p.id === this.props.viewing} key={i} getItem={this.props.getItem} switchLocation={this.props.switchLocation}/>
           )}
         </div>
 

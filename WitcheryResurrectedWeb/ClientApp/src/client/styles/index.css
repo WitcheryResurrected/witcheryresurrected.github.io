@@ -13,6 +13,13 @@
   --link: #5969d4;
   --link-hover: #4653a1;
   --bs-darker: #292929;
+
+  --compendium-main: #c91006;
+  --compendium-accent: #93180f;
+  --compendium-off: #660f03;
+  --compendium-complement: #202375;
+  --compendium-back-main: #fdf8ec;
+  --compendium-back-complement: #6f462a;
 }
 
 #root {
@@ -24,7 +31,7 @@
 #app {
   display: flex;
   flex-flow: column;
-  flex: 1 1 auto;
+  flex: 1;
   background-image: var(--background);
   background-size: cover;
   background-attachment: fixed;
@@ -33,10 +40,10 @@
 .page {
   display: flex;
   flex-flow: column;
-  flex: 1 1 auto;
+  flex: 1;
 }
 .content {
-  flex: 1 1 auto;
+  flex: 1;
   overflow: hidden;
 }
 

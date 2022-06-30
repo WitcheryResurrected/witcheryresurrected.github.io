@@ -1,4 +1,7 @@
 import React from 'react'
+import {
+  Link
+} from 'react-router-dom'
 
 import {
   CraftingTable,
@@ -79,7 +82,12 @@ const entries = { // TEMP
       name: 'Breath of the Goddess',
       iconURL: goddessBreathIcon
     }
-  ]
+  ]/* .concat(new Array(30).fill({
+    id: 'witchery:attuned_stone',
+    name: 'Attuned Stone',
+    iconURL: attunedIcon,
+    description: 'The Attuned Stone is an item from the Witchery mod. This item is used in the creation of various items and machines, such as the Chalice, Poppet Shelf, Distillery, Kettle, and the Candelabra. Additionally, it can be used as a portable power source for circle magic, when a nearby Altar is not available. They must first be charged with the Rite of Charging.'
+  })) */
 }
 
 const recipes = [
@@ -323,6 +331,8 @@ class Glossary extends React.Component {
                   ))
                 : null}
             </div>
+
+            <Link to='/compendium' className='compendium-button'>Compendium</Link> {/* Onomasticon */}
           </div>
 
           <div className='blowup-area'>
@@ -352,7 +362,7 @@ class Glossary extends React.Component {
                       {this.state.blowup.recipes?.length
                         ? (
                           <div className='recipe-container'>
-                            {this.state.blowup.recipes.map(this.getGrid.bind(this))}
+                            {this.state.blowup.recipes.map((r, i) => this.getGrid(r, this.state.blowup.id, i))}
                           </div>
                           )
                         : null}
@@ -442,11 +452,11 @@ class Glossary extends React.Component {
     }
   }
 
-  getGrid (recipe) {
+  getGrid (recipe, viewing, key) {
     const Grid = Glossary.grids[recipe.type]
 
     return Grid
-      ? <Grid recipe={recipe} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
+      ? <Grid recipe={recipe} viewing={viewing} key={key} switchLocation={this.switchLocation.bind(this)} getItem={this.getItem.bind(this)}/>
       : <strong className='missing-error'>&#x3C;Crafting method missing from glossary&#x3E;</strong>
   }
 
