@@ -73,7 +73,6 @@
   #navbar:hover {
     transition: 0.2s;
     border-radius: 0 0 2% 2%;
-    transform: scale(1.02) translate(-1%, 1%);
   }
   #navbar::before {
     content: '';
@@ -86,11 +85,11 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0);
     pointer-events: none;
-    transform: scaleY(0.98) translateY(-1%);
   }
   #navbar:hover::before {
     background: rgba(0, 0, 0, 0.6);
     z-index: 49;
+    height: calc(100vh + 1px);
   }
   #navbar::after {
     content: '\2263';
@@ -108,16 +107,29 @@
     transform: scaleX(1.5) translateY(-120%);
   }
 
+  #navbar:hover .logo {
+    transform: scale(1.1);
+  }
+
   #navbar .links {
     transition: 0.5s ease-in-out;
     display: flex;
     flex-direction: column;
     max-height: 0vh;
+    padding-left: 2vh;
     border-radius: 0 0 0 20px;
     overflow: hidden;
   }
 
   #navbar:hover .links {
     max-height: 60vh;
+    padding-left: 1vh;
+    animation: delay-overflow 0s linear 0.5s 1 normal forwards;
+  }
+}
+
+@keyframes delay-overflow {
+  to {
+    overflow: auto;
   }
 }

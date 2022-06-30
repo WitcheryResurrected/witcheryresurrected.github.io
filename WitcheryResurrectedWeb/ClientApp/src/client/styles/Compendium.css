@@ -77,4 +77,8 @@
   .page.compendium .content .side {
     max-width: none;
   }
+
+  .page.compendium .content .side.index .categories {
+    font-size: 4vw;
+  }
 }
