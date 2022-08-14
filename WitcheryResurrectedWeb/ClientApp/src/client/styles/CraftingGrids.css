@@ -66,7 +66,7 @@
 
 .crafting-grid.furnace .recipe {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: space-between;
   width: calc((36px + 8px) * var(--furnace-grid-scaler)); /* Slots, padding */
   height: calc(((36px * 2) + 8px + 36px) * var(--furnace-grid-scaler)); /* Slots, padding, flame */
@@ -192,7 +192,7 @@
 
 .crafting-grid.witches-oven .products {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding-top: calc(40px * var(--witches-oven-grid-scaler));
@@ -242,7 +242,7 @@
 
 .crafting-grid.distillery .recipe {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   width: calc((36px + 46px) * var(--distillery-grid-scaler)); /* Slots, padding, horizontal slot gap */
   height: calc(((36px * 3) + 40px + 4px) * var(--distillery-grid-scaler)); /* Slots, padding, vertical slot gap */
   padding-top: calc(40px * var(--distillery-grid-scaler));

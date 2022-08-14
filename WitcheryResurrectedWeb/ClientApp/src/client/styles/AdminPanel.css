@@ -11,7 +11,7 @@
 
 .page.admin-panel .content {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 4%;
@@ -19,7 +19,7 @@
 
 .page.admin-panel form {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   min-width: 50%;
   padding: 1%;
   border-radius: 20px;
@@ -68,7 +68,7 @@
 
 .page.admin-panel form .file {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   position: relative;
   align-items: flex-start;
   margin-right: 0.5rem;
@@ -123,12 +123,12 @@
 
 .page.admin-panel form .dependency-container {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
 }
 
 .page.admin-panel form .dependency {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   position: relative;
   align-items: flex-start;
   margin-bottom: 0.5rem;

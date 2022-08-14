@@ -36,7 +36,7 @@
 
 #bauble-container {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -166,7 +166,7 @@
     margin-bottom: 30%;
   }
   .page.home .content .card.info .blurb .body {
-    flex-flow: column;
+    flex-direction: column;
   }
   .page.home .content .card.info .blurb .body p {
     text-align: justify;

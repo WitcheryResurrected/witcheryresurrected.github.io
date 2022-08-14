@@ -9,7 +9,7 @@
 
 .page.glossary .content .index {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   align-items: stretch;
   flex: 1;
   padding-top: 0.3%;
@@ -169,7 +169,7 @@
 .page.glossary .content .blowup-area .blowup .printout {
   display: flex;
   position: relative;
-  flex-flow: column;
+  flex-direction: column;
   padding: 1% 5%;
   background: var(--frost-back);
   border-radius: 30px;
@@ -221,7 +221,7 @@
 
 .page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   align-items: flex-end;
 }
 .page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container .crafting-grid {
@@ -315,7 +315,7 @@
   }
 
   .page.glossary .content .blowup-area .blowup .printout .underscore {
-    flex-flow: column-reverse;
+    flex-direction: column-reverse;
     align-items: flex-end;
   }
 
