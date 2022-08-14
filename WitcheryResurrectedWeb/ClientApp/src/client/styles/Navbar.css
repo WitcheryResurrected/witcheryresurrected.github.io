@@ -42,7 +42,7 @@
   z-index: 51;
 }
 #navbar .nav-link.external::before {
-  content: '\e89e';
+  content: 'open_in_new';
   margin-right: 0.3rem;
   vertical-align: text-bottom;
   font-family: 'Material Symbols Outlined';
