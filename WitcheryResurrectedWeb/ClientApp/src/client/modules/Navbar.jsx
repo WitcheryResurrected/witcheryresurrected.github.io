@@ -8,24 +8,24 @@ import logo from '../../assets/images/logo.png'
 import '../styles/Navbar.css'
 
 class Navbar extends React.Component {
+  static observer = new IntersectionObserver(
+    ([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
+    { threshold: [1] }
+  )
+
+  navbar = React.createRef()
+
   componentDidMount () {
-    if (!this.observer) {
-      const navbar = document.getElementById('navbar')
+    Navbar.observer.observe(this.navbar.current)
+  }
 
-      const observer = new IntersectionObserver(
-        ([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1),
-        { threshold: [1] }
-      )
-
-      observer.observe(navbar)
-
-      this.observer = observer
-    }
+  componentWillUnmount () {
+    this.observer?.unobserve?.(this.navbar.current)
   }
 
   render () {
     return (
-      <div id='navbar'>
+      <div id='navbar' ref={this.navbar}>
         <img className='logo' src={logo} alt='logo'/>
 
         <div className='links'>
