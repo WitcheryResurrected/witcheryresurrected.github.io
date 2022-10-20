@@ -18,7 +18,6 @@ public interface IDiscordHandler : IHostedService
     DiscordSocketClient? BotClient { get; }
 
     SocketGuild? Guild { get; }
-    SocketTextChannel? SuggestionsChannel { get; }
 
     public Task PostChangelog(string name, Changelog changelog, string url, string directoryName, IEnumerable<string> links);
 }
@@ -29,7 +28,6 @@ public class DiscordHandler : IDiscordHandler
     public DiscordSocketClient? BotClient { get; private set; }
 
     public SocketGuild? Guild { get; private set; }
-    public SocketTextChannel? SuggestionsChannel { get; private set; }
 
     private readonly IConfigurationManager _configurationManager;
 
@@ -48,12 +46,6 @@ public class DiscordHandler : IDiscordHandler
                 if (_configurationManager.Config.GuildId != null)
                 {
                     Guild = BotClient.GetGuild(ulong.Parse(_configurationManager.Config.GuildId));
-                }
-
-                if (Guild != null && _configurationManager.Config.SuggestionsChannel != null)
-                {
-                    SuggestionsChannel =
-                        Guild.GetTextChannel(ulong.Parse(_configurationManager.Config.SuggestionsChannel));
                 }
 
                 return Console.Out.WriteLineAsync($"Logged into bot {BotClient.CurrentUser}");

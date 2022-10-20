@@ -27,13 +27,17 @@ public class SuggestionsController : Controller
         _suggestionsHandler = suggestionsHandler;
     }
 
-    [HttpPost("add/{messageId}")]
-    public async Task<ActionResult<int>> AddSuggestion([FromRoute] ulong messageId, [FromBody] string? pass)
+    [HttpPost("add/{threadId}/{messageId}")]
+    public async Task<ActionResult<int>> AddSuggestion([FromRoute] ulong threadId, [FromRoute] ulong messageId, [FromBody] string? pass)
     {
         if (!await _configurationManager.IsAuthenticated(pass)) return StatusCode(401);
-        if (_discordHandler.SuggestionsChannel == null) return StatusCode(501);
-        var message = await _discordHandler.SuggestionsChannel.GetMessageAsync(messageId);
+
+        var channel = _discordHandler.Guild?.GetThreadChannel(threadId);
+        if (channel == null) return StatusCode(404);
+
+        var message = await channel.GetMessageAsync(messageId);
         if (message == null) return StatusCode(404);
+
         var id = _suggestionsHandler.Suggestions.Count > 0 ? _suggestionsHandler.Suggestions.Last().Key + 1 : 1;
         var filteredWords =
             from x in Regex.Replace(message.Content.Replace('\n', ' '), "[^ A-Za-z0-9_-]", "").Split(" ")
