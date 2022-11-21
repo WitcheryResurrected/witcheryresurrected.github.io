@@ -37,7 +37,7 @@ public class Startup
 
         services.AddHostedService(provider => provider.GetRequiredService<IDiscordHandler>());
 
-        services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/build");
+        services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
     }
 
     public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
