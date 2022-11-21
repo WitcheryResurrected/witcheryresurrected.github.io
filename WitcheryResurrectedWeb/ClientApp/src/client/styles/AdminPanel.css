@@ -20,14 +20,11 @@
 .page.admin-panel form {
   display: flex;
   flex-direction: column;
+  gap: 1em;
   min-width: 50%;
   padding: 1%;
   border-radius: 20px;
   background: var(--bs-dark);
-}
-
-.page.admin-panel form > * {
-  margin: 1% 0;
 }
 
 .page.admin-panel form input,
@@ -69,6 +66,7 @@
 .page.admin-panel form .file {
   display: flex;
   flex-direction: column;
+  gap: 1.5em;
   position: relative;
   align-items: flex-start;
   margin-right: 0.5rem;
@@ -81,7 +79,6 @@
 .page.admin-panel form .file input,
 .page.admin-panel form .file select {
   width: 60%;
-  margin: 4% 0;
 }
 
 .page.admin-panel form .file input[type='file'] {

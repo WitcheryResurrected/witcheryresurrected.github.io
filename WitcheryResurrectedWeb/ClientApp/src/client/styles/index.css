@@ -31,19 +31,19 @@
 #app {
   display: flex;
   flex-direction: column;
+  height: 100%;
   flex: 1;
   background-image: var(--background);
   background-size: cover;
   background-attachment: fixed;
+  overflow: auto;
 }
 
 .page {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 .content {
-  flex: 1;
   overflow: hidden;
 }
 
