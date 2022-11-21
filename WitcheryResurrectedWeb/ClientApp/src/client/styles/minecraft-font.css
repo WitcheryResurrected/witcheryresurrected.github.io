@@ -5,11 +5,8 @@
 }
 
 .minecraft {
-  padding: 0.375em;
-  font-family: Mojang, 'Gill Sans', sans-serif;
-  letter-spacing: -0.5px;
-  word-spacing: 6px;
-  line-height: 1.25em;
-  white-space: nowrap;
-  margin: 0.125em 0.25em;
+  font-family: Mojang, 'Gill Sans', sans-serif !important;
+  letter-spacing: -0.5px !important;
+  word-spacing: 2px !important;
+  line-height: 1.25em !important;
 }
