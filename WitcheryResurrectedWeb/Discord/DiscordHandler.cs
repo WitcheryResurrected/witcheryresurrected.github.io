@@ -9,6 +9,7 @@ using Discord.Webhook;
 using Discord.WebSocket;
 using Microsoft.Extensions.Hosting;
 using WitcheryResurrectedWeb.Download;
+using WitcheryResurrectedWeb.Suggestions;
 
 namespace WitcheryResurrectedWeb.Discord;
 
@@ -18,6 +19,7 @@ public interface IDiscordHandler : IHostedService
     DiscordSocketClient? BotClient { get; }
 
     SocketGuild? Guild { get; }
+    SocketTextChannel? SuggestionsChannel { get; }
 
     public Task PostChangelog(string name, Changelog changelog, string url, string directoryName, IEnumerable<string> links);
 }
@@ -28,6 +30,7 @@ public class DiscordHandler : IDiscordHandler
     public DiscordSocketClient? BotClient { get; private set; }
 
     public SocketGuild? Guild { get; private set; }
+    public SocketTextChannel? SuggestionsChannel { get; private set; }
 
     private readonly IConfigurationManager _configurationManager;
 
@@ -41,14 +44,14 @@ public class DiscordHandler : IDiscordHandler
         if (_configurationManager.Config.BotToken != null)
         {
             BotClient = new DiscordSocketClient();
-            BotClient.Ready += () =>
+            BotClient.Ready += async () =>
             {
                 if (_configurationManager.Config.GuildId != null)
                 {
                     Guild = BotClient.GetGuild(ulong.Parse(_configurationManager.Config.GuildId));
                 }
 
-                return Console.Out.WriteLineAsync($"Logged into bot {BotClient.CurrentUser}");
+                await Console.Out.WriteLineAsync($"Logged into bot {BotClient.CurrentUser}");
             };
             await BotClient.LoginAsync(TokenType.Bot, _configurationManager.Config.BotToken);
             await BotClient.StartAsync();

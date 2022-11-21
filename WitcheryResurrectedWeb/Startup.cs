@@ -19,7 +19,7 @@ public class Startup
 
         services.AddControllersWithViews();
 
-        services.AddSingleton<ISuggestionsHandler>(_ => new SuggestionsHandler("suggestions.bin"));
+        services.AddSingleton<ISuggestionsHandler>(provider => new SuggestionsHandler("suggestions.bin", provider.GetRequiredService<IDiscordHandler>()));
         services.AddHostedService(provider => provider.GetRequiredService<ISuggestionsHandler>());
 
         services.AddSingleton<IConfigurationManager>(

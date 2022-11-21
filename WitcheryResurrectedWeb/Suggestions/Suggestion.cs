@@ -4,7 +4,7 @@ using WitcheryResurrectedWeb.Discord;
 
 namespace WitcheryResurrectedWeb.Suggestions;
 
-public struct Suggestion
+public class Suggestion
 {
     public ulong Message { get; }
     public ulong Author { get; }

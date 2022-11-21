@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using WitcheryResurrectedWeb.Discord;
 
 namespace WitcheryResurrectedWeb.Suggestions;
 
@@ -23,12 +25,17 @@ public class SuggestionsHandler : ISuggestionsHandler
     private bool _writePending;
 
     private readonly string _file;
+    private readonly IDiscordHandler _discordHandler;
 
     public IDictionary<int, Suggestion> Suggestions { get; } = new SortedDictionary<int, Suggestion>();
     public IDictionary<ulong, int> ByMessage { get; } = new Dictionary<ulong, int>();
     public IDictionary<ulong, ISet<int>> ByAuthor { get; } = new Dictionary<ulong, ISet<int>>();
 
-    public SuggestionsHandler(string file) => _file = file;
+    public SuggestionsHandler(string file, IDiscordHandler discordHandler)
+    {
+        _file = file;
+        _discordHandler = discordHandler;
+    }
 
     public Task MarkChange()
     {
@@ -53,7 +60,7 @@ public class SuggestionsHandler : ISuggestionsHandler
             output.Write(id);
             output.Write(suggestion.Message);
             output.Write(suggestion.Author);
-            output.Write((byte) suggestion.State);
+            output.Write((byte)suggestion.State);
             output.Write(suggestion.AuthorName);
 
             output.Write(suggestion.Keywords.Count);
@@ -77,7 +84,7 @@ public class SuggestionsHandler : ISuggestionsHandler
                 var id = input.ReadInt32();
                 var messageId = input.ReadUInt64();
                 var authorId = input.ReadUInt64();
-                var state = (SuggestionState) input.ReadByte();
+                var state = (SuggestionState)input.ReadByte();
                 var authorTitle = input.ReadString();
 
                 var keywordCapacity = input.ReadInt32();
