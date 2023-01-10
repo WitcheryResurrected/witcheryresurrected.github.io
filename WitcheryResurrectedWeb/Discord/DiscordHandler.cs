@@ -15,47 +15,23 @@ namespace WitcheryResurrectedWeb.Discord;
 
 public interface IDiscordHandler : IHostedService
 {
-    DiscordWebhookClient? WebhookClient { get; }
-    DiscordSocketClient? BotClient { get; }
-
-    SocketGuild? Guild { get; }
-    SocketTextChannel? SuggestionsChannel { get; }
-
     public Task PostChangelog(string name, Changelog changelog, string url, string directoryName, IEnumerable<string> links);
 }
 
 public class DiscordHandler : IDiscordHandler
 {
     public DiscordWebhookClient? WebhookClient { get; private set; }
-    public DiscordSocketClient? BotClient { get; private set; }
-
-    public SocketGuild? Guild { get; private set; }
-    public SocketTextChannel? SuggestionsChannel { get; private set; }
 
     private readonly IConfigurationManager _configurationManager;
 
     public DiscordHandler(IConfigurationManager configurationManager) => _configurationManager = configurationManager;
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public Task StartAsync(CancellationToken cancellationToken)
     {
         if (_configurationManager.Config.Webhook != null)
             WebhookClient = new DiscordWebhookClient(_configurationManager.Config.Webhook);
 
-        if (_configurationManager.Config.BotToken != null)
-        {
-            BotClient = new DiscordSocketClient();
-            BotClient.Ready += async () =>
-            {
-                if (_configurationManager.Config.GuildId != null)
-                {
-                    Guild = BotClient.GetGuild(ulong.Parse(_configurationManager.Config.GuildId));
-                }
-
-                await Console.Out.WriteLineAsync($"Logged into bot {BotClient.CurrentUser}");
-            };
-            await BotClient.LoginAsync(TokenType.Bot, _configurationManager.Config.BotToken);
-            await BotClient.StartAsync();
-        }
+        return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

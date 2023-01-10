@@ -4,14 +4,16 @@ public class UnnamedSuggestionView
 {
     public int Id { get; }
     public string AuthorId { get; }
-    public string MessageId { get; }
-    public SuggestionState State { get; }
+    public string ThreadId { get; }
+    public int StateId { get; }
+    public bool Deleted { get; }
 
     public UnnamedSuggestionView(int id, Suggestion suggestion)
     {
         Id = id;
-        AuthorId = suggestion.Author.ToString();
-        MessageId = suggestion.Message.ToString();
-        State = suggestion.State;
+        AuthorId = suggestion.CreatorId.ToString();
+        ThreadId = suggestion.ThreadId.ToString();
+        StateId = suggestion.StateId;
+        Deleted = suggestion.DeletedAt.HasValue;
     }
 }

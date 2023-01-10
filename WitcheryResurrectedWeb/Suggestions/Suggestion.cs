@@ -1,41 +1,67 @@
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using WitcheryResurrectedWeb.Discord;
+using Microsoft.EntityFrameworkCore;
 
 namespace WitcheryResurrectedWeb.Suggestions;
 
-public class Suggestion
+public class SuggestionState
 {
-    public ulong Message { get; }
-    public ulong Author { get; }
-    public SuggestionState State { get; set; }
-        
-    public string AuthorName { get; }
-    public HashSet<string> Keywords { get; }
-
-    public Suggestion(ulong message, ulong author, SuggestionState state, string authorName, HashSet<string> keywords)
-    {
-        Message = message;
-        Author = author;
-        State = state;
-        AuthorName = authorName;
-        Keywords = keywords;
-    }
-
-    public async Task<string?> GetContent(IDiscordHandler discordHandler)
-    {
-        // TODO
-        return null;
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
 }
 
-public enum SuggestionState : byte
+public class SuggestionTagType
 {
-    Pending,
-    Approved,
-    Implemented,
-    PartiallyApproved,
-    PartiallyImplemented,
-    Denied,
-    Duplicate
+    public ulong Id { get; set; }
+    public string Name { get; set; }
+}
+
+[PrimaryKey(nameof(SuggestionId), nameof(TypeId))]
+public class SuggestionTag
+{
+    public int SuggestionId { get; set; }
+    public virtual Suggestion Suggestion { get; }
+
+    public ulong TypeId { get; set; }
+    public virtual SuggestionTagType Type { get; }
+}
+
+public class SuggestionModuleType
+{
+    public ulong Id { get; set; }
+    public string Name { get; set; }
+}
+
+[PrimaryKey(nameof(SuggestionId), nameof(TypeId))]
+public class SuggestionModule
+{
+    public int SuggestionId { get; set; }
+    public virtual Suggestion Suggestion { get; }
+
+    public ulong TypeId { get; set; }
+    public virtual SuggestionModuleType Type { get; }
+}
+
+public class Suggestion
+{
+    public int Id { get; set; }
+    public ulong ThreadId { get; set; }
+    public ulong CreatorId { get; set; }
+
+    public int StateId { get; set; }
+    public virtual SuggestionState State { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
+
+    public virtual List<SuggestionTag> Tags { get; }
+
+    public virtual List<SuggestionModule> Modules { get; }
+}
+
+public class SuggestionContent
+{
+    public int Id { get; set; }
+    public string CreatorName { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
 }

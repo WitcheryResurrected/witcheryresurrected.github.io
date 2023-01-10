@@ -1,10 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WitcheryResurrectedWeb.Discord;
+using Microsoft.EntityFrameworkCore;
 using WitcheryResurrectedWeb.Suggestions;
 
 namespace WitcheryResurrectedWeb.Controllers;
@@ -13,51 +13,52 @@ namespace WitcheryResurrectedWeb.Controllers;
 public class SuggestionsController : Controller
 {
     private readonly IConfigurationManager _configurationManager;
-    private readonly IDiscordHandler _discordHandler;
-    private readonly ISuggestionsHandler _suggestionsHandler;
 
-    public SuggestionsController(
-        IConfigurationManager configurationManager,
-        IDiscordHandler discordHandler,
-        ISuggestionsHandler suggestionsHandler
-    )
+    public SuggestionsController(IConfigurationManager configurationManager) => _configurationManager = configurationManager;
+
+    [HttpPost("add")]
+    public async Task<ActionResult<int>> AddSuggestion([FromBody] Add add)
     {
-        _configurationManager = configurationManager;
-        _discordHandler = discordHandler;
-        _suggestionsHandler = suggestionsHandler;
-    }
+        if (!await _configurationManager.IsAuthenticated(add.Pass)) return StatusCode(401);
 
-    [HttpPost("add/{threadId}/{messageId}")]
-    public async Task<ActionResult<int>> AddSuggestion([FromRoute] ulong threadId, [FromRoute] ulong messageId, [FromBody] string? pass)
-    {
-        if (!await _configurationManager.IsAuthenticated(pass)) return StatusCode(401);
+        await using var context = new SuggestionsContext();
 
-        var channel = _discordHandler.Guild?.GetThreadChannel(threadId);
-        if (channel == null) return StatusCode(404);
+        var suggestion = new Suggestion
+        {
+            CreatorId = add.CreatorId,
+            ThreadId = add.ThreadId,
+            StateId = 1
+        };
 
-        var message = await channel.GetMessageAsync(messageId);
-        if (message == null) return StatusCode(404);
+        await context.Suggestions.AddAsync(suggestion);
 
-        var id = _suggestionsHandler.Suggestions.Count > 0 ? _suggestionsHandler.Suggestions.Last().Key + 1 : 1;
-        var filteredWords =
-            from x in Regex.Replace(message.Content.Replace('\n', ' '), "[^ A-Za-z0-9_-]", "").Split(" ")
-            where x.Length > 3
-            select x;
-        _suggestionsHandler.Suggestions[id] = new Suggestion(messageId, message.Author.Id, SuggestionState.Pending,
-            message.Author.Username, new HashSet<string>(filteredWords));
-        await _suggestionsHandler.MarkChange();
-        return id;
+        await context.SaveChangesAsync();
+
+        await context.SuggestionContent.AddAsync(new SuggestionContent
+        {
+            Id = suggestion.Id,
+            Title = add.Title,
+            Content = add.Content,
+            CreatorName = add.CreatorName
+        });
+
+        return suggestion.Id;
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<UnnamedSuggestionView>> DeleteSuggestion([FromRoute] int id, [FromBody] string? pass)
     {
         if (!await _configurationManager.IsAuthenticated(pass)) return StatusCode(401);
-        if (!_suggestionsHandler.Suggestions.ContainsKey(id)) return StatusCode(404);
-        _suggestionsHandler.Suggestions.Remove(id, out var suggestion);
-        _suggestionsHandler.ByAuthor[suggestion.Author].Remove(id);
-        _suggestionsHandler.ByMessage.Remove(suggestion.Message);
-        await _suggestionsHandler.MarkChange();
+
+        await using var context = new SuggestionsContext();
+
+        var suggestion = await context.Suggestions.FindAsync(id);
+        if (suggestion == null) return StatusCode(401);
+
+        suggestion.DeletedAt = DateTime.Now;
+
+        await context.SaveChangesAsync();
+
         return new UnnamedSuggestionView(id, suggestion);
     }
 
@@ -66,44 +67,54 @@ public class SuggestionsController : Controller
         [FromBody] Update update)
     {
         if (!await _configurationManager.IsAuthenticated(update.Pass)) return StatusCode(401);
-        if (!_suggestionsHandler.Suggestions.ContainsKey(id)) return StatusCode(404);
-        var suggestion = _suggestionsHandler.Suggestions[id];
-        suggestion.State = update.State;
-        _suggestionsHandler.Suggestions[id] = suggestion;
-        await _suggestionsHandler.MarkChange();
+
+        await using var context = new SuggestionsContext();
+
+        var suggestion = await context.Suggestions.FindAsync(id);
+
+        if (suggestion == null) return StatusCode(404);
+
+        suggestion.StateId = update.StateId;
+
+        await context.SaveChangesAsync();
+
         return new UnnamedSuggestionView(id, suggestion);
     }
 
     [HttpGet("{id:int}")]
-    public ActionResult<UnnamedSuggestionView> ById([FromRoute] int id)
+    public async Task<ActionResult<UnnamedSuggestionView>> ById([FromRoute] int id)
     {
-        if (!_suggestionsHandler.Suggestions.ContainsKey(id)) return StatusCode(404);
-        return new UnnamedSuggestionView(id, _suggestionsHandler.Suggestions[id]);
+        await using var context = new SuggestionsContext();
+        var suggestion = await context.Suggestions.FindAsync(id);
+
+        if (suggestion == null) return StatusCode(404);
+
+        return new UnnamedSuggestionView(id, suggestion);
     }
 
-    [HttpGet("by_message/{messageId}")]
-    public ActionResult<UnnamedSuggestionView> ByMessage([FromRoute] ulong messageId)
+    [HttpGet("by_thread/{threadId}")]
+    public async Task<ActionResult<UnnamedSuggestionView>> ByMessage([FromRoute] ulong threadId)
     {
-        if (!_suggestionsHandler.ByMessage.ContainsKey(messageId)) return StatusCode(404);
-        var id = _suggestionsHandler.ByMessage[messageId];
-        return new UnnamedSuggestionView(id, _suggestionsHandler.Suggestions[id]);
+        await using var context = new SuggestionsContext();
+        var suggestion = await context.Suggestions.FirstOrDefaultAsync(suggestion => suggestion.ThreadId == threadId);
+
+        if (suggestion == null) return StatusCode(404);
+        return new UnnamedSuggestionView(suggestion.Id, suggestion);
     }
 
     [HttpGet("by_author/{authorId}")]
-    public ActionResult<List<UnnamedSuggestionView>> ByAuthor([FromRoute] ulong authorId)
+    public async Task<IEnumerable<UnnamedSuggestionView>> ByAuthor([FromRoute] ulong authorId)
     {
-        if (!_suggestionsHandler.ByAuthor.ContainsKey(authorId)) return StatusCode(404);
-        var authorSuggestions =
-            from id in _suggestionsHandler.ByAuthor[authorId]
-            select new UnnamedSuggestionView(id, _suggestionsHandler.Suggestions[id]);
+        await using var context = new SuggestionsContext();
 
-        return new List<UnnamedSuggestionView>(authorSuggestions);
+        return context.Suggestions
+            .Where(suggestion => suggestion.CreatorId == authorId)
+            .Select(suggestion => new UnnamedSuggestionView(suggestion.Id, suggestion)).ToList();
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<SuggestionView>>> GetSuggestions([FromQuery] string? last)
+    public async Task<IEnumerable<SuggestionView>> GetSuggestions([FromQuery] string? last)
     {
-        var suggestions = new List<SuggestionView>();
         int? lastId;
         if (last == null)
         {
@@ -111,45 +122,36 @@ public class SuggestionsController : Controller
         }
         else
         {
-            if (!int.TryParse(last, out var id)) return suggestions;
+            if (!int.TryParse(last, out var id)) return Enumerable.Empty<SuggestionView>();
             lastId = id;
         }
 
-        var sent = -1;
-        foreach (var (id, suggestion) in _suggestionsHandler.Suggestions)
-        {
-            switch (sent)
-            {
-                case < 1 when !lastId.HasValue:
-                    sent = 1;
-                    suggestions.Add(new SuggestionView(id, suggestion.AuthorName,
-                        await suggestion.GetContent(_discordHandler) ?? "Failed to fetch contents.", suggestion.State));
-                    break;
-                case < 0 when id == lastId.Value:
-                    sent = 0;
-                    break;
-                default:
-                {
-                    if (sent != -1)
-                    {
-                        if (sent++ >= 10) continue;
-                        suggestions.Add(new SuggestionView(id, suggestion.AuthorName,
-                            await suggestion.GetContent(_discordHandler) ?? "Failed to fetch contents.",
-                            suggestion.State));
-                    }
+        await using var context = new SuggestionsContext();
 
-                    break;
-                }
-            }
-        }
+        var suggestions = lastId.HasValue
+            ? context.Suggestions.Where(suggestion => suggestion.Id > lastId)
+            : context.Suggestions;
 
-        return suggestions;
+        return (from suggestion in suggestions
+            join content in context.SuggestionContent on suggestion.Id equals content.Id
+            select new SuggestionView(suggestion.Id, content.CreatorName, content.Content, suggestion.StateId)).Take(10).ToList();
+    }
+
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+    public class Add
+    {
+        public ulong CreatorId { get; set; }
+        public ulong ThreadId { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string CreatorName { get; set; }
+        public string? Pass { get; set; }
     }
 
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class Update
     {
-        public SuggestionState State { get; set; }
+        public int StateId { get; set; }
         public string? Pass { get; set; }
     }
 }
