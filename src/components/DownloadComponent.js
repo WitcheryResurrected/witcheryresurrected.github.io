@@ -13,6 +13,7 @@ import {
     BarChart
 } from '@material-ui/icons';
 import {apiLink} from "../pages/DownloadsPage";
+import {Link} from "react-router-dom";
 
 export function DownloadComponent(props) {
     const [opened, setOpened] = useState(false);
