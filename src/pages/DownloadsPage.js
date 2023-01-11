@@ -5,6 +5,8 @@ import {DownloadComponent} from "../components/DownloadComponent";
 import './../styles/Downloads.css';
 import './../styles/LoadingCircle.css';
 
+export const apiLink = "witchery-api.msrandom.net";
+
 export default class DownloadsPage extends React.Component {
     state = {
         downloads: [],
@@ -23,7 +25,7 @@ export default class DownloadsPage extends React.Component {
         const {downloads, lastId} = this.state;
         if (!lastId && !firstLoad) return;
 
-        fetch('../downloads?limit=5' + (!firstLoad ? `&after=${lastId}` : '')).then(this.handleResponse).then(data => {
+        fetch(`${apiLink}/downloads?limit=5` + (!firstLoad ? `&after=${lastId}` : '')).then(this.handleResponse).then(data => {
             const newDownloads = [...downloads, ...data];
 
             this.setState({

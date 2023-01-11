@@ -12,6 +12,7 @@ import {
     PhotoSizeSelectSmall,
     BarChart
 } from '@material-ui/icons';
+import {apiLink} from "../pages/DownloadsPage";
 
 export function DownloadComponent(props) {
     const [opened, setOpened] = useState(false);
@@ -85,7 +86,7 @@ function FileComponent(props) {
         <div className='download-file'>
             <div className='download-title'>
                 <p className='file-title'>{name}</p>
-                <a className='download-button' href={`../download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
+                <a className='download-button' href={`${apiLink}/download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
             </div>
 
             <div className='file-stats'>
