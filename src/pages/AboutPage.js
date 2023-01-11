@@ -1,6 +1,5 @@
 import React from 'react';
 import './../styles/Home.css';
-import {Link} from "react-router-dom";
 
 const ASH_GITHUB = 'https://github.com/MsRandom';
 const ABUSED_GITHUB = 'https://github.com/abused';
