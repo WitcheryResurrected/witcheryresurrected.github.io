@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {/*NightsStay, Brightness7, */Reorder, Close} from "@material-ui/icons";
 import './../styles/Navbar.css';
+import {Link} from "react-router-dom";
 
 //const wikiLink = 'https://github.com/WitcheryResurrected/WitcheryResurrectedWiki/wiki';
 const discordLink = 'https://discord.gg/y2EN7Uy';
@@ -40,14 +41,14 @@ export function NavbarComponent(props) {
 
 const NavbarLinks = () => (
     <>
-        <a className='navbar-link' href='/home'>Home</a>
-        <a className='navbar-link' href='/home/downloads'>Downloads</a>
-        {/*<a className='navbar-link' target='_blank' href={wikiLink}>Wiki</a>*/}
-        <a className='navbar-link' target='_blank' rel='noreferrer' href={discordLink}>Discord</a>
-        <a className='navbar-link' target='_blank' rel='noreferrer' href={redditLink}>Reddit</a>
-        <a className='navbar-link' target='_blank' rel='noreferrer' href={twitterLink}>Twitter</a>
-        <a className='navbar-link' target='_blank' rel='noreferrer' href={trelloLink}>Trello</a>
-        <a className='navbar-link' href='/home/about'>About</a>
+        <Link className='navbar-link' to='/home'>Home</Link>
+        <Link className='navbar-link' to='/home/downloads'>Downloads</Link>
+        {/*<Link className='navbar-link' target='_blank' to={wikiLink}>Wiki</Link>*/}
+        <Link className='navbar-link' target='_blank' rel='noreferrer' to={discordLink}>Discord</Link>
+        <Link className='navbar-link' target='_blank' rel='noreferrer' to={redditLink}>Reddit</Link>
+        <Link className='navbar-link' target='_blank' rel='noreferrer' to={twitterLink}>Twitter</Link>
+        <Link className='navbar-link' target='_blank' rel='noreferrer' to={trelloLink}>Trello</Link>
+        <Link className='navbar-link' to='/home/about'>About</Link>
     </>
 );
 

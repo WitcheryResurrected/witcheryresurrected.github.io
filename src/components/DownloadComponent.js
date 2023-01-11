@@ -86,7 +86,7 @@ function FileComponent(props) {
         <div className='download-file'>
             <div className='download-title'>
                 <p className='file-title'>{name}</p>
-                <a className='download-button' href={`${apiLink}/download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
+                <Link className='download-button' to={`${apiLink}/download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></Link>
             </div>
 
             <div className='file-stats'>
@@ -99,9 +99,9 @@ function FileComponent(props) {
             {dependencies.length > 0 && <h3 className='dependency-title'>Dependencies:</h3>}
             <div className='file-dependencies'>
                 {dependencies.map(dependency => (
-                    <a key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' href={dependency.link}>
+                    <Link key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' to={dependency.link}>
                         {dependency.name}
-                    </a>
+                    </Link>
                 ))}
             </div>
         </div>

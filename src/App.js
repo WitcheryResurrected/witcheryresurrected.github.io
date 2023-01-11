@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 import {Route, Switch} from "react-router";
 import {NavbarComponent} from "./components/NavbarComponent";
 
@@ -13,9 +13,8 @@ export default class App extends React.Component {
     render() {
         return (
             <div className='content'>
-                <NavbarComponent/>
-
                 <BrowserRouter>
+                    <NavbarComponent/>
                     <Switch>
                         <Route exact path='/home' component={HomePage}/>
                         <Route exact path='/home/downloads' component={DownloadsPage}/>
