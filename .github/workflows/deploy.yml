@@ -1,0 +1,46 @@
+name: Build & Deploy
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.14.0'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload to prod
+        uses: actions/upload-artifact@v2
+        with:
+          name: prod-files
+          path: ./build
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: prod-files
+          path: ./build
+
+      - name: Deploy to dev branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: ./build
