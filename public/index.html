@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type = "image/png" href="%PUBLIC_URL%/assets/images/logo192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/assets/images/logo192.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
     <meta
-      name="description"
-      content="Witchery: Resurrected aims to recreate and improve the popular Witchery mod in modern versions; with a focus on customizability."
+            name="description"
+            content="Witchery: Resurrected aims to recreate and improve the popular Witchery mod in modern versions; with a focus on customizability."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/images/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/assets/manifest.json" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/images/logo192.png"/>
+    <link rel="manifest" href="%PUBLIC_URL%/assets/manifest.json"/>
     <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/assets/css/main.css">
 
     <title>Witchery: Resurrected</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+
+    <!-- Start Single Page Apps for GitHub Pages -->
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgraph/spa-github-pages
+        // This script checks to see if a redirect is present in the query string,
+        // converts it back into the correct url and adds it to the
+        // browser's history using window.history.replaceState(...),
+        // which won't cause the browser to attempt to load the new url.
+        // When the single page app is loaded further down in this file,
+        // the correct url will be waiting in the browser's history for
+        // the single page app to route accordingly.
+        const l = window.location;
+        if (l.search[1] === '/') {
+            const decoded = l.search.slice(1).split('&').map(s => s.replace(/~and~/g, '&')).join('?');
+            window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+    </script>
+    <!-- End Single Page Apps for GitHub Pages -->
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+</body>
 </html>
