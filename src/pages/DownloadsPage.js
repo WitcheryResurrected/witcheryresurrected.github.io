@@ -5,7 +5,7 @@ import {DownloadComponent} from "../components/DownloadComponent";
 import './../styles/Downloads.css';
 import './../styles/LoadingCircle.css';
 
-export const apiLink = "witchery-api.msrandom.net";
+export const apiLink = "https://witchery-api.msrandom.net";
 
 export default class DownloadsPage extends React.Component {
     state = {
