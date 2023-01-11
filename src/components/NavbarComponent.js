@@ -43,11 +43,11 @@ const NavbarLinks = () => (
     <>
         <Link className='navbar-link' to='/home'>Home</Link>
         <Link className='navbar-link' to='/home/downloads'>Downloads</Link>
-        {/*<Link className='navbar-link' target='_blank' to={wikiLink}>Wiki</Link>*/}
-        <Link className='navbar-link' target='_blank' rel='noreferrer' to={discordLink}>Discord</Link>
-        <Link className='navbar-link' target='_blank' rel='noreferrer' to={redditLink}>Reddit</Link>
-        <Link className='navbar-link' target='_blank' rel='noreferrer' to={twitterLink}>Twitter</Link>
-        <Link className='navbar-link' target='_blank' rel='noreferrer' to={trelloLink}>Trello</Link>
+        {/*<a className='navbar-link' target='_blank' href={wikiLink}>Wiki</a>*/}
+        <a className='navbar-link' target='_blank' rel='noreferrer' href={discordLink}>Discord</a>
+        <a className='navbar-link' target='_blank' rel='noreferrer' href={redditLink}>Reddit</a>
+        <a className='navbar-link' target='_blank' rel='noreferrer' href={twitterLink}>Twitter</a>
+        <a className='navbar-link' target='_blank' rel='noreferrer' href={trelloLink}>Trello</a>
         <Link className='navbar-link' to='/home/about'>About</Link>
     </>
 );

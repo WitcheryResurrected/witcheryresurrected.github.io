@@ -13,7 +13,6 @@ import {
     BarChart
 } from '@material-ui/icons';
 import {apiLink} from "../pages/DownloadsPage";
-import {Link} from "react-router-dom";
 
 export function DownloadComponent(props) {
     const [opened, setOpened] = useState(false);
@@ -87,7 +86,7 @@ function FileComponent(props) {
         <div className='download-file'>
             <div className='download-title'>
                 <p className='file-title'>{name}</p>
-                <Link className='download-button' to={`${apiLink}/download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></Link>
+                <a className='download-button' href={`${apiLink}/download/${downloadId}/${name}`} target='_blank' rel='noreferrer'><GetApp/></a>
             </div>
 
             <div className='file-stats'>
@@ -100,9 +99,9 @@ function FileComponent(props) {
             {dependencies.length > 0 && <h3 className='dependency-title'>Dependencies:</h3>}
             <div className='file-dependencies'>
                 {dependencies.map(dependency => (
-                    <Link key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' to={dependency.link}>
+                    <a key={dependency.name} className='file-dependency' target='_blank' rel='noreferrer' href={dependency.link}>
                         {dependency.name}
-                    </Link>
+                    </a>
                 ))}
             </div>
         </div>

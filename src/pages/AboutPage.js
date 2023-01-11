@@ -22,9 +22,9 @@ export default class HomePage extends React.Component {
                             <h2>About this project</h2>
                         </div>
                         <p className='text'>
-                            This remake was started in early 2020 by <Link className='welcome-link' target='_blank' rel='noreferrer' to={ASH_GITHUB}>Ashley Wright</Link>, who is the owner and maintainer of the project.
-                            The mod is written in the <Link className='welcome-link' target='_blank' rel='noreferrer' to={KOTLIN_LINK}>Kotlin</Link> programming language and is designed to be as data-driven and customizable as possible, to allow for freedom over features for server admins and general users.<br/>
-                            This website was designed by <Link className='welcome-link' target='_blank' rel='noreferrer' to={ABUSED_GITHUB}>abused_master</Link> and the backend server was programmed by Ashley.
+                            This remake was started in early 2020 by <a className='welcome-link' target='_blank' rel='noreferrer' href={ASH_GITHUB}>Ashley Wright</a>, who is the owner and maintainer of the project.
+                            The mod is written in the <a className='welcome-link' target='_blank' rel='noreferrer' href={KOTLIN_LINK}>Kotlin</a> programming language and is designed to be as data-driven and customizable as possible, to allow for freedom over features for server admins and general users.<br/>
+                            This website was designed by <a className='welcome-link' target='_blank' rel='noreferrer' href={ABUSED_GITHUB}>abused_master</a> and the backend server was programmed by Ashley.
                         </p>
                     </div>
                 </div>
