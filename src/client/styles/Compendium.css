@@ -1,0 +1,84 @@
+@import url('./minecraft-font.css');
+
+.page.compendium .content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/images/paper_overlay.png'), var(--background);
+  background-blend-mode: color-burn;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.page.compendium .content .minecraft {
+  color: #222;
+}
+
+.page.compendium .content .side {
+  flex: 1;
+  position: relative;
+  max-width: 35%;
+  aspect-ratio: 146 / 180; /* Image dimensions */
+  padding: 2%;
+  padding-right: 4%;
+}
+.page.compendium .content .side:first-child::before {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../assets/images/book.png');
+  background-size: contain;
+  image-rendering: pixelated;
+  transform: scaleX(-1);
+}
+.page.compendium .content .side:last-child {
+  background-image: url('../../assets/images/book.png');
+  background-size: contain;
+  image-rendering: pixelated;
+}
+
+.page.compendium .content .side.index .categories {
+  position: relative;
+  padding-top: 2%;
+  padding-left: 8%;
+  font-size: 1.5rem;
+}
+.page.compendium .content .side.index .categories .category {
+  transition: 0.25s ease-out;
+  cursor: pointer;
+  background-image: linear-gradient(to right, var(--bs-red) 50%, transparent 50%);
+  background-size: 200%;
+  background-position: 100%;
+}
+.page.compendium .content .side.index .categories .category.selected::marker {
+  content: '>';
+  letter-spacing: 0.4rem;
+}
+.page.compendium .content .side.index .categories .category:hover {
+  background-position: 0%;
+}
+
+.page.compendium .content .side.index .back-arrow {
+  position: absolute;
+  left: 10%;
+  bottom: 6%;
+  width: 10%;
+  image-rendering: pixelated;
+}
+.page.compendium .content .side.index .back-arrow:hover {
+  filter: hue-rotate(315deg) saturate(10);
+}
+
+@media (max-width: 800px) {
+  .page.compendium .content .side {
+    max-width: none;
+  }
+
+  .page.compendium .content .side.index .categories {
+    font-size: 4vw;
+  }
+}

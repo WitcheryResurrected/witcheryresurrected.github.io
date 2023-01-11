@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+
+#root:has(.page.glossary) {
+  height: 100vh;
+}
+
+.page.glossary {
+  height: 100%;
+}
+
+.page.glossary .content {
+  display: flex;
+  height: 100%;
+}
+
+.page.glossary .content .index {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+  padding-top: 1%;
+}
+
+.page.glossary .content .blowup-area {
+  flex: 2;
+  padding-top: 2%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.page.glossary .index .categories {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.page.glossary .index .categories .category {
+  transition: 0.2s;
+  background: var(--accent);
+  padding: 0.5% 2%;
+  clip-path: polygon(0.5vw 0%, calc(100% - 0.5vw) 0%, 100% 50%, calc(100% - 0.5vw) 100%, 0.5vw 100%, 0% 50%);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.page.glossary .index .categories .category::before,
+.page.glossary .index .categories .category::after {
+  content: '\25C6';
+  color: rgb(50, 50, 50);
+  opacity: 0.2;
+}
+.page.glossary .index .categories .category::before {
+  margin-left: -0.6rem;
+  margin-right: 0.1rem;
+}
+
+.page.glossary .index .categories .category::after {
+  margin-right: -0.6rem;
+  margin-left: 0.1rem;
+}
+.page.glossary .index .categories .category:hover {
+  background: var(--main);
+}
+.page.glossary .index .categories .category.selected {
+  background: var(--complement);
+}
+.page.glossary .index .categories .category.selected:hover {
+  background: var(--complement-accent);
+}
+
+.page.glossary .index .searchbar {
+  width: 85%;
+  margin: 1.5em 0 1em;
+  padding: 1%;
+  align-self: center;
+  border-radius: 5px;
+  outline: none;
+  color: white;
+}
+
+.page.glossary .index .entries {
+  display: flex;
+  justify-content: space-evenly;
+  align-content: baseline;
+  flex-wrap: wrap;
+  height: 100%;
+  gap: 1%;
+  padding: 2% 0 4% 0;
+  overflow: auto;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 1%, black 85%, transparent 100%);
+}
+
+.page.glossary .index .entries .entry {
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  min-width: 6em;
+  cursor: pointer;
+}
+.page.glossary .index .entries .entry:hover {
+  transform: scale(1.05);
+}
+.page.glossary .index .entries .entry .icon {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.page.glossary .index .entries .entry .icon img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: 5%;
+  image-rendering: pixelated;
+  border: 1px solid gray;
+  border-radius: 25px;
+}
+.page.glossary .index .entries .entry .icon::before {
+  transition: 0.2s;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 85%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  clip-path: polygon(0 0, 0% 30%, 40% 0);
+}
+.page.glossary .index .entries .entry:hover .icon::before {
+  clip-path: polygon(0 0, 0% 70%, 80% 0);
+  background: rgba(255, 255, 255, 0.6);
+}
+.page.glossary .index .entries .entry .caption {
+  display: block;
+  text-align: center;
+}
+
+.page.glossary .index .compendium-button {
+  transition: 0.3s;
+  position: absolute;
+  bottom: 0;
+  padding-left: calc(2% + 0.5rem);
+  padding-right: 1%;
+  transform: translateX(-0.5rem);
+  background: linear-gradient(
+    to right,
+    var(--compendium-main),
+    var(--compendium-main) 90%,
+    var(--compendium-off) 90%
+  );
+  color: black !important;
+  font-family: 'Courgette', cursive;
+  font-size: 2rem;
+  font-weight: 900;
+  text-decoration: none;
+  clip-path: polygon(0 0, 100% 0, 100% 10%, calc(100% - 1vw) 50%, 100% 90%, 100% 100%, 0 100%);
+  overflow: hidden;
+}
+.page.glossary .index .compendium-button:hover {
+  transform: translateX(0rem);
+}
+.page.glossary .index .compendium-button::after {
+  content: '\21aa';
+  margin: 0 0.3rem;
+  font-size: 3rem;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+.page.glossary .content .blowup-area .blowup {
+  width: 85%;
+  margin-left: 5%;
+  padding: 1%;
+  border-radius: 10px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.page.glossary .content .blowup-area .blowup .printout {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  padding: 1% 5%;
+  background: var(--frost-back);
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.page.glossary .content .blowup-area .blowup .printout .identity {
+  display: flex;
+  align-self: center;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate {
+  position: absolute;
+  transform: translateX(-105%);
+  white-space: nowrap;
+  line-height: 1;
+  text-align: end;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate .name {
+  font-size: 3rem;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .nameplate .id {
+  display: block;
+  font-size: 1rem;
+  font-style: italic;
+  color: lightgray;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .icon {
+  width: 8rem;
+  min-width: fit-content;
+  height: 8rem;
+  padding: 4px;
+}
+.page.glossary .content .blowup-area .blowup .printout .identity .icon img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.page.glossary .content .blowup-area .blowup .printout .underscore {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 2%;
+}
+.page.glossary .content .blowup-area .blowup .printout .underscore .description {
+  padding-right: 10%;
+  font-size: larger;
+  text-indent: 2rem;
+}
+
+.page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container .crafting-grid {
+  margin-bottom: 3%;
+}
+.page.glossary .content .blowup-area .blowup .printout .underscore .recipe-container .missing-error {
+  color: var(--bs-red);
+  font-size: larger;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .page.glossary .content .index {
+    transition: 0.2s ease-out;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    opacity: 0.2;
+    z-index: 1;
+    animation: hint 3s ease-in-out 0s 1 normal none;
+  }
+  .page.glossary .content .index::before { /* Disable selecting an item on mobile until extended */
+    transition: 1s;
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .page.glossary .content .index::after {
+    transition: 0.2s;
+    content: '>';
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-right: 1rem;
+    background: var(--frost-back);
+    opacity: 1;
+    font-size: 10rem;
+    justify-content: flex-end;
+    align-items: center;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .page.glossary .content .index:hover {
+    transform: translateX(0%);
+    opacity: 1;
+    animation: hint 0s ease-in-out 0s 1 normal none; /* Force index open on hover */
+  }
+  .page.glossary .content .index:hover::before {
+    z-index: -1;
+  }
+  .page.glossary .content .index:hover::after {
+    opacity: 0;
+  }
+
+  .page.glossary .index .compendium-button {
+    width: 100%;
+    font-size: 1.5rem;
+  }
+  .page.glossary .index .compendium-button::after {
+    font-size: 1.5rem;
+    margin-left: 1%;
+    vertical-align: baseline;
+  }
+
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate {
+    position: relative;
+    transform: none;
+    margin-right: 5%;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate .name {
+    font-size: 4vh;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .nameplate .id {
+    font-size: 2vh;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .icon {
+    width: 10vh;
+    height: 10vh;
+    padding: 1%;
+  }
+  .page.glossary .content .blowup-area .blowup .printout .identity .icon img {
+    vertical-align: baseline;
+  }
+
+  .page.glossary .content .blowup-area .blowup .printout .underscore {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+
+  @keyframes hint {
+    0% {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+
+    80% {
+      transform: translateX(-20%);
+      opacity: 0.8;
+    }
+    
+    100% {
+      transform: translateX(-50%);
+      opacity: 0.2;
+    }
+  }
+}

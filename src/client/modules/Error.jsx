@@ -30,6 +30,8 @@ class Error extends React.Component {
 
   update () {
     if (this.props.error instanceof TypeError) {
+      console.error(this.props.error)
+
       this.setState({
         error: {
           type: 'network',

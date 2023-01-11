@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0');
+
 :root {
   --main: #7a2a91;
   --accent: #9a39b4;
@@ -7,33 +9,41 @@
   --semifrost-back: rgba(38, 39, 43, 0.2);
   --frost-back: rgba(38, 39, 43, 0.4);
   --superfrost-back: rgba(38, 39, 43, 0.2);
+  --antifrost-back: rgba(146, 149, 165, 0.2);
   --link: #5969d4;
   --link-hover: #4653a1;
   --bs-darker: #292929;
+
+  --compendium-main: #c91006;
+  --compendium-accent: #93180f;
+  --compendium-off: #660f03;
+  --compendium-complement: #202375;
+  --compendium-back-main: #fdf8ec;
+  --compendium-back-complement: #6f462a;
 }
 
 #root {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   min-height: 100vh;
 }
 
 #app {
   display: flex;
-  flex-flow: column;
-  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
   background-image: var(--background);
   background-size: cover;
   background-attachment: fixed;
+  overflow: auto;
 }
 
 .page {
   display: flex;
-  flex-flow: column;
-  flex: 1 1 auto;
+  flex-direction: column;
 }
 .content {
-  flex: 1 1 auto;
   overflow: hidden;
 }
 
@@ -64,6 +74,10 @@ ul:last-child {
   background: var(--semifrost-back);
   backdrop-filter: blur(5px);
 }
+.antifrosted {
+  background: var(--antifrost-back);
+  backdrop-filter: blur(2px);
+}
 
 .question {
   font-style: italic;
@@ -76,6 +90,15 @@ ul:last-child {
 .loading-placeholder::after {
   content: '';
   animation: tick 1s linear 0s infinite normal forwards;
+}
+
+.slot:not(.no-square) {
+  background: rgba(139, 139, 139, 0.8);
+  border: 2px solid;
+  border-color: #373737 #FFF #FFF #373737;
+}
+.slot.uncertain img {
+  animation: flicker 1s ease-in-out 0s infinite alternate forwards;
 }
 
 .error {
@@ -150,5 +173,20 @@ ul:last-child {
   }
   75% {
     content: '...';
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

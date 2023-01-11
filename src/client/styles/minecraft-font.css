@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Mojang';
+  src: url('../../assets/fonts/Mojang-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
+.minecraft {
+  font-family: Mojang, 'Gill Sans', sans-serif !important;
+  letter-spacing: -0.5px !important;
+  word-spacing: 2px !important;
+  line-height: 1.25em !important;
+}

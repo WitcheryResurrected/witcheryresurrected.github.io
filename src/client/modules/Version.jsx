@@ -1,43 +1,31 @@
 import React from 'react'
 
-import AddIcon from '@material-ui/icons/Add'
-import RemoveIcon from '@material-ui/icons/Remove'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
-import {
-  Backup,
-  BarChart,
-  GetApp,
-  Keyboard,
-  PhotoSizeSelectSmall,
-  Today
-} from '@material-ui/icons'
-
 import '../styles/Version.css'
 
 class Version extends React.Component {
   static versionStats = [
     {
-      Icon: AddIcon,
+      icon: 'add',
       name: 'Additions',
       get: (data) => data.changelog.additions.length
     },
     {
-      Icon: RemoveIcon,
+      icon: 'remove',
       name: 'Removals',
       get: (data) => data.changelog.removals.length
     },
     {
-      Icon: FiberManualRecordIcon,
+      icon: 'circle',
       name: 'Changes',
       get: (data) => data.changelog.changes.length
     },
     {
-      Icon: Backup,
+      icon: 'file_copy',
       name: 'Files',
       get: (data) => data.paths.length
     },
     {
-      Icon: Today,
+      icon: 'event',
       name: 'Uploaded',
       get: (data) => new Date(data.release).toLocaleString('en-US', {
         dateStyle: 'medium',
@@ -48,22 +36,22 @@ class Version extends React.Component {
 
   static fileStats = [
     {
-      Icon: PhotoSizeSelectSmall,
+      icon: 'weight',
       name: 'Size',
       get: (data) => this.bytesToString(data.size)
     },
     {
-      Icon: Keyboard,
+      icon: 'memory',
       name: 'Loader',
       get: (data) => this.loaders[data.loader]
     },
     {
-      Icon: BarChart,
+      icon: 'dns',
       name: 'Game Version',
       get: (data) => data.version
     },
     {
-      Icon: GetApp,
+      icon: 'cloud_download',
       name: 'Downloads',
       get: (data) => data.downloadCount
     }
@@ -84,7 +72,9 @@ class Version extends React.Component {
         <div className='stats'>
           {Version.versionStats.map((s) => (
             <div className={'stat ' + s.name.toLowerCase().replace(' ', '')} key={s.name}>
-              <s.Icon className='icon'/>
+              <span className='material-symbols-outlined icon'>
+                {s.icon}
+              </span>
 
               <div className='data'>
                 <strong className='name'>{s.name}</strong>
@@ -119,7 +109,9 @@ class Version extends React.Component {
                   <div className='stats'>
                     {Version.fileStats.map((s) => (
                       <div className={'stat ' + s.name.toLowerCase().replace(' ', '')} key={s.name}>
-                        <s.Icon className='icon'/>
+                        <span className='material-symbols-outlined icon'>
+                          {s.icon}
+                        </span>
 
                         <div className='data'>
                           <strong className='name'>{s.name}</strong>
@@ -143,8 +135,8 @@ class Version extends React.Component {
                     : null}
                 </div>
 
-                <a className='download' href={`../download/${this.props.data.id}/${f.name}`} target='_blank' rel='noreferrer'>
-                  <GetApp className='icon'/>
+                <a className='material-symbols-outlined download' href={`../download/${this.props.data.id}/${f.name}`} target='_blank' rel='noreferrer'>
+                  download
                 </a>
               </div>
             ))}

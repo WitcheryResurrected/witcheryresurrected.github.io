@@ -21,16 +21,17 @@
   margin-right: 2rem;
 }
 .version-card .stat .icon {
+  width: fit-content;
+  height: fit-content;
   background: #171719;
-  width: 2rem;
-  height: 2rem;
   margin-right: 0.5rem;
-  padding: 0.2rem;
+  padding: 0.4rem;
   border-radius: 50%;
+  font-size: 1.5rem;
 }
 .version-card .stat .data {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
 }
 
 .version-card .expansion {
@@ -59,19 +60,21 @@
 }
 .version-card .expansion .notes .note-container ul li::before {
   margin-right: 0.5rem;
-  font-family: monospace;
+  vertical-align: middle;
+  font-family: 'Material Symbols Outlined';
 }
 .version-card .expansion .notes .note-container.additions ul li::before {
-  content: '+';
-  /* color: #01d701; */
+  content: 'add';
+  color: #01d701;
 }
 .version-card .expansion .notes .note-container.removals ul li::before {
-  content: '-';
-  /* color: #ce1414; */
+  content: 'remove';
+  color: #ce1414;
 }
 .version-card .expansion .notes .note-container.changes ul li::before {
-  content: '\2022';
-  /* color: #db780d; */
+  content: 'circle';
+  color: #db780d;
+  font-size: 0.5rem;
 }
 
 .version-card .expansion .files {
@@ -117,15 +120,18 @@
   color: lightgray !important;
 }
 
-.version-card .file .download .icon {
-  width: 2.8rem;
-  height: 2.8rem;
+.version-card .file .download {
+  transition: 0.1s;
+  width: fit-content;
+  height: fit-content;
   padding: 0.4rem;
   background: #222224;
-  fill: white;
+  color: white !important;
   border-radius: 8px;
+  font-size: 2rem;
+  text-decoration: none;
 }
-.version-card .file .download .icon:hover {
+.version-card .file .download:hover {
   background: #1a1a1a;
 }
 
@@ -134,34 +140,31 @@
   justify-content: space-between;
 }
 
-.stat.additions .icon {
-  fill: #01d701;
+.stat .icon {
+  color: #01d701;
 }
 .stat.removals .icon {
-  fill: #ce1414;
+  color: #ce1414;
 }
 .stat.changes .icon {
-  fill: #db780d;
+  color: #db780d;
 }
 .stat.files .icon {
-  fill: #4fbaf7;
+  color: #4fbaf7;
 }
 .stat.uploaded .icon {
-  fill: #ffbf00;
+  color: #ffbf00;
 }
 
-.file .stat .icon {
-  fill: #01d701;
-}
-/* .stat.size .icon {
-  fill: #eb2334;
+.stat.size .icon {
+  color: #eb2334;
 }
 .stat.loader .icon {
-  fill: #5d42f5;
+  color: #5d42f5;
 }
 .stat.gameversion .icon {
-  fill: #15e65a;
+  color: #15e65a;
 }
 .stat.downloads .icon {
-  fill: #f02020;
-} */
+  color: #3cf34b;
+}

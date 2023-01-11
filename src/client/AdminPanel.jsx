@@ -80,12 +80,26 @@ class File extends React.Component {
 }
 
 class AdminPanel extends React.Component {
+  static authURL = 'https://discord.com/api/oauth2/authorize?client_id=665314456745541653&response_type=code&scope=identify&redirect_uri=' +
+    encodeURIComponent(window.location.origin + '/auth')
+
+  static cancel (e) {
+    if (e) e.preventDefault()
+
+    window.location.reload()
+  }
+
   state = {
-    files: []
+    files: [],
+    authToken: null
   }
 
   componentDidMount () {
     return this.addFile()
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.authCheckInterval)
   }
 
   render () {
@@ -104,11 +118,18 @@ class AdminPanel extends React.Component {
               <button className='file-button add' onClick={this.addFile.bind(this)}>+</button>
             </div>
 
-            <div className='buttons'>
-              <button className='btn btn-success' type='submit'>Upload</button>
-              <button className='btn btn-danger cancel' onClick={this.cancel}>Cancel</button>
+            <input type='hidden' id='auth' name='auth' value={this.state.authToken || ''}/>
 
-              <input id='pass' type='password' name='pass' placeholder='Secret' required/>
+            <div className='buttons'>
+              <button className='btn btn-success' type='submit' onClick={this.checkAuth.bind(this)}>Upload</button>
+              <button className='btn btn-danger cancel' onClick={AdminPanel.cancel}>Cancel</button>
+
+              <div
+                className={`btn btn-${this.state.authToken ? 'outline-success disabled' : 'secondary'} authorize`}
+                onClick={this.openAuthWindow.bind(this)}
+              >
+                {this.state.authToken ? 'Authorized' : 'Authorize'}
+              </div>
             </div>
           </form>
         </div>
@@ -144,10 +165,30 @@ class AdminPanel extends React.Component {
     })
   }
 
-  cancel (e) {
-    if (e) e.preventDefault()
+  openAuthWindow () {
+    window.open(AdminPanel.authURL, 'popup', 'width=500,height=800,scrollbars=no,resizable=no,noreferrer')
 
-    window.location.reload()
+    if (!this.authCheckInterval) {
+      this.authCheckInterval = setInterval(() => {
+        if ('admin_auth' in localStorage) {
+          this.setState({
+            authToken: localStorage.getItem('admin_auth')
+          })
+
+          localStorage.removeItem('admin_auth')
+
+          clearInterval(this.authCheckInterval)
+        }
+      })
+    }
+  }
+
+  checkAuth (e) {
+    if (!this.state.authToken) {
+      alert('Remember to authorize!')
+
+      e.preventDefault()
+    }
   }
 }
 

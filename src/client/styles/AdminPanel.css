@@ -5,13 +5,13 @@
   width: 100%;
   height: 100%;
   background: white;
-  animation: flash 0.2s linear 0s 1 alternate forwards;
+  animation: flash 0.2s linear 0s 1 normal forwards;
   pointer-events: none;
 }
 
 .page.admin-panel .content {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 4%;
@@ -19,15 +19,12 @@
 
 .page.admin-panel form {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
+  gap: 1em;
   min-width: 50%;
   padding: 1%;
   border-radius: 20px;
   background: var(--bs-dark);
-}
-
-.page.admin-panel form > * {
-  margin: 1% 0;
 }
 
 .page.admin-panel form input,
@@ -68,7 +65,8 @@
 
 .page.admin-panel form .file {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
+  gap: 1.5em;
   position: relative;
   align-items: flex-start;
   margin-right: 0.5rem;
@@ -81,7 +79,6 @@
 .page.admin-panel form .file input,
 .page.admin-panel form .file select {
   width: 60%;
-  margin: 4% 0;
 }
 
 .page.admin-panel form .file input[type='file'] {
@@ -123,12 +120,12 @@
 
 .page.admin-panel form .dependency-container {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
 }
 
 .page.admin-panel form .dependency {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   position: relative;
   align-items: flex-start;
   margin-bottom: 0.5rem;
@@ -140,6 +137,29 @@
 
 .page.admin-panel form .dep-button {
   font-size: 2rem;
+}
+
+.page.admin-panel form .btn.authorize:not(.disabled) {
+  background: #5865f2;
+}
+.page.admin-panel form .btn.authorize:not(.disabled):hover {
+  background: #4c57d0;
+}
+.page.admin-panel form .btn.authorize:not(.disabled)::before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-image: url('https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384f934b806f37f4956_145dc557845548a36a82337912ca3ac5.svg');
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+.page.admin-panel form .btn.authorize.disabled::before {
+  content: '\2713';
 }
 
 @keyframes flash {

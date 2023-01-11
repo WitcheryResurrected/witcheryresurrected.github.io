@@ -7,11 +7,11 @@ import postFetch from './util/postFetch.js'
 import logo from '../assets/images/logo.png'
 import backvid from '../assets/videos/background.webm'
 
-import ritualExample from '../assets/videos/examples/rituals.webm'
-import infusionExample from '../assets/videos/examples/infusions.webm'
-import symbolExample from '../assets/videos/examples/symbology.webm'
-import brewingExample from '../assets/videos/examples/brewing.webm'
-import transformExample from '../assets/videos/examples/transformations.webm'
+// import ritualExample from '../assets/videos/examples/rituals.webm'
+// import infusionExample from '../assets/videos/examples/infusions.webm'
+// import symbolExample from '../assets/videos/examples/symbology.webm'
+// import brewingExample from '../assets/videos/examples/brewing.webm'
+// import transformExample from '../assets/videos/examples/transformations.webm'
 
 import batBauble from '../assets/images/bat_bauble.png'
 import potionBauble from '../assets/images/potion_bauble.png'
@@ -23,12 +23,21 @@ import './styles/Home.css'
 class Home extends React.Component {
   static baubleShiftRate = 2
 
+  static shiftBaubles (event) {
+    const container = document.getElementById('bauble-container')
+
+    const xOffset = (event.clientX - (window.innerWidth / 2)) / window.innerWidth
+    const yOffset = (event.clientY - (window.innerHeight / 2)) / window.innerHeight
+
+    container.style.transform = `translate(calc(-50% + ${xOffset * Home.baubleShiftRate}px), calc(-50% + ${yOffset * Home.baubleShiftRate}px))`
+  }
+
   constructor (props) {
     super(props)
 
     document.title = props.title + ' - Home'
 
-    if (!('ontouchstart' in window)) window.addEventListener('mousemove', this.shiftBaubles)
+    if (!('ontouchstart' in window)) window.addEventListener('mousemove', Home.shiftBaubles)
   }
 
   componentDidMount () {
@@ -44,7 +53,7 @@ class Home extends React.Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('mousemove', this.shiftBaubles)
+    window.removeEventListener('mousemove', Home.shiftBaubles)
   }
 
   render () {
@@ -143,7 +152,7 @@ class Home extends React.Component {
                   </p>
 
                   <video autoPlay muted loop lazy='true'>
-                    <source src={ritualExample} type='video/webm'/>
+                    {/* <source src={ritualExample} type='video/webm'/> */}
                   </video>
                 </div>
               </div>
@@ -159,7 +168,7 @@ class Home extends React.Component {
                   </p>
 
                   <video autoPlay muted loop lazy='true'>
-                    <source src={infusionExample} type='video/webm'/>
+                    {/* <source src={infusionExample} type='video/webm'/> */}
                   </video>
                 </div>
               </div>
@@ -175,7 +184,7 @@ class Home extends React.Component {
                   </p>
 
                   <video autoPlay muted loop lazy='true'>
-                    <source src={symbolExample} type='video/webm'/>
+                    {/* <source src={symbolExample} type='video/webm'/> */}
                   </video>
                 </div>
               </div>
@@ -191,7 +200,7 @@ class Home extends React.Component {
                   </p>
 
                   <video autoPlay muted loop lazy='true'>
-                    <source src={brewingExample} type='video/webm'/>
+                    {/* <source src={brewingExample} type='video/webm'/> */}
                   </video>
                 </div>
               </div>
@@ -207,7 +216,7 @@ class Home extends React.Component {
                   </p>
 
                   <video autoPlay muted loop lazy='true'>
-                    <source src={transformExample} type='video/webm'/>
+                    {/* <source src={transformExample} type='video/webm'/> */}
                   </video>
                 </div>
               </div>
@@ -249,15 +258,6 @@ class Home extends React.Component {
         </div>
       </div>
     )
-  }
-
-  shiftBaubles = (event) => {
-    const container = document.getElementById('bauble-container')
-
-    const xOffset = (event.clientX - (window.innerWidth / 2)) / window.innerWidth
-    const yOffset = (event.clientY - (window.innerHeight / 2)) / window.innerHeight
-
-    container.style.transform = `translate(calc(-50% + ${xOffset * Home.baubleShiftRate}px), calc(-50% + ${yOffset * Home.baubleShiftRate}px))`
   }
 }
 
